@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Providers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EventBus.Abstractions\EventBus.Abstractions.csproj" />
+    <ProjectReference Include="..\EventBus.Extensions\EventBus.Extensions.csproj" />
+    <ProjectReference Include="..\EventBus.Storage.Abstractions\EventBus.Storage.Abstractions.csproj" />
+    <ProjectReference Include="..\EventBus.Storage.MongoDB\EventBus.Storage.MongoDB.csproj" />
+    <ProjectReference Include="..\EventBus.Storage.Mysql\EventBus.Storage.Mysql.csproj" />
+  </ItemGroup>
+
+</Project>
