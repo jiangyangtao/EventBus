@@ -7,12 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Providers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +18,10 @@
     <ProjectReference Include="..\EventBus.Storage.Abstractions\EventBus.Storage.Abstractions.csproj" />
     <ProjectReference Include="..\EventBus.Storage.MongoDB\EventBus.Storage.MongoDB.csproj" />
     <ProjectReference Include="..\EventBus.Storage.Mysql\EventBus.Storage.Mysql.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Enums\" />
   </ItemGroup>
 
 </Project>
