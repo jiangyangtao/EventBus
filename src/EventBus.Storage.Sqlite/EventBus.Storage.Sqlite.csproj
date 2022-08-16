@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EventBus.Storage.Abstractions\EventBus.Storage.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>

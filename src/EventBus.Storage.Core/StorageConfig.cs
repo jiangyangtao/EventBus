@@ -5,10 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventBus.Storage.Abstractions.IRepositories
+namespace EventBus.Storage.Core
 {
-    public interface IDataBaseContext
+    internal class StorageConfig
     {
-        public StorageType StorageType { get; }
+        public StorageType StorageType { set; get; }
+
+        public string ConnectionString { set; get; }
     }
 }

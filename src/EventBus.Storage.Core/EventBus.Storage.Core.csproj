@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>disable</Nullable>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,12 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EventBus.Abstractions\EventBus.Abstractions.csproj" />
-    <ProjectReference Include="..\EventBus.Storage.Core\EventBus.Storage.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Enums\" />
+    <ProjectReference Include="..\EventBus.Storage.Abstractions\EventBus.Storage.Abstractions.csproj" />
+    <ProjectReference Include="..\EventBus.Storage.MongoDB\EventBus.Storage.MongoDB.csproj" />
+    <ProjectReference Include="..\EventBus.Storage.Mysql\EventBus.Storage.MySql.csproj" />
+    <ProjectReference Include="..\EventBus.Storage.Sqlite\EventBus.Storage.Sqlite.csproj" />
+    <ProjectReference Include="..\EventBus.Storage.SqlServer\EventBus.Storage.SqlServer.csproj" />
   </ItemGroup>
 
 </Project>

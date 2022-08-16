@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EventBus.Storage.Abstractions.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -9,6 +10,8 @@ namespace EventBus.Storage.Abstractions.IRepositories
 {
     public interface IRepository
     {
+        public StorageType StorageType { get; }
+
         /// <summary>
         /// 创建一条数据
         /// </summary>
