@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventBus.Infrastructure.Enums
+namespace EventBus.Storage.Abstractions.Enums
 {
-    internal enum StorageType
+    public enum StorageType
     {
-        Mysql,
+        MySql,
+        Sqlite,
+        SqlServer,
         MongoDB
     }
 }

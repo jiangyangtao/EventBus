@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventBus.Domain.IManager
+namespace EventBus.Abstractions.IProviders
 {
     public interface IApplicationManager
     {
