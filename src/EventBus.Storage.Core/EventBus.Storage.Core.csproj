@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EventBus.Storage.Abstractions\EventBus.Storage.Abstractions.csproj" />
     <ProjectReference Include="..\EventBus.Storage.MongoDB\EventBus.Storage.MongoDB.csproj" />
     <ProjectReference Include="..\EventBus.Storage.Mysql\EventBus.Storage.MySql.csproj" />
     <ProjectReference Include="..\EventBus.Storage.Sqlite\EventBus.Storage.Sqlite.csproj" />

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EventBus.Storage.Sqlite
 {
-    internal class SqliteDBContext : IDataBaseContext
+    internal class SqliteDBContext
     {
         public StorageType StorageType => StorageType.Sqlite;
     }

@@ -10,8 +10,6 @@ namespace EventBus.Storage.Abstractions
 {
     public interface IStorageInitialization
     {
-        StorageType StorageType { get; }
-
-        void Initialize(IServiceCollection services);
+        void Initialize(IServiceCollection services, string connectionString);
     }
 }

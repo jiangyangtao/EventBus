@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EventBus.Storage.SqlServer
 {
-    internal class SqlServerDBContext : IDataBaseContext
+    internal class SqlServerDBContext
     {
         public StorageType StorageType => StorageType.SqlServer;
     }

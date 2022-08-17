@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EventBus.Storage.MySql
 {
-    internal class MySqlDBContext : IDataBaseContext
+    internal class MySqlDBContext
     {
         public StorageType StorageType => StorageType.MySql;
     }

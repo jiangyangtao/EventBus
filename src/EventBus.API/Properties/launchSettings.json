@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "EventBus.Application": {
+    "EventBus.API": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

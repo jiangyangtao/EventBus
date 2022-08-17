@@ -28,7 +28,5 @@ namespace EventBus.Domain.IProviders
         /// <param name="evnetId"></param>
         /// <returns></returns>
         Task<IRetryData[]> GetEventRetryAsync(string evnetId);
-
-        Task<>
     }
 }

@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace EventBus.Storage.Sqlite
 {
-    internal class StorageInitialization : IStorageInitialization
+    internal class SqliteStorageInitialization : IStorageInitialization
     {
         public StorageType StorageType => StorageType.Sqlite;
 
-        public void Initialize(IServiceCollection services)
+        public void Initialize(IServiceCollection services, string connectionString)
         {
-            throw new NotImplementedException();
+
         }
     }
 }

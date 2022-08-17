@@ -7,15 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventBus.Storage.MongoDB
+namespace EventBus.Storage.MySql
 {
-    internal class StorageInitialization : IStorageInitialization
+    internal class MySqlStorageInitialization : IStorageInitialization
     {
-        public StorageType StorageType => StorageType.MongoDB;
+        public StorageType StorageType => StorageType.MySql;
 
-        public void Initialize(IServiceCollection services)
+        public void Initialize(IServiceCollection services, string connectionString)
         {
-            throw new NotImplementedException();
+
         }
     }
 }

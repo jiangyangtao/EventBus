@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace EventBus.Application.Controllers
+namespace EventBus.API.Controllers
 {
     public class HomeController : Controller
     {

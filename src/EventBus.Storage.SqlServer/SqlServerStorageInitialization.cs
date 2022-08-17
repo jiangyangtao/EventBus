@@ -7,15 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventBus.Storage.MySql
+namespace EventBus.Storage.SqlServer
 {
-    internal class StorageInitialization : IStorageInitialization
+    internal class SqlServerStorageInitialization : IStorageInitialization
     {
-        public StorageType StorageType => StorageType.MySql;
+        public StorageType StorageType => StorageType.SqlServer;
 
-        public void Initialize(IServiceCollection services)
+        public void Initialize(IServiceCollection services, string connectionString)
         {
-            throw new NotImplementedException();
+
         }
     }
 }

@@ -13,33 +13,29 @@ namespace EventBus.Storage.Core
         public static IServiceCollection AddStorage(this IServiceCollection services, IConfiguration configuration, ILogger logger)
         {
             var storageSection = configuration.GetSection("Storage");
-            var storageType = storageSection.GetSection("StorageType").Value;
-
-            var config = storageSection.GetSection<StorageConfig>();
-            var r = Enum.TryParse(storageType, true, out StorageType databaseType);
+            var storageTypeValue = storageSection.GetSection("StorageType").Value;
+            var r = Enum.TryParse(storageTypeValue, true, out StorageType storageType);
             if (r == false)
             {
-                databaseType = StorageType.Sqlite;
-                logger.LogError($"Unrecognizable StorageType:{storageType}. Enable default database:Sqlite.");
-                logger.LogError("Please choose one of the MySql / Sqlite / Sql Server / MongoDB.");
+                storageType = StorageType.Sqlite;
+                logger.LogError($"Unrecognizable StorageType:{storageTypeValue}. Enable default database:Sqlite.");
             }
 
-            logger.LogInformation($"Database: {databaseType}");
+            logger.LogInformation($"Database: {storageType}");
 
             var connectionString = storageSection.GetSection("ConnectionString").Value;
             if (connectionString.IsNullOrEmpty())
                 throw new NullReferenceException("Database ConnectionString can not be empty.");
 
-
-            //var assembly = Assembly.GetEntryAssembly();
-            var storageInitializationType = typeof(IStorageInitialization).Assembly;
-            var types = storageInitializationType.GetTypes();
+            var assembly = Assembly.Load($"EventBus.Storage.{storageType}");
+            var types = assembly.GetTypes();
             foreach (var type in types)
             {
-                if (type.GetInterfaces().Length > 0 && type.IsAbstract == false)
+                var interfaceType = type.GetInterface(nameof(IStorageInitialization));
+                if (interfaceType != null)
                 {
                     var storageInitialization = (IStorageInitialization)Activator.CreateInstance(type);
-                    if (storageInitialization.StorageType == databaseType) storageInitialization.Initialize(services);
+                    if (storageInitialization != null) storageInitialization.Initialize(services, connectionString);
                 }
             }
 
