@@ -11,7 +11,7 @@ namespace EventBus.Storage.SqlServer
         {
             services.AddDbContext<SqlServerDBContext>(builder =>
             {
-                builder.UseSqlServer(connectionString);
+                builder.UseLazyLoadingProxies().UseSqlServer(connectionString);
             });
             services.AddScoped<IRepository, SqlServerRepository>();
         }

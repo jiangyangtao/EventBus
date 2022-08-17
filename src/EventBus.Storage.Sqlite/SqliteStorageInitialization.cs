@@ -11,7 +11,7 @@ namespace EventBus.Storage.Sqlite
         {
             services.AddDbContext<SqliteDBContext>(builder =>
             {
-                builder.UseSqlite(connectionString);
+                builder.UseLazyLoadingProxies().UseSqlite(connectionString);
             });
             services.AddScoped<IRepository, SqliteRepository>();
         }

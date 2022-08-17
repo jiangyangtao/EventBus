@@ -13,7 +13,7 @@ namespace EventBus.Storage.MySql
             services.AddDbContext<MySqlDBContext>(options =>
             {
                 var serverVersiohn = ServerVersion.AutoDetect(connectionString);
-                options.UseMySql(connectionString, serverVersiohn);
+                options.UseLazyLoadingProxies().UseMySql(connectionString, serverVersiohn);
             });
             services.AddScoped<IRepository, MySqlRepository>();
         }
