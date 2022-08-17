@@ -9,7 +9,7 @@ namespace EventBus.Storage.MongoDB
     {
         public void Initialize(IServiceCollection services, string connectionString)
         {
-            services.AddSingleton(new MongoClient(connectionString));
+            //services.AddSingleton(new MongoClient(connectionString));
             services.AddScoped<IRepository, MongoDBRepository>();
         }
     }

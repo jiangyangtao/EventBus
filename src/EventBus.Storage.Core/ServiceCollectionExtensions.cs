@@ -9,7 +9,7 @@ namespace EventBus.Storage.Core
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddStorage(this IServiceCollection services, IConfiguration configuration, ILogger logger)
+        public static IServiceCollection AddStorage(this IServiceCollection services, IConfiguration configuration)
         {
             var storageSection = configuration.GetSection(nameof(Storage));
             var storageTypeValue = storageSection.GetSection(nameof(Storage.StorageType)).Value;
@@ -17,10 +17,12 @@ namespace EventBus.Storage.Core
             if (r == false)
             {
                 storageType = StorageType.Sqlite;
-                logger.LogError($"Unrecognizable StorageType:{storageTypeValue}. Enable default database:Sqlite.");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Unrecognizable StorageType:{storageTypeValue}. Enable default database:Sqlite.");
             }
 
-            logger.LogInformation($"Database: {storageType}");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"Database: {storageType}");
 
             var connectionString = storageSection.GetSection(nameof(Storage.ConnectionString)).Value;
             if (connectionString.IsNullOrEmpty())
