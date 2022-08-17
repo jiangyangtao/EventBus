@@ -1,4 +1,6 @@
 ﻿using EventBus.Storage.Abstractions;
+using EventBus.Storage.Abstractions.IRepositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EventBus.Storage.Sqlite
@@ -7,7 +9,11 @@ namespace EventBus.Storage.Sqlite
     {
         public void Initialize(IServiceCollection services, string connectionString)
         {
-
+            services.AddDbContext<SqliteDBContext>(builder =>
+            {
+                builder.UseSqlite(connectionString);
+            });
+            services.AddScoped<IRepository, SqliteRepository>();
         }
     }
 }

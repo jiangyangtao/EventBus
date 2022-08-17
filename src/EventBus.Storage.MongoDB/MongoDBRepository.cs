@@ -1,10 +1,18 @@
 ﻿using EventBus.Storage.Abstractions.IRepositories;
+using MongoDB.Driver;
 using System.Linq.Expressions;
 
 namespace EventBus.Storage.MongoDB
 {
     internal class MongoDBRepository : IRepository
     {
+        private readonly MongoClient _mongoClient;
+
+        public MongoDBRepository(MongoClient mongoClient)
+        {
+            _mongoClient = mongoClient;
+        }
+
         public Task<int> AddRangeAsync<TEntity>(List<TEntity> entities, bool isCommit = true) where TEntity : IEntity
         {
             throw new NotImplementedException();
