@@ -12,7 +12,7 @@ namespace EventBus.Infrastructure
         public static IServiceCollection AddEventBus(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddStorage(configuration);
-            Colorful.Console.WriteAscii("EventBus", FigletFont.Default, Color.White);
+            Colorful.Console.WriteAscii("EventBus",Color.White);
             return services;
         }
     }
