@@ -1,15 +1,8 @@
-﻿using EventBus.Storage.Abstractions.Enums;
-using EventBus.Storage.Abstractions.IRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace EventBus.Storage.Sqlite
 {
-    internal class SqliteDBContext
+    internal class SqliteDBContext: DbContext
     {
-        public StorageType StorageType => StorageType.Sqlite;
     }
 }

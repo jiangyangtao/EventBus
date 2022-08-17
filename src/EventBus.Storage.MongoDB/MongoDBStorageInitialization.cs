@@ -1,21 +1,16 @@
 ﻿using EventBus.Storage.Abstractions;
-using EventBus.Storage.Abstractions.Enums;
+using EventBus.Storage.Abstractions.IRepositories;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MongoDB.Driver;
 
 namespace EventBus.Storage.MongoDB
 {
     internal class MongoDBStorageInitialization : IStorageInitialization
     {
-        public StorageType StorageType => StorageType.MongoDB;
-
         public void Initialize(IServiceCollection services, string connectionString)
         {
-
+            services.AddSingleton(new MongoClient(connectionString));
+            services.AddScoped<IRepository, MongoDBRepository>();
         }
     }
 }

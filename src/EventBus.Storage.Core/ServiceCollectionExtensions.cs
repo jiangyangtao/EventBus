@@ -1,6 +1,5 @@
 ﻿using EventBus.Extensions;
 using EventBus.Storage.Abstractions;
-using EventBus.Storage.Abstractions.Enums;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,8 +11,8 @@ namespace EventBus.Storage.Core
     {
         public static IServiceCollection AddStorage(this IServiceCollection services, IConfiguration configuration, ILogger logger)
         {
-            var storageSection = configuration.GetSection("Storage");
-            var storageTypeValue = storageSection.GetSection("StorageType").Value;
+            var storageSection = configuration.GetSection(nameof(Storage));
+            var storageTypeValue = storageSection.GetSection(nameof(Storage.StorageType)).Value;
             var r = Enum.TryParse(storageTypeValue, true, out StorageType storageType);
             if (r == false)
             {
@@ -23,7 +22,7 @@ namespace EventBus.Storage.Core
 
             logger.LogInformation($"Database: {storageType}");
 
-            var connectionString = storageSection.GetSection("ConnectionString").Value;
+            var connectionString = storageSection.GetSection(nameof(Storage.ConnectionString)).Value;
             if (connectionString.IsNullOrEmpty())
                 throw new NullReferenceException("Database ConnectionString can not be empty.");
 
@@ -31,7 +30,7 @@ namespace EventBus.Storage.Core
             var types = assembly.GetTypes();
             foreach (var type in types)
             {
-                var interfaceType = type.GetInterface(nameof(IStorageInitialization));
+                var interfaceType = type.GetInterface(nameof(IStorageInitialization), true);
                 if (interfaceType != null)
                 {
                     var storageInitialization = (IStorageInitialization)Activator.CreateInstance(type);

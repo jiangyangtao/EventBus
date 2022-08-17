@@ -1,18 +1,10 @@
-﻿using EventBus.Storage.Abstractions.Enums;
-using EventBus.Storage.Abstractions.IRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using EventBus.Storage.Abstractions.IRepositories;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EventBus.Storage.MongoDB
 {
     internal class MongoDBRepository : IRepository
     {
-        public StorageType StorageType => StorageType.MongoDB;
-
         public Task<int> AddRangeAsync<TEntity>(List<TEntity> entities, bool isCommit = true) where TEntity : IEntity
         {
             throw new NotImplementedException();
