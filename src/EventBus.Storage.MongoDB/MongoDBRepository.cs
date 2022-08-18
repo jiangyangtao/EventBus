@@ -1,4 +1,5 @@
-﻿using EventBus.Storage.Abstractions.IRepositories;
+﻿using EventBus.Extensions;
+using EventBus.Storage.Abstractions.IRepositories;
 using MongoDB.Driver;
 using System.Linq.Expressions;
 
@@ -6,44 +7,46 @@ namespace EventBus.Storage.MongoDB
 {
     internal class MongoDBRepository : IRepository
     {
-        //private readonly MongoClient _mongoClient;
+        private readonly IMongoDatabase _db;
+        private readonly IClientSessionHandle _sessionHandle;
 
-        //public MongoDBRepository(MongoClient mongoClient)
-        //{
-        //    _mongoClient = mongoClient;
-        //}
-
-        public Task<int> AddRangeAsync<TEntity>(List<TEntity> entities, bool isCommit = true) where TEntity : IEntity
+        public MongoDBRepository(MongoClient mongoClient)
         {
-            throw new NotImplementedException();
+            _sessionHandle = mongoClient.StartSession();
+            _db = mongoClient.GetDatabase("");
         }
 
-        public Task<int> AddRangeAsync<TEntity>(TEntity[] entities, bool isCommit = true) where TEntity : IEntity
+        private IMongoCollection<TDocument> GetMongoCollection<TDocument>() =>
+            _db.GetCollection<TDocument>(typeof(TDocument).Name);
+
+        public async Task<int> AddRangeAsync<TEntity>(List<TEntity> entities, bool isCommit = true) where TEntity : IEntity
         {
-            throw new NotImplementedException();
+            return await AddRangeAsync(entities.ToArray(), isCommit);
         }
 
-        public Task<int> CommitAsync()
+        public async Task<int> AddRangeAsync<TEntity>(TEntity[] entities, bool isCommit = true) where TEntity : IEntity
         {
-            throw new NotImplementedException();
+            if (entities.IsNullOrEmpty()) return 0;
+
+            foreach (var item in entities)
+            {
+                item.CreateTime = DateTime.Now;
+                item.UpdateTime = DateTime.Now;
+            }
+
+            await GetMongoCollection<TEntity>().InsertManyAsync(entities);
+            if (isCommit) await CommitAsync();
+
+            return entities.Length;
         }
 
-        public Task<TEntity> CreateAsync<TEntity>(TEntity entity, bool isCommit = true) where TEntity : IEntity
+        public async Task<int> CommitAsync()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> DeleteAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, bool isCommit = true) where TEntity : IEntity
-        {
-            throw new NotImplementedException();
+            await _sessionHandle.CommitTransactionAsync();
+            return 1;
         }
 
         public Task<int> DeleteAsync<TEntity>(TEntity entity, bool isCommit = true) where TEntity : IEntity
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> DeleteAsync<TEntity>(bool isCommit = true) where TEntity : IEntity
         {
             throw new NotImplementedException();
         }
@@ -53,22 +56,38 @@ namespace EventBus.Storage.MongoDB
             throw new NotImplementedException();
         }
 
-        public IQueryable<TSource> Get<TSource>() where TSource : IEntity
+        public Task<TEntity> CreateAsync<TEntity>(TEntity entity, bool isCommit) where TEntity : class, IEntity
         {
             throw new NotImplementedException();
         }
 
-        public IQueryable<TSource> Get<TSource>(Expression<Func<TSource, bool>> predicate, params string[] include) where TSource : IEntity
+        public Task<int> DeleteAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, bool isCommit)
+            where TEntity : class, IEntity
         {
             throw new NotImplementedException();
         }
 
-        public Task<TSource> GetByIdAsync<TSource>(Expression<Func<TSource, bool>> predicate) where TSource : IEntity
+        public Task<int> DeleteAsync<TEntity>(bool isCommit) where TEntity : class, IEntity
         {
             throw new NotImplementedException();
         }
 
-        public Task<TEntity> UpdateAsync<TEntity>(TEntity entity, bool isCommit = true) where TEntity : IEntity
+        public IQueryable<TSource> Get<TSource>() where TSource : class, IEntity
+        {
+            return GetMongoCollection<TSource>().AsQueryable();
+        }
+
+        public IQueryable<TSource> Get<TSource>(Expression<Func<TSource, bool>> predicate) where TSource : class, IEntity
+        {
+            return GetMongoCollection<TSource>().AsQueryable().Where(predicate);
+        }
+
+        public Task<TSource> GetByIdAsync<TSource>(Expression<Func<TSource, bool>> predicate) where TSource : class, IEntity
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<TEntity> UpdateAsync<TEntity>(TEntity entity, bool isCommit) where TEntity : class, IEntity
         {
             throw new NotImplementedException();
         }

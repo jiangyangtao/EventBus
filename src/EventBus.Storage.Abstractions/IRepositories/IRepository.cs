@@ -11,7 +11,7 @@ namespace EventBus.Storage.Abstractions.IRepositories
         /// <param name="entity"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        Task<TEntity> CreateAsync<TEntity>(TEntity entity, bool isCommit = true) where TEntity : IEntity;
+        Task<TEntity> CreateAsync<TEntity>(TEntity entity, bool isCommit = true) where TEntity : class, IEntity;
 
         /// <summary>
         /// 批量添加
@@ -38,7 +38,7 @@ namespace EventBus.Storage.Abstractions.IRepositories
         /// <param name="entity"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        Task<TEntity> UpdateAsync<TEntity>(TEntity entity, bool isCommit = true) where TEntity : IEntity;
+        Task<TEntity> UpdateAsync<TEntity>(TEntity entity, bool isCommit = true) where TEntity : class, IEntity;
 
         /// <summary>
         /// 根据条件删除
@@ -47,7 +47,7 @@ namespace EventBus.Storage.Abstractions.IRepositories
         /// <param name="predicate"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        Task<int> DeleteAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, bool isCommit = true) where TEntity : IEntity;
+        Task<int> DeleteAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, bool isCommit = true) where TEntity : class, IEntity;
 
         /// <summary>
         /// 删除一条数据
@@ -64,7 +64,7 @@ namespace EventBus.Storage.Abstractions.IRepositories
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        Task<int> DeleteAsync<TEntity>(bool isCommit = true) where TEntity : IEntity;
+        Task<int> DeleteAsync<TEntity>(bool isCommit = true) where TEntity : class, IEntity;
 
         /// <summary>
         /// 批量删除
@@ -87,14 +87,14 @@ namespace EventBus.Storage.Abstractions.IRepositories
         /// <typeparam name="TSource"></typeparam>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        Task<TSource> GetByIdAsync<TSource>(Expression<Func<TSource, bool>> predicate) where TSource : IEntity;
+        Task<TSource> GetByIdAsync<TSource>(Expression<Func<TSource, bool>> predicate) where TSource : class, IEntity;
 
         /// <summary>
         /// 获取一个 IQueryable
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        IQueryable<TSource> Get<TSource>() where TSource : IEntity;
+        IQueryable<TSource> Get<TSource>() where TSource : class, IEntity;
 
         /// <summary>
         /// 获取一个 IQueryable
@@ -103,6 +103,7 @@ namespace EventBus.Storage.Abstractions.IRepositories
         /// <param name="predicate"></param>
         /// <param name="include"></param>
         /// <returns></returns>
-        IQueryable<TSource> Get<TSource>(Expression<Func<TSource, bool>> predicate, params string[] include) where TSource : IEntity;
+        IQueryable<TSource> Get<TSource>(Expression<Func<TSource, bool>> predicate)
+            where TSource : class, IEntity;
     }
 }

@@ -25,7 +25,7 @@ namespace EventBus.Core.Providers
         /// <param name="isCommit"></param>
         /// <returns></returns>
         protected async Task<TEntity> CreateAsync<TEntity>(TEntity entity, bool isCommit = true)
-            where TEntity : IEntity
+            where TEntity : class, IEntity
         {
             return await _repository.CreateAsync(entity, isCommit);
         }
@@ -64,7 +64,7 @@ namespace EventBus.Core.Providers
         /// <param name="isCommit"></param>
         /// <returns></returns>
         protected async Task<TEntity> UpdateAsync<TEntity>(TEntity entity, bool isCommit = true)
-            where TEntity : IEntity
+            where TEntity : class, IEntity
         {
             return await _repository.UpdateAsync(entity, isCommit);
         }
@@ -77,7 +77,7 @@ namespace EventBus.Core.Providers
         /// <param name="isCommit"></param>
         /// <returns></returns>
         protected async Task<int> DeleteAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, bool isCommit = true)
-            where TEntity : IEntity
+            where TEntity : class, IEntity
         {
             return await _repository.DeleteAsync(predicate, isCommit);
         }
@@ -101,7 +101,7 @@ namespace EventBus.Core.Providers
         /// <param name="isCommit"></param>
         /// <returns></returns>
         protected async Task<int> DeleteAsync<TEntity>(bool isCommit = true)
-            where TEntity : IEntity
+            where TEntity : class, IEntity
         {
             return await _repository.DeleteAsync<TEntity>(isCommit);
         }
@@ -135,7 +135,7 @@ namespace EventBus.Core.Providers
         /// <param name="predicate"></param>
         /// <returns></returns>
         protected async Task<TSource> GetByIdAsync<TSource>(Expression<Func<TSource, bool>> predicate)
-            where TSource : IEntity
+            where TSource : class, IEntity
         {
             return await _repository.GetByIdAsync(predicate);
         }
@@ -146,7 +146,7 @@ namespace EventBus.Core.Providers
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         protected IQueryable<TSource> Get<TSource>()
-            where TSource : IEntity
+            where TSource : class, IEntity
         {
             return _repository.Get<TSource>();
         }
@@ -158,9 +158,9 @@ namespace EventBus.Core.Providers
         /// <param name="predicate"></param>
         /// <param name="include"></param>
         /// <returns></returns>
-        protected IQueryable<TSource> Get<TSource>(Expression<Func<TSource, bool>> predicate, params string[] include) where TSource : IEntity
+        protected IQueryable<TSource> Get<TSource>(Expression<Func<TSource, bool>> predicate) where TSource : class, IEntity
         {
-            return _repository.Get(predicate, include);
+            return _repository.Get(predicate);
         }
     }
 }
