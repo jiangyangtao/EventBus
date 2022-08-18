@@ -15,12 +15,12 @@ namespace EventBus.Storage.Mysql
             _dbContext = dbContext;
         }
 
-        public async Task<int> AddRangeAsync<TEntity>(List<TEntity> entities, bool isCommit = true) where TEntity : IEntity
+        public async Task<long> AddRangeAsync<TEntity>(List<TEntity> entities, bool isCommit = true) where TEntity : IEntity
         {
             return await AddRangeAsync(entities.ToArray(), isCommit);
         }
 
-        public async Task<int> AddRangeAsync<TEntity>(TEntity[] entities, bool isCommit = true) where TEntity : IEntity
+        public async Task<long> AddRangeAsync<TEntity>(TEntity[] entities, bool isCommit = true) where TEntity : IEntity
         {
             if (entities.IsNullOrEmpty()) return 0;
 
@@ -36,7 +36,7 @@ namespace EventBus.Storage.Mysql
             return entities.Length;
         }
 
-        public async Task<int> CommitAsync()
+        public async Task<long> CommitAsync()
         {
             return await _dbContext.SaveChangesAsync();
         }
@@ -54,7 +54,7 @@ namespace EventBus.Storage.Mysql
             return entity;
         }
 
-        public async Task<int> DeleteAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, bool isCommit = true) where TEntity : class, IEntity
+        public async Task<long> DeleteAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, bool isCommit = true) where TEntity : class, IEntity
         {
             var entities = await Get(predicate).ToArrayAsync();
             if (entities.IsNullOrEmpty()) return 0;
@@ -65,7 +65,7 @@ namespace EventBus.Storage.Mysql
             return entities.Length;
         }
 
-        public async Task<int> DeleteAsync<TEntity>(TEntity entity, bool isCommit = true) where TEntity : IEntity
+        public async Task<long> DeleteAsync<TEntity>(TEntity entity, bool isCommit = true) where TEntity : IEntity
         {
             if (entity == null) return 0;
 
@@ -75,7 +75,7 @@ namespace EventBus.Storage.Mysql
             return 1;
         }
 
-        public async Task<int> DeleteAsync<TEntity>(bool isCommit = true) where TEntity : class, IEntity
+        public async Task<long> DeleteAsync<TEntity>(bool isCommit = true) where TEntity : class, IEntity
         {
             var entities = await Get<TEntity>().ToArrayAsync();
             if (entities.IsNullOrEmpty()) return 0;
@@ -86,7 +86,7 @@ namespace EventBus.Storage.Mysql
             return entities.Length;
         }
 
-        public async Task<int> DeleteRangeAsync<TEntity>(ICollection<TEntity> entities, bool isCommit = true) where TEntity : IEntity
+        public async Task<long> DeleteRangeAsync<TEntity>(ICollection<TEntity> entities, bool isCommit = true) where TEntity : IEntity
         {
             if (entities.IsNullOrEmpty()) return 0;
 

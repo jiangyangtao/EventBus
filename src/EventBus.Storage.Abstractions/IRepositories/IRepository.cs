@@ -20,7 +20,7 @@ namespace EventBus.Storage.Abstractions.IRepositories
         /// <param name="entities"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        Task<int> AddRangeAsync<TEntity>(List<TEntity> entities, bool isCommit = true) where TEntity : IEntity;
+        Task<long> AddRangeAsync<TEntity>(List<TEntity> entities, bool isCommit = true) where TEntity : IEntity;
 
         /// <summary>
         /// 批量添加
@@ -29,7 +29,7 @@ namespace EventBus.Storage.Abstractions.IRepositories
         /// <param name="entities"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        Task<int> AddRangeAsync<TEntity>(TEntity[] entities, bool isCommit = true) where TEntity : IEntity;
+        Task<long> AddRangeAsync<TEntity>(TEntity[] entities, bool isCommit = true) where TEntity : IEntity;
 
         /// <summary>
         /// 修改
@@ -47,7 +47,7 @@ namespace EventBus.Storage.Abstractions.IRepositories
         /// <param name="predicate"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        Task<int> DeleteAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, bool isCommit = true) where TEntity : class, IEntity;
+        Task<long> DeleteAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, bool isCommit = true) where TEntity : class, IEntity;
 
         /// <summary>
         /// 删除一条数据
@@ -56,7 +56,7 @@ namespace EventBus.Storage.Abstractions.IRepositories
         /// <param name="entity"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        Task<int> DeleteAsync<TEntity>(TEntity entity, bool isCommit = true) where TEntity : IEntity;
+        Task<long> DeleteAsync<TEntity>(TEntity entity, bool isCommit = true) where TEntity : IEntity;
 
         /// <summary>
         /// 删除一个对象的所有数据
@@ -64,7 +64,7 @@ namespace EventBus.Storage.Abstractions.IRepositories
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        Task<int> DeleteAsync<TEntity>(bool isCommit = true) where TEntity : class, IEntity;
+        Task<long> DeleteAsync<TEntity>(bool isCommit = true) where TEntity : class, IEntity;
 
         /// <summary>
         /// 批量删除
@@ -73,13 +73,13 @@ namespace EventBus.Storage.Abstractions.IRepositories
         /// <param name="entities"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        Task<int> DeleteRangeAsync<TEntity>(ICollection<TEntity> entities, bool isCommit = true) where TEntity : IEntity;
+        Task<long> DeleteRangeAsync<TEntity>(ICollection<TEntity> entities, bool isCommit = true) where TEntity : IEntity;
 
         /// <summary>
         /// 提交
         /// </summary>
         /// <returns></returns>
-        Task<int> CommitAsync();
+        Task<long> CommitAsync();
 
         /// <summary>
         /// 获取一条数据
