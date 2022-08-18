@@ -1,5 +1,5 @@
 ﻿using EventBus.Abstractions.IProviders;
-using EventBus.Domain.IModels;
+using EventBus.Abstractions.IModels;
 using EventBus.Storage.Abstractions.IRepositories;
 using System;
 using System.Collections.Generic;
@@ -12,9 +12,11 @@ namespace EventBus.Core.Providers
     internal class ApplicationManager : BaseService, IApplicationManager
     {
 
-        public ApplicationManager(IRepository repository) : base(repository)
-        {
+        private readonly IApplicationProvider _applicationProvider;
 
+        public ApplicationManager(IRepository repository, IApplicationProvider applicationProvider) : base(repository)
+        {
+            _applicationProvider = applicationProvider;
         }
 
         public Task AddOrUpdateApplicationAsync(IApplication application)

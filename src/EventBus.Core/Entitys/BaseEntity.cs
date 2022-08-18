@@ -1,4 +1,4 @@
-﻿using EventBus.Domain.IModels;
+﻿using EventBus.Abstractions.IModels;
 using EventBus.Storage.Abstractions.IRepositories;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,5 @@
-﻿using EventBus.Domain.IModels;
-using EventBus.Domain.IProviders;
+﻿using EventBus.Abstractions.IModels;
+using EventBus.Abstractions.IProviders;
 using EventBus.Storage.Abstractions.IRepositories;
 using System;
 using System.Collections.Generic;

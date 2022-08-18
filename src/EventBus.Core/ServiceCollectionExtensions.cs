@@ -1,8 +1,8 @@
-﻿using EventBus.Storage.Core;
+﻿using EventBus.Abstractions.IProviders;
+using EventBus.Core.Providers;
+using EventBus.Storage.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System.Drawing;
 
 namespace EventBus.Infrastructure
 {
@@ -12,6 +12,13 @@ namespace EventBus.Infrastructure
         {
             PrintProjectName();
             services.AddStorage(configuration);
+            services.AddScoped<IApplicationManager, ApplicationManager>();
+            services.AddScoped<IApplicationProvider, ApplicationProvider>();
+            services.AddScoped<IEventLogProvider, EventLogProvider>();
+            services.AddScoped<IEventManager, EventManager>();
+            services.AddScoped<IEventProvider, EventProvider>();
+            services.AddScoped<IRetryManager, RetryManager>();
+            services.AddScoped<IRetryProvider, RetryProvider>();
             return services;
         }
 

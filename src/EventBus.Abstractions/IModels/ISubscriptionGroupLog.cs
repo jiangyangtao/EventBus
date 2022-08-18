@@ -1,11 +1,11 @@
-﻿using EventBus.Domain.Enums;
+﻿using EventBus.Abstractions.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventBus.Domain.IModels
+namespace EventBus.Abstractions.IModels
 {
     /// <summary>
     /// 订阅的分组日志

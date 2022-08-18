@@ -37,7 +37,7 @@ namespace EventBus.Core.Providers
         /// <param name="entities"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        protected async Task<int> AddRangeAsync<TEntity>(List<TEntity> entities, bool isCommit = true)
+        protected async Task<long> AddRangeAsync<TEntity>(List<TEntity> entities, bool isCommit = true)
             where TEntity : IEntity
         {
             return await _repository.AddRangeAsync(entities, isCommit);
@@ -50,7 +50,7 @@ namespace EventBus.Core.Providers
         /// <param name="entities"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        protected async Task<int> AddRangeAsync<TEntity>(TEntity[] entities, bool isCommit = true)
+        protected async Task<long> AddRangeAsync<TEntity>(TEntity[] entities, bool isCommit = true)
             where TEntity : IEntity
         {
             return await _repository.AddRangeAsync(entities, isCommit);
@@ -76,7 +76,7 @@ namespace EventBus.Core.Providers
         /// <param name="predicate"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        protected async Task<int> DeleteAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, bool isCommit = true)
+        protected async Task<long> DeleteAsync<TEntity>(Expression<Func<TEntity, bool>> predicate, bool isCommit = true)
             where TEntity : class, IEntity
         {
             return await _repository.DeleteAsync(predicate, isCommit);
@@ -89,7 +89,7 @@ namespace EventBus.Core.Providers
         /// <param name="entity"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        protected async Task<int> DeleteAsync<TEntity>(TEntity entity, bool isCommit = true) where TEntity : IEntity
+        protected async Task<long> DeleteAsync<TEntity>(TEntity entity, bool isCommit = true) where TEntity : IEntity
         {
             return await _repository.DeleteAsync(entity, isCommit);
         }
@@ -100,7 +100,7 @@ namespace EventBus.Core.Providers
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        protected async Task<int> DeleteAsync<TEntity>(bool isCommit = true)
+        protected async Task<long> DeleteAsync<TEntity>(bool isCommit = true)
             where TEntity : class, IEntity
         {
             return await _repository.DeleteAsync<TEntity>(isCommit);
@@ -113,7 +113,7 @@ namespace EventBus.Core.Providers
         /// <param name="entities"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        protected Task<int> DeleteRangeAsync<TEntity>(ICollection<TEntity> entities, bool isCommit = true)
+        protected Task<long> DeleteRangeAsync<TEntity>(ICollection<TEntity> entities, bool isCommit = true)
             where TEntity : IEntity
         {
             return _repository.DeleteRangeAsync(entities, isCommit);
@@ -123,7 +123,7 @@ namespace EventBus.Core.Providers
         /// 提交
         /// </summary>
         /// <returns></returns>
-        protected async Task<int> CommitAsync()
+        protected async Task<long> CommitAsync()
         {
             return await _repository.CommitAsync();
         }

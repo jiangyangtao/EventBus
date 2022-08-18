@@ -10,8 +10,11 @@ namespace EventBus.Core.Providers
 {
     internal class RetryManager : BaseService, IRetryManager
     {
-        public RetryManager(IRepository repository) : base(repository)
+        private readonly IRetryProvider _retryProvider;
+
+        public RetryManager(IRepository repository, IRetryProvider retryProvider) : base(repository)
         {
+            _retryProvider = retryProvider;
         }
 
         public Task RetryAsync(string retryDataId)

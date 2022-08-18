@@ -1,5 +1,5 @@
 ﻿using EventBus.Abstractions.IProviders;
-using EventBus.Domain.IModels;
+using EventBus.Abstractions.IModels;
 using EventBus.Storage.Abstractions.IRepositories;
 using System;
 using System.Collections.Generic;
@@ -11,8 +11,11 @@ namespace EventBus.Core.Providers
 {
     internal class EventManager : BaseService, IEventManager
     {
-        public EventManager(IRepository repository) : base(repository)
+        private readonly IEventProvider _eventProvider;
+
+        public EventManager(IRepository repository, IEventProvider eventProvider) : base(repository)
         {
+            _eventProvider = eventProvider;
         }
 
         public Task AddOrUpdateAsync(IEvent data)

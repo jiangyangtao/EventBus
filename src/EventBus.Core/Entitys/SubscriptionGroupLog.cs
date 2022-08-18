@@ -1,5 +1,5 @@
-﻿using EventBus.Domain.Enums;
-using EventBus.Domain.IModels;
+﻿using EventBus.Abstractions.Enums;
+using EventBus.Abstractions.IModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventBus.Domain.IModels
+namespace EventBus.Abstractions.IModels
 {
     /// <summary>
     /// 事件日志
