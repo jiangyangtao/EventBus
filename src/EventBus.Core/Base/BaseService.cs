@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventBus.Core.Providers
+namespace EventBus.Core.Base
 {
     internal abstract class BaseService
     {
@@ -161,6 +161,142 @@ namespace EventBus.Core.Providers
         protected IQueryable<TSource> Get<TSource>(Expression<Func<TSource, bool>> predicate) where TSource : class, IEntity
         {
             return _repository.Get(predicate);
+        }
+    }
+
+    internal abstract class BaseService<TEntity> : BaseService where TEntity : class, IEntity
+    {
+        protected BaseService(IRepository repository) : base(repository)
+        {
+        }
+
+        /// <summary>
+        /// 创建一条数据
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entity"></param>
+        /// <param name="isCommit"></param>
+        /// <returns></returns>
+        protected async Task<TEntity> CreateAsync(TEntity entity, bool isCommit = true)
+        {
+            return await base.CreateAsync(entity, isCommit);
+        }
+
+        /// <summary>
+        /// 批量添加
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entities"></param>
+        /// <param name="isCommit"></param>
+        /// <returns></returns>
+        protected async Task<long> AddRangeAsync(List<TEntity> entities, bool isCommit = true)
+        {
+            return await base.AddRangeAsync(entities, isCommit);
+        }
+
+        /// <summary>
+        /// 批量添加
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entities"></param>
+        /// <param name="isCommit"></param>
+        /// <returns></returns>
+        protected async Task<long> AddRangeAsync(TEntity[] entities, bool isCommit = true)
+        {
+            return await base.AddRangeAsync(entities, isCommit);
+        }
+
+        /// <summary>
+        /// 修改
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entity"></param>
+        /// <param name="isCommit"></param>
+        /// <returns></returns>
+        protected async Task<TEntity> UpdateAsync(TEntity entity, bool isCommit = true)
+        {
+            return await base.UpdateAsync(entity, isCommit);
+        }
+
+        /// <summary>
+        /// 根据条件删除
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="predicate"></param>
+        /// <param name="isCommit"></param>
+        /// <returns></returns>
+        protected async Task<long> DeleteAsync(Expression<Func<TEntity, bool>> predicate, bool isCommit = true)
+        {
+            return await base.DeleteAsync(predicate, isCommit);
+        }
+
+        /// <summary>
+        /// 删除一条数据
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entity"></param>
+        /// <param name="isCommit"></param>
+        /// <returns></returns>
+        protected async Task<long> DeleteAsync(TEntity entity, bool isCommit = true)
+        {
+            return await base.DeleteAsync(entity, isCommit);
+        }
+
+        /// <summary>
+        /// 删除一个对象的所有数据
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="isCommit"></param>
+        /// <returns></returns>
+        protected async Task<long> DeleteAsync(bool isCommit = true)
+        {
+            return await base.DeleteAsync<TEntity>(isCommit);
+        }
+
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="entities"></param>
+        /// <param name="isCommit"></param>
+        /// <returns></returns>
+        protected Task<long> DeleteRangeAsync(ICollection<TEntity> entities, bool isCommit = true)
+        {
+            return base.DeleteRangeAsync(entities, isCommit);
+        }
+
+
+        /// <summary>
+        /// 获取一条数据
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        protected async Task<TEntity> GetByIdAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await base.GetByIdAsync(predicate);
+        }
+
+        /// <summary>
+        /// 获取一个 IQueryable
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        protected IQueryable<TEntity> Get()
+        {
+            return base.Get<TEntity>();
+        }
+
+        /// <summary>
+        /// 获取一个 IQueryable
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="predicate"></param>
+        /// <param name="include"></param>
+        /// <returns></returns>
+        protected IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> predicate)
+        {
+            return base.Get(predicate);
         }
     }
 }

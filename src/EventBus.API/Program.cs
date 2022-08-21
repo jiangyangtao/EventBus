@@ -1,4 +1,4 @@
-using EventBus.Infrastructure;
+using EventBus.Core;
 
 
 var builder = WebApplication.CreateBuilder(args);

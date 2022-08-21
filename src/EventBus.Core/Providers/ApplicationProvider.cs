@@ -1,18 +1,14 @@
 ﻿using EventBus.Abstractions.IModels;
 using EventBus.Abstractions.IProviders;
+using EventBus.Core.Base;
+using EventBus.Core.Entitys;
 using EventBus.Extensions;
-using EventBus.Infrastructure.Entitys;
 using EventBus.Storage.Abstractions.IRepositories;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EventBus.Core.Providers
 {
-    internal class ApplicationProvider : BaseService, IApplicationProvider
+    internal class ApplicationProvider : BaseService<Application>, IApplicationProvider
     {
         public ApplicationProvider(IRepository repository) : base(repository)
         {
@@ -20,7 +16,7 @@ namespace EventBus.Core.Providers
 
         public async Task<IApplication> GetApplicationAsync(Guid applicationId)
         {
-            var application = await _repository.Get<Application>().FirstOrDefaultAsync(a => a.Id == applicationId);
+            var application = await Get().FirstOrDefaultAsync(a => a.Id == applicationId);
             if (application == null) return null;
 
             return application;
@@ -28,7 +24,7 @@ namespace EventBus.Core.Providers
 
         public async Task<IApplicationEndpoint> GetApplicationEndpointAsync(Guid applicationEndpointId)
         {
-            var applicationEndpoint = await _repository.Get<ApplicationEndpoint>().FirstOrDefaultAsync(a => a.Id == applicationEndpointId);
+            var applicationEndpoint = await Get<ApplicationEndpoint>().FirstOrDefaultAsync(a => a.Id == applicationEndpointId);
             if (applicationEndpoint == null) return null;
 
             return applicationEndpoint;
@@ -36,7 +32,7 @@ namespace EventBus.Core.Providers
 
         public async Task<IApplicationEndpoint[]> GetApplicationEndpointsAsync(Guid applicationId)
         {
-            var applicationEndpoints = await _repository.Get<ApplicationEndpoint>().Where(a => a.ApplicationId == applicationId).ToArrayAsync();
+            var applicationEndpoints = await Get<ApplicationEndpoint>().Where(a => a.ApplicationId == applicationId).ToArrayAsync();
             if (applicationEndpoints.IsNullOrEmpty()) return ApplicationEndpoint.EmptyArray;
 
             return applicationEndpoints;
@@ -44,7 +40,7 @@ namespace EventBus.Core.Providers
 
         public async Task<IApplicationEndpoint[]> GetApplicationEndpointsAsync(int start, int count, string endpointName)
         {
-            var query = _repository.Get<ApplicationEndpoint>();
+            var query = Get<ApplicationEndpoint>();
             if (endpointName.NotNullAndEmpty()) query.Where(a => a.EndpointName.Contains(endpointName));
 
             var applicationEndpoints = await query.Skip(start).Take(count).ToArrayAsync();
@@ -53,14 +49,23 @@ namespace EventBus.Core.Providers
             return applicationEndpoints;
         }
 
-        public Task<IApplication[]> GetApplicationsAsync()
+        public async Task<IApplication[]> GetApplicationsAsync()
         {
-            throw new NotImplementedException();
+            var applications = await Get().ToArrayAsync();
+            if (applications.IsNullOrEmpty()) return Application.EmptyArray;
+
+            return applications;
         }
 
-        public Task<IApplication[]> GetApplicationsAsync(int start, int count, string applicationName)
+        public async Task<IApplication[]> GetApplicationsAsync(int start, int count, string applicationName)
         {
-            throw new NotImplementedException();
+            var query = Get();
+            if (applicationName.NotNullAndEmpty()) query.Where(a => a.ApplicationName.Contains(applicationName));
+
+            var applications = await query.Skip(start).Take(count).ToArrayAsync();
+            if (applications.IsNullOrEmpty()) return Application.EmptyArray;
+
+            return applications;
         }
     }
 }

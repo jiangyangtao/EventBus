@@ -1,13 +1,9 @@
 ﻿using EventBus.Abstractions.IModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EventBus.Core.Base;
 
-namespace EventBus.Infrastructure.Entitys
+namespace EventBus.Core.Entitys
 {
-    internal class Subscription : BaseEntity, ISubscription
+    internal class Subscription : BaseEntity<Subscription>, ISubscription
     {
         public Guid EvnetId { get; set; }
 

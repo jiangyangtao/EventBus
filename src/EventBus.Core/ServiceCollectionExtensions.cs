@@ -4,7 +4,7 @@ using EventBus.Storage.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace EventBus.Infrastructure
+namespace EventBus.Core
 {
     public static class ServiceCollectionExtensions
     {

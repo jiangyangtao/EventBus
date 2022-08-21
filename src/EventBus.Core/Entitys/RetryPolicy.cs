@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventBus.Infrastructure.Entitys
+namespace EventBus.Core.Entitys
 {
     internal class RetryPolicy : IRetryPolicy
     {

@@ -1,14 +1,10 @@
 ﻿using EventBus.Abstractions.Enums;
 using EventBus.Abstractions.IModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EventBus.Core.Base;
 
-namespace EventBus.Infrastructure.Entitys
+namespace EventBus.Core.Entitys
 {
-    internal class SubscriptionLog : BaseEntity, ISubscriptionLog
+    internal class SubscriptionLog : BaseEntity<SubscriptionLog>, ISubscriptionLog
     {
         public NoticeType NoticeType { get; set; } = NoticeType.Automatic;
 

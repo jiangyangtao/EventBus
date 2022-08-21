@@ -1,14 +1,10 @@
 ﻿using EventBus.Abstractions.Enums;
 using EventBus.Abstractions.IModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EventBus.Core.Base;
 
-namespace EventBus.Infrastructure.Entitys
+namespace EventBus.Core.Entitys
 {
-    internal class ApplicationEndpoint : BaseEntity, IApplicationEndpoint
+    internal class ApplicationEndpoint : BaseEntity<ApplicationEndpoint>, IApplicationEndpoint
     {
         public string EndpointName { set; get; }
 
@@ -26,7 +22,5 @@ namespace EventBus.Infrastructure.Entitys
         {
             return new RetryPolicy();
         }
-
-        public static ApplicationEndpoint[] EmptyArray => Array.Empty<ApplicationEndpoint>();
     }
 }

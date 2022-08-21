@@ -1,14 +1,10 @@
 ﻿using EventBus.Abstractions.IModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EventBus.Core.Base;
 
-namespace EventBus.Infrastructure.Entitys
+namespace EventBus.Core.Entitys
 {
 
-    internal class RetryData: BaseEntity, IRetryData
+    internal class RetryData: BaseEntity<RetryData>, IRetryData
     {
         /// <summary>
         /// 重试时间

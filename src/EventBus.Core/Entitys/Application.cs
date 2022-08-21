@@ -1,8 +1,9 @@
 ﻿using EventBus.Abstractions.IModels;
+using EventBus.Core.Base;
 
-namespace EventBus.Infrastructure.Entitys
+namespace EventBus.Core.Entitys
 {
-    internal class Application : BaseEntity, IApplication
+    internal class Application : BaseEntity<Application>, IApplication
     {
         public string ApplicationName { set; get; }
 
