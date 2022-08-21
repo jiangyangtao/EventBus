@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace EventBus.Core.Base
 {
-    internal abstract class BaseService
+    internal abstract class BaseRepository
     {
         protected readonly IRepository _repository;
 
-        protected BaseService(IRepository repository)
+        protected BaseRepository(IRepository repository)
         {
             _repository = repository;
         }
@@ -164,9 +164,9 @@ namespace EventBus.Core.Base
         }
     }
 
-    internal abstract class BaseService<TEntity> : BaseService where TEntity : class, IEntity
+    internal abstract class BaseRepository<TEntity> : BaseRepository where TEntity : class, IEntity
     {
-        protected BaseService(IRepository repository) : base(repository)
+        protected BaseRepository(IRepository repository) : base(repository)
         {
         }
 

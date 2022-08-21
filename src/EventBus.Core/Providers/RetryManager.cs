@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EventBus.Core.Providers
 {
-    internal class RetryManager : BaseService, IRetryManager
+    internal class RetryManager : BaseRepository, IRetryManager
     {
         private readonly IRetryProvider _retryProvider;
 

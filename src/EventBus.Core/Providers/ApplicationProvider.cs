@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventBus.Core.Providers
 {
-    internal class ApplicationProvider : BaseService<Application>, IApplicationProvider
+    internal class ApplicationProvider : BaseRepository<Application>, IApplicationProvider
     {
         public ApplicationProvider(IRepository repository) : base(repository)
         {

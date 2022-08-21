@@ -10,7 +10,7 @@ using EventBus.Core.Base;
 
 namespace EventBus.Core.Providers
 {
-    internal class ApplicationManager : BaseService, IApplicationManager
+    internal class ApplicationManager : BaseRepository, IApplicationManager
     {
 
         private readonly IApplicationProvider _applicationProvider;

@@ -10,7 +10,7 @@ using EventBus.Core.Base;
 
 namespace EventBus.Core.Providers
 {
-    internal class EventManager : BaseService, IEventManager
+    internal class EventManager : BaseRepository, IEventManager
     {
         private readonly IEventProvider _eventProvider;
 

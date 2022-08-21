@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace EventBus.Core.Providers
 {
-    internal class EventProvider : BaseService, IEventProvider
+    internal class EventProvider : BaseRepository, IEventProvider
     {
         public EventProvider(IRepository repository) : base(repository)
         {
