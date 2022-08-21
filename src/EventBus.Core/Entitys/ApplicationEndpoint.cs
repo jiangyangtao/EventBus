@@ -26,5 +26,7 @@ namespace EventBus.Infrastructure.Entitys
         {
             return new RetryPolicy();
         }
+
+        public static ApplicationEndpoint[] EmptyArray => Array.Empty<ApplicationEndpoint>();
     }
 }
