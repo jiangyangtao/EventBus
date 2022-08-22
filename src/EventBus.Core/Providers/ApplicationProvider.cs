@@ -22,6 +22,14 @@ namespace EventBus.Core.Providers
             return application;
         }
 
+        public async Task<IApplication> GetApplicationAsync(string applicationName)
+        {
+            var application = await Get().FirstOrDefaultAsync(a => a.ApplicationName == applicationName);
+            if (application == null) return null;
+
+            return application;
+        }
+
         public async Task<IApplicationEndpoint> GetApplicationEndpointAsync(Guid applicationEndpointId)
         {
             var applicationEndpoint = await Get<ApplicationEndpoint>().FirstOrDefaultAsync(a => a.Id == applicationEndpointId);

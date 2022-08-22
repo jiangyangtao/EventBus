@@ -23,11 +23,6 @@ namespace EventBus.Abstractions.IModels
         public Uri EndpointUrl { get; }
 
         /// <summary>
-        /// 应用 Id
-        /// </summary>
-        public Guid ApplicationId { get; }
-
-        /// <summary>
         /// 通知协议
         /// </summary>
         public ProtocolType NoticeProtocol { get; }
