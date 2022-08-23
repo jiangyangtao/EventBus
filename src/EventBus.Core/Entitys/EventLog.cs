@@ -15,6 +15,8 @@ namespace EventBus.Core.Entitys
 
         public decimal SubscriptionCompletionRate { set; get; }
 
+        public Guid EventId { set; get; }
+
         public IEvent Event { set; get; }
 
         public ISubscriptionGroupLog[] ISubscriptionGroupLogs { set; get; }
