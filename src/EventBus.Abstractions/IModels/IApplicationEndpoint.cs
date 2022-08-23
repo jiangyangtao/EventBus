@@ -1,4 +1,5 @@
 ﻿using EventBus.Abstractions.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBus.Abstractions.IModels
 {
@@ -30,7 +31,7 @@ namespace EventBus.Abstractions.IModels
         /// <summary>
         /// 失败的重试策略
         /// </summary>
-        public IRetryPolicy[] FailedRetryPolicy { set; get; }
+        public IRetryPolicy[] FailedRetryPolicy { get; }
 
         /// <summary>
         /// 获取重试策略

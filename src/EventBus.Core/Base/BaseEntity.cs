@@ -5,13 +5,9 @@ namespace EventBus.Core.Base
 {
     internal abstract class BaseEntity<TEntity> : IBaseModel, IEntity
     {
-        internal BaseEntity() { }
-
-        internal BaseEntity(IBaseModel model)
+        protected BaseEntity()
         {
-            Id = model.Id;
-            CreateTime = model.CreateTime;
-            UpdateTime = model.UpdateTime;
+            Id = Guid.NewGuid();
         }
 
         public Guid Id { set; get; }

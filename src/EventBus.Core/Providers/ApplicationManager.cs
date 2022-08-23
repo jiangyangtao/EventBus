@@ -3,6 +3,7 @@ using EventBus.Abstractions.IProviders;
 using EventBus.Core.Base;
 using EventBus.Core.Entitys;
 using EventBus.Storage.Abstractions.IRepositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventBus.Core.Providers
 {
@@ -18,7 +19,7 @@ namespace EventBus.Core.Providers
 
         public async Task AddOrUpdateApplicationAsync(IApplication application)
         {
-            var data = await _applicationProvider.GetApplicationAsync(application.Id);
+            var data = await Get().FirstOrDefaultAsync(a => a.Id == application.Id);
             if (data == null)
             {
                 await CreateAsync(new Application()
@@ -28,27 +29,42 @@ namespace EventBus.Core.Providers
                 return;
             }
 
+            data.ApplicationName = application.ApplicationName;
+            await UpdateAsync(data);
+        }
 
-            var app = new Application(data)
+        public async Task AddOrUpdateApplicationEndpointAsync(IApplicationEndpoint applicationEndpoint)
+        {
+            var endpoint = await Get<ApplicationEndpoint>().FirstOrDefaultAsync(a => a.Id == applicationEndpoint.Id);
+            if (endpoint == null)
             {
-                ApplicationName = application.ApplicationName
-            };
-            await UpdateAsync(app);
+                await CreateAsync(new ApplicationEndpoint(applicationEndpoint));
+            }
+
+            endpoint.EndpointName = applicationEndpoint.EndpointName;
+            endpoint.EndpointUrl = applicationEndpoint.EndpointUrl;
+            endpoint.NoticeProtocol = applicationEndpoint.NoticeProtocol;
+            endpoint.FailedRetryPolicy = applicationEndpoint.FailedRetryPolicy;
+
+            await UpdateAsync(endpoint);
         }
 
-        public Task AddOrUpdateApplicationEndpointAsync(IApplicationEndpoint applicationEndpoint)
+        public async Task RemoveApplicationAsync(IApplication application)
         {
-            throw new NotImplementedException();
+            var app = await _applicationProvider.GetApplicationAsync(application.Id);
+            if (app != null)
+            {
+                await DeleteAsync(a => a.Id == application.Id);
+            }
         }
 
-        public Task RemoveApplicationAsync(IApplication application)
+        public async Task RemoveApplicationEndpointAsync(IApplicationEndpoint endpoint)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task RemoveApplicationEndpointAsync(IApplicationEndpoint endpoint)
-        {
-            throw new NotImplementedException();
+            var applicationEndpoint = await _applicationProvider.GetApplicationEndpointAsync(endpoint.Id);
+            if (applicationEndpoint != null)
+            {
+                await DeleteAsync(a => a.Id == endpoint.Id);
+            }
         }
     }
 }
