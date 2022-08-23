@@ -1,9 +1,4 @@
 ﻿using EventBus.Abstractions.IModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EventBus.Abstractions.IProviders
 {
@@ -20,13 +15,13 @@ namespace EventBus.Abstractions.IProviders
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<IRetryData> GetRetryAsync(string id);
+        Task<IRetryData> GetRetryAsync(Guid id);
 
         /// <summary>
         /// 获取事件的所有重试数据
         /// </summary>
         /// <param name="evnetId"></param>
         /// <returns></returns>
-        Task<IRetryData[]> GetEventRetryAsync(string evnetId);
+        Task<IRetryData[]> GetEventRetryAsync(Guid evnetId);
     }
 }

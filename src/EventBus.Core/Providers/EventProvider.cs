@@ -1,34 +1,44 @@
 ﻿using EventBus.Abstractions.IModels;
 using EventBus.Abstractions.IProviders;
 using EventBus.Core.Base;
+using EventBus.Core.Entitys;
+using EventBus.Extensions;
 using EventBus.Storage.Abstractions.IRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventBus.Core.Providers
 {
-    internal class EventProvider : BaseRepository, IEventProvider
+    internal class EventProvider : BaseRepository<Event>, IEventProvider
     {
         public EventProvider(IRepository repository) : base(repository)
         {
         }
 
-        public Task<IEvent> GetEventAsync(string eventId)
+        public async Task<IEvent> GetEventAsync(Guid eventId)
         {
-            throw new NotImplementedException();
+            var e = await Get().FirstOrDefaultAsync(a => a.Id == eventId);
+            if (e == null) return null;
+
+            return e;
         }
 
-        public Task<IEvent[]> GetEventsAsync()
+        public async Task<IEvent[]> GetEventsAsync()
         {
-            throw new NotImplementedException();
+            var events = await Get().ToArrayAsync();
+            if (events.IsNullOrEmpty()) return Event.EmptyArray;
+
+            return events;
         }
 
-        public Task<IEvent[]> GetEventsAsync(int start, int count, string enentName)
+        public async Task<IEvent[]> GetEventsAsync(int start, int count, string eventName)
         {
-            throw new NotImplementedException();
+            var query = Get();
+            if (eventName.NotNullAndEmpty()) query.Where(a => a.EventName.Contains(eventName));
+
+            var events = await query.Skip(start).Take(count).ToArrayAsync();
+            if (events.IsNullOrEmpty()) return Event.EmptyArray;
+
+            return events;
         }
     }
 }

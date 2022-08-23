@@ -12,10 +12,10 @@ namespace EventBus.Abstractions.IProviders
     /// </summary>
     public interface IEventProvider
     {
-        Task<IEvent> GetEventAsync(string eventId);
+        Task<IEvent> GetEventAsync(Guid eventId);
 
         Task<IEvent[]> GetEventsAsync();
 
-        Task<IEvent[]> GetEventsAsync(int start, int count, string enentName);
+        Task<IEvent[]> GetEventsAsync(int start, int count, string eventName);
     }
 }

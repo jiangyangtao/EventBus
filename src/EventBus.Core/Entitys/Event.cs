@@ -1,4 +1,5 @@
-﻿using EventBus.Abstractions.Enums;
+﻿
+using EventBus.Abstractions.Enums;
 using EventBus.Abstractions.IModels;
 using EventBus.Core.Base;
 
