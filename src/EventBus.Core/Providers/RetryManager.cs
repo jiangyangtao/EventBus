@@ -1,5 +1,6 @@
 ﻿using EventBus.Abstractions.IProviders;
 using EventBus.Core.Base;
+using EventBus.Core.Entitys;
 using EventBus.Storage.Abstractions.IRepositories;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace EventBus.Core.Providers
 {
-    internal class RetryManager : BaseRepository, IRetryManager
+    internal class RetryManager : BaseRepository<RetryData>, IRetryManager
     {
         private readonly IRetryProvider _retryProvider;
 

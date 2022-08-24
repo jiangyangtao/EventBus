@@ -5,6 +5,11 @@ namespace EventBus.Core.Entitys
 {
     internal class Application : BaseEntity<Application>, IApplication
     {
+        public Application() : base()
+        {
+
+        }
+
         public string ApplicationName { set; get; }
 
         public IApplicationEndpoint[] ApplicationEndpoints { set; get; }

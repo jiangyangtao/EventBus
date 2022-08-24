@@ -22,6 +22,11 @@ namespace EventBus.Core.Providers
             return e;
         }
 
+        public async Task<IEvent> GetEventAsync(string eventName)
+        {
+            return await Get().FirstOrDefaultAsync(a => a.EventName == eventName);
+        }
+
         public async Task<IEvent[]> GetEventsAsync()
         {
             var events = await Get().ToArrayAsync();

@@ -18,7 +18,7 @@ namespace EventBus.Abstractions.IProviders
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns></returns>
-        Task PublishAsync(string eventId);
+        Task PublishAsync(Guid eventId);
 
         /// <summary>
         /// 通知

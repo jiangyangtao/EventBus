@@ -1,16 +1,13 @@
-﻿using EventBus.Abstractions.IProviders;
-using EventBus.Abstractions.IModels;
-using EventBus.Storage.Abstractions.IRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EventBus.Abstractions.IModels;
+using EventBus.Abstractions.IProviders;
 using EventBus.Core.Base;
+using EventBus.Core.Entitys;
+using EventBus.Storage.Abstractions.IRepositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventBus.Core.Providers
 {
-    internal class EventManager : BaseRepository, IEventManager
+    internal class EventManager : BaseRepository<Event>, IEventManager
     {
         private readonly IEventProvider _eventProvider;
 
@@ -19,9 +16,20 @@ namespace EventBus.Core.Providers
             _eventProvider = eventProvider;
         }
 
-        public Task AddOrUpdateAsync(IEvent data)
+        public async Task AddOrUpdateAsync(IEvent data)
         {
-            throw new NotImplementedException();
+            var e = await Get().FirstOrDefaultAsync(a => a.EventName == data.EventName);
+            if (e == null)
+            {
+                await CreateAsync(new Event(data));
+                return;
+            }
+
+            e.EventName = e.EventName;
+            e.EnableIPAddressWhiteList = e.EnableIPAddressWhiteList;
+            e.IPAddressWhiteList = e.IPAddressWhiteList;
+            e.EventProtocol = e.EventProtocol;
+            await UpdateAsync(e);
         }
 
         public Task NotifyAsync(string subscriptionGroupLogId)
@@ -29,14 +37,19 @@ namespace EventBus.Core.Providers
             throw new NotImplementedException();
         }
 
-        public Task PublishAsync(string eventId)
+        public async Task PublishAsync(Guid eventId)
         {
-            throw new NotImplementedException();
+            var e = await _eventProvider.GetEventAsync(eventId);
+            if (e == null) return;
         }
 
-        public Task RemoveAsync(IEvent data)
+        public async Task RemoveAsync(IEvent data)
         {
-            throw new NotImplementedException();
+            var e = await _eventProvider.GetEventAsync(data.EventName);
+            if (e != null)
+            {
+                await DeleteAsync(a => a.Id == e.Id);
+            }
         }
     }
 }

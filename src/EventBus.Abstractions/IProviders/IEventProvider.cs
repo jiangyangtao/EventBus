@@ -14,6 +14,8 @@ namespace EventBus.Abstractions.IProviders
     {
         Task<IEvent> GetEventAsync(Guid eventId);
 
+        Task<IEvent> GetEventAsync(string eventName);
+
         Task<IEvent[]> GetEventsAsync();
 
         Task<IEvent[]> GetEventsAsync(int start, int count, string eventName);

@@ -7,6 +7,20 @@ namespace EventBus.Core.Entitys
 {
     internal class Event : BaseEntity<Event>, IEvent
     {
+        public Event()
+        {
+        }
+
+        public Event(IEvent e)
+        {
+            EventName = e.EventName;
+            EnableIPAddressWhiteList = e.EnableIPAddressWhiteList;
+            IPAddressWhiteList = e.IPAddressWhiteList;
+            EventProtocol = e.EventProtocol;
+            Subscriptions = e.Subscriptions;
+        }
+
+
         public string EventName { set; get; }
 
         public bool EnableIPAddressWhiteList { set; get; }
@@ -14,8 +28,6 @@ namespace EventBus.Core.Entitys
         public string[] IPAddressWhiteList { set; get; }
 
         public ProtocolType EventProtocol { set; get; }
-
-        public IEventLog[] EventLogs { set; get; }
 
         public ISubscription[] Subscriptions { set; get; }
     }

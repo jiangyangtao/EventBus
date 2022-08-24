@@ -29,11 +29,6 @@ namespace EventBus.Abstractions.IModels
         public ProtocolType EventProtocol { get; }
 
         /// <summary>
-        /// 事件日志
-        /// </summary>
-        public IEventLog[] EventLogs { get; }
-
-        /// <summary>
         /// 订阅集
         /// </summary>
         public ISubscription[] Subscriptions { get; }
