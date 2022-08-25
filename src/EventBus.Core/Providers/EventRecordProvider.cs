@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventBus.Core.Providers
 {
-    internal class EventLogProvider : BaseRepository<EventRecord>, IEventLogProvider
+    internal class EventRecordProvider : BaseRepository<EventRecord>, IEventRecordProvider
     {
-        public EventLogProvider(IRepository repository) : base(repository)
+        public EventRecordProvider(IRepository repository) : base(repository)
         {
         }
 
-        public async Task<IEventRecord> GetEventLogAsync(Guid eventLogId)
+        public async Task<IEventRecord> GetEventRecordAsync(Guid eventLogId)
         {
             var evnetLog = await Get().FirstOrDefaultAsync(a => a.Id == eventLogId);
             if (evnetLog == null) return null;
@@ -22,7 +22,7 @@ namespace EventBus.Core.Providers
             return evnetLog;
         }
 
-        public async Task<IEventRecord[]> GetEventLogsAsync(Guid eventId)
+        public async Task<IEventRecord[]> GetEventRecordsAsync(Guid eventId)
         {
             var eventLogs = await Get().Where(a => a.EventId == eventId).ToArrayAsync();
             if (eventLogs.IsNullOrEmpty()) return EventRecord.EmptyArray;
@@ -30,7 +30,7 @@ namespace EventBus.Core.Providers
             return eventLogs;
         }
 
-        public async Task<IEventRecord[]> GetEventLogsAsync(int start, int count, DateTime? begin, DateTime? end)
+        public async Task<IEventRecord[]> GetEventRecordsAsync(int start, int count, DateTime? begin, DateTime? end)
         {
             var query = Get();
             if (begin.HasValue && end.HasValue) query.Where(a => a.CreateTime > begin.Value && a.CreateTime < end.Value);

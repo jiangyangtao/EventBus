@@ -37,14 +37,6 @@ namespace EventBus.Core.Providers
             throw new NotImplementedException();
         }
 
-        public async Task PublishAsync(Guid eventId)
-        {
-            var e = await _eventProvider.GetEventAsync(eventId);
-            if (e == null) return;
-
-            // TODO
-        }
-
         public async Task RemoveAsync(IEvent data)
         {
             var e = await _eventProvider.GetEventAsync(data.EventName);

@@ -11,17 +11,23 @@ namespace EventBus.Core
         public static IServiceCollection AddEventBus(this IServiceCollection services, IConfiguration configuration)
         {
             PrintProjectName();
+
             services.AddStorage(configuration);
             services.AddScoped<IApplicationManager, ApplicationManager>();
             services.AddScoped<IApplicationProvider, ApplicationProvider>();
-            services.AddScoped<IEventLogProvider, EventLogProvider>();
-            services.AddScoped<IEventManager, EventManager>();
             services.AddScoped<IEventProvider, EventProvider>();
+            services.AddScoped<IEventManager, EventManager>();
+            services.AddScoped<IEventRecordProvider, EventRecordProvider>();
+            services.AddScoped<IEventRecordManager, EventRecordManager>();
             services.AddScoped<IRetryManager, RetryManager>();
             services.AddScoped<IRetryProvider, RetryProvider>();
+
             return services;
         }
 
+        /// <summary>
+        /// 打印项目名称
+        /// </summary>
         private static void PrintProjectName()
         {
             Console.WriteLine("");

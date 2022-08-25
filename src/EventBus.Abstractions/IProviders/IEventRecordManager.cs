@@ -7,17 +7,13 @@ using System.Threading.Tasks;
 
 namespace EventBus.Abstractions.IProviders
 {
-    public interface IEventManager
+    public interface IEventRecordManager
     {
-        Task AddOrUpdateAsync(IEvent data);
-
-        Task RemoveAsync(IEvent data);
-
         /// <summary>
-        /// 通知
+        /// 发布事件
         /// </summary>
-        /// <param name="subscriptionGroupLogId"></param>
+        /// <param name="eventRecord"></param>
         /// <returns></returns>
-        Task NotifyAsync(string subscriptionGroupLogId);
+        Task PublishAsync(IEventRecord eventRecord);
     }
 }
