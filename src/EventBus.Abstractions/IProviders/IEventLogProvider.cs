@@ -9,10 +9,10 @@ namespace EventBus.Abstractions.IProviders
 {
     public interface IEventLogProvider
     {
-        Task<IEventLog> GetEventLogAsync(Guid eventLogId);
+        Task<IEventRecord> GetEventLogAsync(Guid eventLogId);
 
-        Task<IEventLog[]> GetEventLogsAsync(Guid eventId);
+        Task<IEventRecord[]> GetEventLogsAsync(Guid eventId);
 
-        Task<IEventLog[]> GetEventLogsAsync(int start, int count, DateTime? begin, DateTime? end);
+        Task<IEventRecord[]> GetEventLogsAsync(int start, int count, DateTime? begin, DateTime? end);
     }
 }

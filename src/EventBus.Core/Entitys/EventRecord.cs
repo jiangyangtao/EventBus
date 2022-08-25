@@ -3,11 +3,11 @@ using EventBus.Core.Base;
 
 namespace EventBus.Core.Entitys
 {
-    internal class EventLog : BaseEntity<EventLog>, IEventLog
+    internal class EventRecord : BaseEntity<EventRecord>, IEventRecord
     {
         public string QueryString { set; get; }
 
-        public Dictionary<string, object> Header { set; get; }
+        public IDictionary<string, object> Header { set; get; }
 
         public object Data { set; get; }
 
@@ -19,6 +19,6 @@ namespace EventBus.Core.Entitys
 
         public IEvent Event { set; get; }
 
-        public ISubscriptionGroupLog[] ISubscriptionGroupLogs { set; get; }
+        public ISubscriptionRecord[] ISubscriptionRecords { set; get; }
     }
 }

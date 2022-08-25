@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventBus.Core.Providers
 {
-    internal class EventLogProvider : BaseRepository<EventLog>, IEventLogProvider
+    internal class EventLogProvider : BaseRepository<EventRecord>, IEventLogProvider
     {
         public EventLogProvider(IRepository repository) : base(repository)
         {
         }
 
-        public async Task<IEventLog> GetEventLogAsync(Guid eventLogId)
+        public async Task<IEventRecord> GetEventLogAsync(Guid eventLogId)
         {
             var evnetLog = await Get().FirstOrDefaultAsync(a => a.Id == eventLogId);
             if (evnetLog == null) return null;
@@ -22,21 +22,21 @@ namespace EventBus.Core.Providers
             return evnetLog;
         }
 
-        public async Task<IEventLog[]> GetEventLogsAsync(Guid eventId)
+        public async Task<IEventRecord[]> GetEventLogsAsync(Guid eventId)
         {
             var eventLogs = await Get().Where(a => a.EventId == eventId).ToArrayAsync();
-            if (eventLogs.IsNullOrEmpty()) return EventLog.EmptyArray;
+            if (eventLogs.IsNullOrEmpty()) return EventRecord.EmptyArray;
 
             return eventLogs;
         }
 
-        public async Task<IEventLog[]> GetEventLogsAsync(int start, int count, DateTime? begin, DateTime? end)
+        public async Task<IEventRecord[]> GetEventLogsAsync(int start, int count, DateTime? begin, DateTime? end)
         {
             var query = Get();
             if (begin.HasValue && end.HasValue) query.Where(a => a.CreateTime > begin.Value && a.CreateTime < end.Value);
 
             var eventLogs = await Get().Skip(start).Take(count).ToArrayAsync();
-            if (eventLogs.IsNullOrEmpty()) return EventLog.EmptyArray;
+            if (eventLogs.IsNullOrEmpty()) return EventRecord.EmptyArray;
 
             return eventLogs;
         }

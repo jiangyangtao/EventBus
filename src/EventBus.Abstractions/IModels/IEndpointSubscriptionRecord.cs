@@ -2,16 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace EventBus.Abstractions.IModels
 {
     /// <summary>
-    /// 订阅日志
+    /// 接入点的订阅记录
     /// </summary>
-    public interface ISubscriptionLog : IBaseModel
+    public interface IEndpointSubscriptionRecord
     {
         /// <summary>
         /// 通知类型
@@ -41,11 +40,9 @@ namespace EventBus.Abstractions.IModels
         /// <summary>
         /// 耗时，单位：秒
         /// </summary>
-        public int UsageTime { get; }
+        public long UsageTime { get; }
 
 
         public ISubscription Subscription { get; }
-
-        public IEventLog EventLog { get; }
     }
 }

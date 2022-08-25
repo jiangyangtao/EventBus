@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace EventBus.Abstractions.IModels
 {
     /// <summary>
-    /// 事件日志
+    /// 事件记录
     /// </summary>
-    public interface IEventLog : IBaseModel
+    public interface IEventRecord : IBaseModel
     {
         /// <summary>
         /// 查询参数
@@ -19,7 +19,7 @@ namespace EventBus.Abstractions.IModels
         /// <summary>
         /// 头信息
         /// </summary>
-        public Dictionary<string, object> Header { get; }
+        public IDictionary<string, object> Header { get; }
 
         /// <summary>
         /// 数据
@@ -42,9 +42,9 @@ namespace EventBus.Abstractions.IModels
         public IEvent Event { get; }
 
         /// <summary>
-        /// 订阅的分组日志
+        /// 事件的订阅记录
         /// </summary>
-        public ISubscriptionGroupLog[] ISubscriptionGroupLogs { get; }
+        public ISubscriptionRecord[] ISubscriptionRecords { get; }
 
     }
 }

@@ -2,15 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace EventBus.Abstractions.IModels
 {
     /// <summary>
-    /// 订阅的分组日志
+    /// 订阅记录
     /// </summary>
-    public interface ISubscriptionGroupLog
+    public interface ISubscriptionRecord : IBaseModel
     {
         /// <summary>
         /// 接入点名称
@@ -35,7 +36,7 @@ namespace EventBus.Abstractions.IModels
         /// <summary>
         /// 头信息
         /// </summary>
-        public Dictionary<string, object> Header { get; }
+        public IDictionary<string, object> Header { get; }
 
         /// <summary>
         /// 数据
@@ -45,7 +46,7 @@ namespace EventBus.Abstractions.IModels
         /// <summary>
         /// 是否通知成功，true 成功，false 失败
         /// </summary>
-        public bool NoticeResult { set; get; }
+        public bool NoticeResult { get; }
 
         /// <summary>
         /// 订阅
@@ -53,8 +54,8 @@ namespace EventBus.Abstractions.IModels
         public ISubscription Subscription { get; }
 
         /// <summary>
-        /// 订阅日志
+        /// 接入点的订阅记录
         /// </summary>
-        public ISubscriptionLog[] SubscriptionLogs { get; }
+        public IEndpointSubscriptionRecord[] EndpointSubscriptionRecords { get; }
     }
 }

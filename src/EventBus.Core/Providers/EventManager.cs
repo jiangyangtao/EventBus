@@ -41,6 +41,8 @@ namespace EventBus.Core.Providers
         {
             var e = await _eventProvider.GetEventAsync(eventId);
             if (e == null) return;
+
+            // TODO
         }
 
         public async Task RemoveAsync(IEvent data)

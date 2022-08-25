@@ -4,7 +4,7 @@ using EventBus.Core.Base;
 
 namespace EventBus.Core.Entitys
 {
-    internal class SubscriptionLog : BaseEntity<SubscriptionLog>, ISubscriptionLog
+    internal class EndpointSubscriptionRecord : BaseEntity<EndpointSubscriptionRecord>, IEndpointSubscriptionRecord
     {
         public NoticeType NoticeType { get; set; } = NoticeType.Automatic;
 
@@ -16,10 +16,11 @@ namespace EventBus.Core.Entitys
 
         public object ResponseContent { set; get; }
 
-        public int UsageTime { set; get; }
+        public long UsageTime { set; get; }
 
-        public ISubscription Subscription { set; get; }
-
-        public IEventLog EventLog { set; get; }
+        /// <summary>
+        /// 订阅
+        /// </summary>
+        public ISubscription Subscription { get; }
     }
 }
