@@ -8,6 +8,8 @@ namespace EventBus.Abstractions.IProviders
 {
     public interface IRetryManager
     {
-        Task RetryAsync(string retryDataId);
+        Task RetryAsync();
+
+        Task RetryAsync(Guid retryDataId);
     }
 }

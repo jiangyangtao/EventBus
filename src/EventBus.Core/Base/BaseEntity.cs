@@ -1,5 +1,6 @@
 ﻿using EventBus.Abstractions.IModels;
 using EventBus.Storage.Abstractions.IRepositories;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBus.Core.Base
 {
@@ -16,6 +17,7 @@ namespace EventBus.Core.Base
 
         public DateTime UpdateTime { set; get; }
 
+        [NotMapped]
         public static TEntity[] EmptyArray => Array.Empty<TEntity>();
     }
 }

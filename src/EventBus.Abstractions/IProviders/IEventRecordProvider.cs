@@ -9,7 +9,7 @@ namespace EventBus.Abstractions.IProviders
 {
     public interface IEventRecordProvider
     {       
-        Task<IEventRecord> GetEventRecordAsync(Guid eventLogId);
+        Task<IEventRecord> GetEventRecordAsync(Guid eventRecordId);
 
         Task<IEventRecord[]> GetEventRecordsAsync(Guid eventId);
 

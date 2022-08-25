@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EventBus.Core.Services
 {
-    internal class RetryService
+    internal class BuffQueueService
     {
     }
 }

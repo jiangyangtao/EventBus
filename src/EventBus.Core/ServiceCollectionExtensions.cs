@@ -1,5 +1,7 @@
 ﻿using EventBus.Abstractions.IProviders;
+using EventBus.Abstractions.IService;
 using EventBus.Core.Providers;
+using EventBus.Core.Services;
 using EventBus.Storage.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +23,9 @@ namespace EventBus.Core
             services.AddScoped<IEventRecordManager, EventRecordManager>();
             services.AddScoped<IRetryManager, RetryManager>();
             services.AddScoped<IRetryProvider, RetryProvider>();
+
+            services.AddSingleton<IRetryQueueService, RetryQueueService>();
+            services.AddSingleton<ISubscriptionQueueService, SubscriptionQueueService>();
 
             return services;
         }

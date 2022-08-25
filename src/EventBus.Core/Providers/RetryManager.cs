@@ -19,7 +19,13 @@ namespace EventBus.Core.Providers
             _retryProvider = retryProvider;
         }
 
-        public Task RetryAsync(string retryDataId)
+        public async Task RetryAsync()
+        {
+            // TODO Realize get retry data to retry queue
+            await Task.CompletedTask;
+        }
+
+        public Task RetryAsync(Guid retryDataId)
         {
             throw new NotImplementedException();
         }

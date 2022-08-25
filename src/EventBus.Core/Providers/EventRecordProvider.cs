@@ -14,20 +14,20 @@ namespace EventBus.Core.Providers
         {
         }
 
-        public async Task<IEventRecord> GetEventRecordAsync(Guid eventLogId)
+        public async Task<IEventRecord> GetEventRecordAsync(Guid eventRecordId)
         {
-            var evnetLog = await Get().FirstOrDefaultAsync(a => a.Id == eventLogId);
-            if (evnetLog == null) return null;
+            var evnetRecord = await Get().FirstOrDefaultAsync(a => a.Id == eventRecordId);
+            if (evnetRecord == null) return null;
 
-            return evnetLog;
+            return evnetRecord;
         }
 
         public async Task<IEventRecord[]> GetEventRecordsAsync(Guid eventId)
         {
-            var eventLogs = await Get().Where(a => a.EventId == eventId).ToArrayAsync();
-            if (eventLogs.IsNullOrEmpty()) return EventRecord.EmptyArray;
+            var evnetRecords = await Get().Where(a => a.EventId == eventId).ToArrayAsync();
+            if (evnetRecords.IsNullOrEmpty()) return EventRecord.EmptyArray;
 
-            return eventLogs;
+            return evnetRecords;
         }
 
         public async Task<IEventRecord[]> GetEventRecordsAsync(int start, int count, DateTime? begin, DateTime? end)
@@ -35,10 +35,10 @@ namespace EventBus.Core.Providers
             var query = Get();
             if (begin.HasValue && end.HasValue) query.Where(a => a.CreateTime > begin.Value && a.CreateTime < end.Value);
 
-            var eventLogs = await Get().Skip(start).Take(count).ToArrayAsync();
-            if (eventLogs.IsNullOrEmpty()) return EventRecord.EmptyArray;
+            var evnetRecords = await Get().Skip(start).Take(count).ToArrayAsync();
+            if (evnetRecords.IsNullOrEmpty()) return EventRecord.EmptyArray;
 
-            return eventLogs;
+            return evnetRecords;
         }
     }
 }
