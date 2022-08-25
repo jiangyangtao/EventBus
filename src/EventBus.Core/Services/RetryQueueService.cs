@@ -14,8 +14,7 @@ namespace EventBus.Core.Services
 
         public RetryQueueService(IBufferQueueService bufferQueueService)
         {
-            _retryDataQueue = bufferQueueService.CreateBufferQueue<IRetryData>("Retry", 1,
-                async dictionary => await PushAsync(dictionary), 10, 100);
+            _retryDataQueue = bufferQueueService.CreateBufferQueue<IRetryData>("Retry", async retryData => await PushAsync(retryData), 10, 100);
         }
 
         public Task PutAsync(IRetryData retryData)
@@ -28,7 +27,7 @@ namespace EventBus.Core.Services
             throw new NotImplementedException();
         }
 
-        private Task PushAsync(IRetryData[] datas)
+        private Task PushAsync(IRetryData retryData)
         {
             // TODO 实现重试
             return Task.CompletedTask;

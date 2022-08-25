@@ -14,11 +14,11 @@ namespace EventBus.Core.Services
 
         public SubscriptionQueueService(IBufferQueueService bufferQueueService)
         {
-            _endpointSubscriptionRecordQueue = bufferQueueService.CreateBufferQueue<IEndpointSubscriptionRecord>("subscription", 1,
-                async dictionary => await PushAsync(dictionary), 10, 100);
+            _endpointSubscriptionRecordQueue = bufferQueueService.CreateBufferQueue<IEndpointSubscriptionRecord>("subscription",
+                async subscription => await PushAsync(subscription), 10, 100);
         }
 
-        private Task PushAsync(IEndpointSubscriptionRecord[] records)
+        private Task PushAsync(IEndpointSubscriptionRecord record)
         {
             // TODO 实现订阅的消费
             return Task.CompletedTask;

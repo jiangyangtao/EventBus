@@ -9,11 +9,10 @@ namespace EventBus.Core.Services
 {
     internal class BufferQueueService : IHostedService, IBufferQueueService
     {
+        private readonly ILogger<IBufferQueueService> _logger;
         private readonly ICollection<IBufferQueue> _queueCollection = new List<IBufferQueue>();
-
         private volatile bool _stopping = false;
 
-        private readonly ILogger<IBufferQueueService> _logger;
 
         Task IHostedService.StartAsync(CancellationToken cancellationToken)
         {
@@ -32,38 +31,17 @@ namespace EventBus.Core.Services
         }
 
 
-        public IBufferQueue<T> CreateBufferQueue<T>(string name, Action<T> handler, int concurrency = 1, int bound = -1)
+        public IBufferQueue<TElement> CreateBufferQueue<TElement>(string name, Func<TElement, Task> handler, int concurrency = 1, int bound = -1)
         {
             if (_stopping)
                 throw new InvalidOperationException("application is stopping.");
-            var queue = new BufferQueue<T>(name, CreateHandler(_logger, handler), concurrency, bound);
 
+            var queue = new BufferQueue<TElement>(name, CreateHandler(_logger, handler), concurrency, bound);
             _queueCollection.Add(queue);
 
             return queue;
         }
 
-        public IBufferQueue<T> CreateBufferQueue<T>(string name, Func<T, Task> handler, int concurrency = 1, int bound = -1)
-        {
-            if (_stopping)
-                throw new InvalidOperationException("application is stopping.");
-
-            var queue = new BufferQueue<T>(name, CreateHandler(_logger, handler), concurrency, bound);
-            _queueCollection.Add(queue);
-
-            return queue;
-        }
-
-        public IBufferQueue<T> CreateBufferQueue<T>(string name, int batchSize, Action<T[]> handler, int concurrency = 1, int bound = -1)
-        {
-            if (_stopping)
-                throw new InvalidOperationException("application is stopping.");
-            var queue = new BatchBufferQueue<T>(name, batchSize, CreateHandler(_logger, handler), concurrency, bound);
-
-            _queueCollection.Add(queue);
-
-            return queue;
-        }
 
         public IBufferQueue<T> CreateBufferQueue<T>(string name, int batchSize, Func<T[], Task> handler, int concurrency = 1, int bound = -1)
         {
@@ -76,26 +54,6 @@ namespace EventBus.Core.Services
             return queue;
         }
 
-
-        protected Func<T, Task> CreateHandler<T>(Microsoft.Extensions.Logging.ILogger logger, Action<T> handler)
-        {
-            return async item =>
-            {
-                await Task.Run(() =>
-                {
-                    try
-                    {
-                        handler(item);
-                    }
-                    catch (Exception e)
-                    {
-                        logger.LogError($"handle message failed.\n{e}");
-                    }
-                }
-                );
-            };
-
-        }
 
         protected Func<T, Task> CreateHandler<T>(Microsoft.Extensions.Logging.ILogger logger, Func<T, Task> handler)
         {
@@ -118,18 +76,14 @@ namespace EventBus.Core.Services
         }
 
 
-
         private abstract class BufferQueueBase<T> : IBufferQueue<T>
         {
-
             public BufferQueueBase(string name, int maxCuncurrency, int capacity = -1)
             {
                 Name = name;
                 MaxCuncurrency = maxCuncurrency;
                 Capacity = capacity;
             }
-
-            public BufferQueueService _queueService { get; }
 
             public int MaxCuncurrency { get; }
 
@@ -142,8 +96,6 @@ namespace EventBus.Core.Services
             public abstract Task<bool> PutAsync(T item, CancellationToken cancellationToken);
 
             public abstract Task StopAsync();
-
-
         }
 
 
