@@ -5,6 +5,7 @@ using EventBus.Core.Services;
 using EventBus.Storage.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace EventBus.Core
 {
@@ -26,6 +27,10 @@ namespace EventBus.Core
 
             services.AddSingleton<IRetryQueueService, RetryQueueService>();
             services.AddSingleton<ISubscriptionQueueService, SubscriptionQueueService>();
+
+            services.AddSingleton<BufferQueueService>();
+            services.AddSingleton<IBufferQueueService, BufferQueueService>();
+            services.AddSingleton<IHostedService, BufferQueueService>();
 
             return services;
         }
