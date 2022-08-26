@@ -1,5 +1,6 @@
 ﻿using EventBus.Abstractions.IModels;
 using EventBus.Abstractions.IService;
+using EventBus.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,24 +15,30 @@ namespace EventBus.Core.Services
 
         public SubscriptionQueueService(IBufferQueueService bufferQueueService)
         {
-            _endpointSubscriptionRecordQueue = bufferQueueService.CreateBufferQueue<IEndpointSubscriptionRecord>("subscription",
-                async subscription => await PushAsync(subscription), 10, 100);
+            _endpointSubscriptionRecordQueue = bufferQueueService.CreateBufferQueue<IEndpointSubscriptionRecord>("subscription", async record => await PushAsync(record), 10, 100);
         }
 
         private Task PushAsync(IEndpointSubscriptionRecord record)
         {
+            //if (record == null) return;
+
             // TODO 实现订阅的消费
             return Task.CompletedTask;
         }
 
-        public Task PutAsync(IEndpointSubscriptionRecord endpointSubscriptionRecord)
+        public async Task PutAsync(IEndpointSubscriptionRecord endpointSubscriptionRecord)
         {
-            throw new NotImplementedException();
+            await _endpointSubscriptionRecordQueue.PutAsync(endpointSubscriptionRecord, default);
         }
 
-        public Task PutAsync(IEndpointSubscriptionRecord[] endpointSubscriptionRecords)
+        public async Task PutAsync(IEndpointSubscriptionRecord[] endpointSubscriptionRecords)
         {
-            throw new NotImplementedException();
+            if (endpointSubscriptionRecords.IsNullOrEmpty()) return;
+
+            foreach (var endpointSubscriptionRecord in endpointSubscriptionRecords)
+            {
+                await PutAsync(endpointSubscriptionRecord);
+            }
         }
     }
 }

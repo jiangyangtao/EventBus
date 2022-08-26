@@ -19,6 +19,9 @@ namespace EventBus.Core.Providers
             var e = await GetByIdAsync(eventId);
             if (e == null) return null;
 
+            var subscriptions = await GetSubscriptionsAsync(eventId);
+            if (subscriptions.NotNullAndEmpty()) e.Subscriptions = subscriptions;
+
             return e;
         }
 
@@ -44,6 +47,19 @@ namespace EventBus.Core.Providers
             if (events.IsNullOrEmpty()) return Event.EmptyArray;
 
             return events;
+        }
+
+        public async Task<ISubscription> GetSubscriptionAsync(Guid subscriptionId)
+        {
+            return await GetByIdAsync<Subscription>(subscriptionId);
+        }
+
+        public async Task<ISubscription[]> GetSubscriptionsAsync(Guid eventId)
+        {
+            var subscriptions = await Get<Subscription>(a => a.EvnetId == eventId).ToArrayAsync();
+            if (subscriptions.IsNullOrEmpty()) return Subscription.EmptyArray;
+
+            return subscriptions;
         }
     }
 }

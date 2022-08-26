@@ -6,6 +6,13 @@ namespace EventBus.Core.Entitys
 {
     internal class SubscriptionRecord : BaseEntity<SubscriptionRecord>, ISubscriptionRecord
     {
+        public SubscriptionRecord() { }
+
+        public SubscriptionRecord(ISubscription a)
+        {            
+            //EndpointName = a.end
+        }
+
         public string EndpointName { set; get; }
 
         public Uri EndpointUrl { set; get; }

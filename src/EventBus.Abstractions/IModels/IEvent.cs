@@ -32,5 +32,7 @@ namespace EventBus.Abstractions.IModels
         /// 订阅集
         /// </summary>
         public ISubscription[] Subscriptions { get; }
+
+        ISubscriptionRecord[] BuilderSubscriptionRecords();
     }
 }

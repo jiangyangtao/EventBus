@@ -2,6 +2,7 @@
 using EventBus.Abstractions.Enums;
 using EventBus.Abstractions.IModels;
 using EventBus.Core.Base;
+using EventBus.Extensions;
 
 namespace EventBus.Core.Entitys
 {
@@ -30,5 +31,12 @@ namespace EventBus.Core.Entitys
         public ProtocolType EventProtocol { set; get; }
 
         public ISubscription[] Subscriptions { set; get; }
+
+        public ISubscriptionRecord[] BuilderSubscriptionRecords()
+        {
+            if (Subscriptions.IsNullOrEmpty()) return SubscriptionRecord.EmptyArray;
+
+            return Subscriptions.Select(a => new SubscriptionRecord(a)).ToArray();
+        }
     }
 }
