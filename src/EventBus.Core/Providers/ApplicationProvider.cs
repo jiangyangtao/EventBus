@@ -16,7 +16,7 @@ namespace EventBus.Core.Providers
 
         public async Task<IApplication> GetApplicationAsync(Guid applicationId)
         {
-            var application = await Get().FirstOrDefaultAsync(a => a.Id == applicationId);
+            var application = await GetByIdAsync(applicationId);
             if (application == null) return null;
 
             return application;
@@ -24,7 +24,7 @@ namespace EventBus.Core.Providers
 
         public async Task<IApplication> GetApplicationAsync(string applicationName)
         {
-            var application = await Get().FirstOrDefaultAsync(a => a.ApplicationName == applicationName);
+            var application = await Get(a => a.ApplicationName == applicationName).FirstOrDefaultAsync();
             if (application == null) return null;
 
             return application;
@@ -32,7 +32,7 @@ namespace EventBus.Core.Providers
 
         public async Task<IApplicationEndpoint> GetApplicationEndpointAsync(Guid applicationEndpointId)
         {
-            var applicationEndpoint = await Get<ApplicationEndpoint>().FirstOrDefaultAsync(a => a.Id == applicationEndpointId);
+            var applicationEndpoint = await GetByIdAsync<ApplicationEndpoint>(applicationEndpointId);
             if (applicationEndpoint == null) return null;
 
             return applicationEndpoint;

@@ -16,7 +16,7 @@ namespace EventBus.Core.Providers
 
         public async Task<IEvent> GetEventAsync(Guid eventId)
         {
-            var e = await Get().FirstOrDefaultAsync(a => a.Id == eventId);
+            var e = await GetByIdAsync(eventId);
             if (e == null) return null;
 
             return e;
@@ -24,7 +24,7 @@ namespace EventBus.Core.Providers
 
         public async Task<IEvent> GetEventAsync(string eventName)
         {
-            return await Get().FirstOrDefaultAsync(a => a.EventName == eventName);
+            return await Get(a => a.EventName == eventName).FirstOrDefaultAsync();
         }
 
         public async Task<IEvent[]> GetEventsAsync()

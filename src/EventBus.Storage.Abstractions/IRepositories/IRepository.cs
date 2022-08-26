@@ -90,6 +90,14 @@ namespace EventBus.Storage.Abstractions.IRepositories
         Task<TSource> GetByIdAsync<TSource>(Expression<Func<TSource, bool>> predicate) where TSource : class, IEntity;
 
         /// <summary>
+        /// 获取一条数据
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<TSource> GetByIdAsync<TSource>(Guid id) where TSource : class, IEntity;
+
+        /// <summary>
         /// 获取一个 IQueryable
         /// </summary>
         /// <typeparam name="T"></typeparam>

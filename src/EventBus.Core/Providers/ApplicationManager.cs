@@ -19,7 +19,7 @@ namespace EventBus.Core.Providers
 
         public async Task AddOrUpdateApplicationAsync(IApplication application)
         {
-            var data = await Get().FirstOrDefaultAsync(a => a.Id == application.Id);
+            var data = await GetByIdAsync(application.Id);
             if (data == null)
             {
                 await CreateAsync(new Application()
@@ -35,7 +35,7 @@ namespace EventBus.Core.Providers
 
         public async Task AddOrUpdateApplicationEndpointAsync(IApplicationEndpoint applicationEndpoint)
         {
-            var endpoint = await Get<ApplicationEndpoint>().FirstOrDefaultAsync(a => a.Id == applicationEndpoint.Id);
+            var endpoint = await GetByIdAsync<ApplicationEndpoint>(applicationEndpoint.Id);
             if (endpoint == null)
             {
                 await CreateAsync(new ApplicationEndpoint(applicationEndpoint));

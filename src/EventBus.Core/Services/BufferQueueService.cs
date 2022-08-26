@@ -1,6 +1,4 @@
-﻿using Castle.Core.Logging;
-using EventBus.Abstractions.IService;
-using Microsoft.Extensions.DependencyInjection;
+﻿using EventBus.Abstractions.IService;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks.Dataflow;
@@ -55,7 +53,7 @@ namespace EventBus.Core.Services
         }
 
 
-        protected Func<T, Task> CreateHandler<T>(Microsoft.Extensions.Logging.ILogger logger, Func<T, Task> handler)
+        protected Func<T, Task> CreateHandler<T>(ILogger logger, Func<T, Task> handler)
         {
             return async item =>
             {

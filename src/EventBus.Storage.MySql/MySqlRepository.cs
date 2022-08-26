@@ -107,6 +107,14 @@ namespace EventBus.Storage.Mysql
             return _dbContext.Set<TSource>().Where(predicate);
         }
 
+        public async Task<TSource> GetByIdAsync<TSource>(Guid id) where TSource : class, IEntity
+        {
+            var r = await _dbContext.Set<TSource>().FirstOrDefaultAsync(a => a.Id == id);
+            if (r == null) return null;
+
+            return r;
+        }
+
         public async Task<TSource> GetByIdAsync<TSource>(Expression<Func<TSource, bool>> predicate)
             where TSource : class, IEntity
         {

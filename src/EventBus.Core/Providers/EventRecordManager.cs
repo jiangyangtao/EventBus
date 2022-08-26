@@ -25,7 +25,7 @@ namespace EventBus.Core.Providers
             var e = await _eventProvider.GetEventAsync(eventRecord.Event.Id);
             if (e == null) return;
 
-            // TODO 
+            // TODO 发布事件
         }
     }
 }

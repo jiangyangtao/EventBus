@@ -103,6 +103,12 @@ namespace EventBus.Storage.MongoDB
             return SetCollection<TSource>().AsQueryable().Where(predicate);
         }
 
+
+        public async Task<TSource> GetByIdAsync<TSource>(Guid id) where TSource : class, IEntity
+        {
+            return await SetCollection<TSource>().Find(a => a.Id == id).FirstOrDefaultAsync();
+        }
+
         public async Task<TSource> GetByIdAsync<TSource>(Expression<Func<TSource, bool>> predicate) where TSource : class, IEntity
         {
             return await SetCollection<TSource>().Find(predicate).FirstOrDefaultAsync();
@@ -123,5 +129,6 @@ namespace EventBus.Storage.MongoDB
 
             return entity;
         }
+
     }
 }

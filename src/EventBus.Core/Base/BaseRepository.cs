@@ -132,6 +132,17 @@ namespace EventBus.Core.Base
         /// 获取一条数据
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        protected async Task<TSource> GetByIdAsync<TSource>(Guid id) where TSource : class, IEntity
+        {
+            return await _repository.GetByIdAsync<TSource>(id);
+        }
+
+        /// <summary>
+        /// 获取一条数据
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
         /// <param name="predicate"></param>
         /// <returns></returns>
         protected async Task<TSource> GetByIdAsync<TSource>(Expression<Func<TSource, bool>> predicate)
@@ -263,6 +274,17 @@ namespace EventBus.Core.Base
         protected Task<long> DeleteRangeAsync(ICollection<TEntity> entities, bool isCommit = true)
         {
             return base.DeleteRangeAsync(entities, isCommit);
+        }
+
+        /// <summary>
+        /// 获取一条数据
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        protected async Task<TEntity> GetByIdAsync(Guid id)
+        {
+            return await base.GetByIdAsync<TEntity>(id);
         }
 
 

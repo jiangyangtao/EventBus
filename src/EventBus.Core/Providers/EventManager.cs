@@ -18,7 +18,7 @@ namespace EventBus.Core.Providers
 
         public async Task AddOrUpdateAsync(IEvent data)
         {
-            var e = await Get().FirstOrDefaultAsync(a => a.EventName == data.EventName);
+            var e = await Get(a => a.EventName == data.EventName).FirstOrDefaultAsync();
             if (e == null)
             {
                 await CreateAsync(new Event(data));

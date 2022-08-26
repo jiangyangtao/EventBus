@@ -2,6 +2,7 @@
 using EventBus.Core.Base;
 using EventBus.Core.Entitys;
 using EventBus.Storage.Abstractions.IRepositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,13 +22,14 @@ namespace EventBus.Core.Providers
 
         public async Task RetryAsync()
         {
-            // TODO Realize get retry data to retry queue
-            await Task.CompletedTask;
+            var datas = await Get(a => a.RetryTime <= DateTime.Now).ToArrayAsync();
+            // TODO 放入队列
         }
 
-        public Task RetryAsync(Guid retryDataId)
+        public async Task RetryAsync(Guid retryDataId)
         {
-            throw new NotImplementedException();
+            var data = await GetByIdAsync(retryDataId);
+            // TODO 放入队列
         }
     }
 }
