@@ -33,6 +33,6 @@ namespace EventBus.Abstractions.IModels
         /// </summary>
         public ISubscription[] Subscriptions { get; }
 
-        ISubscriptionRecord[] BuilderSubscriptionRecords();
+        ISubscriptionRecord[] BuilderSubscriptionRecords(IEventRecord eventRecord);
     }
 }

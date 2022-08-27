@@ -10,6 +10,16 @@ namespace EventBus.Core.Entitys
 {
     internal class RetryPolicy : IRetryPolicy
     {
+        public RetryPolicy()
+        {
+        }
+
+        public RetryPolicy(int intervalTime, RetryBehavior behavior)
+        {
+            IntervalTime = intervalTime;
+            Behavior = behavior;
+        }
+
         public int IntervalTime { get; set; }
 
         public RetryBehavior Behavior { get; set; }

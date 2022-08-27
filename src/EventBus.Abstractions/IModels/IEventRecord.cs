@@ -14,7 +14,7 @@ namespace EventBus.Abstractions.IModels
         /// <summary>
         /// 查询参数
         /// </summary>
-        public string QueryString{ get; }
+        public string QueryString { get; }
 
         /// <summary>
         /// 头信息
@@ -45,6 +45,8 @@ namespace EventBus.Abstractions.IModels
         /// 事件的订阅记录
         /// </summary>
         public ISubscriptionRecord[] ISubscriptionRecords { get; }
+
+        public HttpContent BuilderHttpContent();
 
     }
 }

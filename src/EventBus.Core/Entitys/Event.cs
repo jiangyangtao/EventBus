@@ -32,11 +32,11 @@ namespace EventBus.Core.Entitys
 
         public ISubscription[] Subscriptions { set; get; }
 
-        public ISubscriptionRecord[] BuilderSubscriptionRecords()
+        public ISubscriptionRecord[] BuilderSubscriptionRecords(IEventRecord eventRecord)
         {
             if (Subscriptions.IsNullOrEmpty()) return SubscriptionRecord.EmptyArray;
 
-            return Subscriptions.Select(a => new SubscriptionRecord(a)).ToArray();
+            return Subscriptions.Where(a => a.ApplicationEndpoint != null).Select(a => new SubscriptionRecord(eventRecord, a.ApplicationEndpoint)).ToArray();
         }
     }
 }

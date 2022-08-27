@@ -29,33 +29,25 @@ namespace EventBus.Abstractions.IModels
         public ProtocolType NoticeProtocol { get; }
 
         /// <summary>
-        /// 查询参数
+        /// 失败的重试策略
         /// </summary>
-        public string QueryString { get; }
+        public IRetryPolicy[] FailedRetryPolicy { get; }
 
         /// <summary>
-        /// 头信息
+        /// 订阅结果，true 成功，false 失败
         /// </summary>
-        public IDictionary<string, object> Header { get; }
-
-        /// <summary>
-        /// 数据
-        /// </summary>
-        public object Data { get; }
-
-        /// <summary>
-        /// 是否通知成功，true 成功，false 失败
-        /// </summary>
-        public bool NoticeResult { get; }
-
-        /// <summary>
-        /// 订阅
-        /// </summary>
-        public ISubscription Subscription { get; }
+        public bool SubscriptionResult { get; }
 
         /// <summary>
         /// 接入点的订阅记录
         /// </summary>
         public IEndpointSubscriptionRecord[] EndpointSubscriptionRecords { get; }
+
+        /// <summary>
+        /// 获取重试策略
+        /// </summary>
+        /// <param name="retryCount"></param>
+        /// <returns></returns>
+        public IRetryPolicy GetRetryPolicy(int retryCount = 1);
     }
 }

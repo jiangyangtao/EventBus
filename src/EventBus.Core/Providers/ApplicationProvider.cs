@@ -43,6 +43,11 @@ namespace EventBus.Core.Providers
             var applicationEndpoints = await Get<ApplicationEndpoint>().Where(a => a.ApplicationId == applicationId).ToArrayAsync();
             if (applicationEndpoints.IsNullOrEmpty()) return ApplicationEndpoint.EmptyArray;
 
+            foreach (var applicationEndpoint in applicationEndpoints)
+            {
+                applicationEndpoint.Application = new Application() { Id = applicationEndpoint.ApplicationId };
+            }
+
             return applicationEndpoints;
         }
 

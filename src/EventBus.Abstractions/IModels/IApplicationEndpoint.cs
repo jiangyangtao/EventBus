@@ -32,12 +32,5 @@ namespace EventBus.Abstractions.IModels
         /// 失败的重试策略
         /// </summary>
         public IRetryPolicy[] FailedRetryPolicy { get; }
-
-        /// <summary>
-        /// 获取重试策略
-        /// </summary>
-        /// <param name="retryCount"></param>
-        /// <returns></returns>
-        public IRetryPolicy GetRetryPolicy(int retryCount = 1);
     }
 }

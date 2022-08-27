@@ -10,8 +10,11 @@ namespace EventBus.Core.Providers
 {
     internal class EventProvider : BaseRepository<Event>, IEventProvider
     {
-        public EventProvider(IRepository repository) : base(repository)
+        private readonly IApplicationProvider _applicationProvider;
+
+        public EventProvider(IRepository repository, IApplicationProvider applicationProvider) : base(repository)
         {
+            _applicationProvider = applicationProvider;
         }
 
         public async Task<IEvent> GetEventAsync(Guid eventId)
@@ -59,7 +62,21 @@ namespace EventBus.Core.Providers
             var subscriptions = await Get<Subscription>(a => a.EvnetId == eventId).ToArrayAsync();
             if (subscriptions.IsNullOrEmpty()) return Subscription.EmptyArray;
 
-            return subscriptions;
+            var endpoints = await _applicationProvider.GetApplicationEndpointsAsync(eventId);
+            if (endpoints.IsNullOrEmpty()) return Subscription.EmptyArray;
+
+            foreach (var subscription in subscriptions)
+            {
+                subscription.Event = new Event() { Id = subscription.EvnetId };
+
+                var applicationEndpoint = endpoints.FirstOrDefault(a => a.Id == subscription.ApplicationEndpointId);
+                if (applicationEndpoint != null)
+                {
+                    subscription.ApplicationEndpoint = applicationEndpoint;
+                }
+            }
+
+            return subscriptions.Where(a => a.ApplicationEndpoint != null).ToArray();
         }
     }
 }

@@ -6,7 +6,7 @@ namespace EventBus.Core.Base
 {
     internal abstract class BaseEntity<TEntity> : IBaseModel, IEntity
     {
-        protected BaseEntity()
+        public BaseEntity()
         {
             Id = Guid.NewGuid();
         }

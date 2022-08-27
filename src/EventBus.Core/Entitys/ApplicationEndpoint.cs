@@ -9,9 +9,9 @@ namespace EventBus.Core.Entitys
 {
     internal class ApplicationEndpoint : BaseEntity<ApplicationEndpoint>, IApplicationEndpoint
     {
-        public ApplicationEndpoint() : base() { }
+        public ApplicationEndpoint() { }
 
-        public ApplicationEndpoint(IApplicationEndpoint endpoint) : base()
+        public ApplicationEndpoint(IApplicationEndpoint endpoint)
         {
             EndpointName = endpoint.EndpointName;
             EndpointUrl = endpoint.EndpointUrl;
@@ -64,10 +64,5 @@ namespace EventBus.Core.Entitys
         }
 
         public string FailedRetryPolicyString { set; get; }
-
-        public IRetryPolicy GetRetryPolicy(int retryCount = 1)
-        {
-            return new RetryPolicy();
-        }
     }
 }

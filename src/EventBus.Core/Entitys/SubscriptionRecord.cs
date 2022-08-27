@@ -1,6 +1,9 @@
 ﻿using EventBus.Abstractions.Enums;
 using EventBus.Abstractions.IModels;
 using EventBus.Core.Base;
+using EventBus.Extensions;
+using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBus.Core.Entitys
 {
@@ -8,27 +11,67 @@ namespace EventBus.Core.Entitys
     {
         public SubscriptionRecord() { }
 
-        public SubscriptionRecord(ISubscription a)
-        {            
-            //EndpointName = a.end
+        public SubscriptionRecord(IEventRecord eventRecord, IApplicationEndpoint endpoint)
+        {
+            EventRecordId = eventRecord.Id;
+            EndpointName = endpoint.EndpointName;
+            EndpointUrl = endpoint.EndpointUrl;
+            NoticeProtocol = endpoint.NoticeProtocol;
+            FailedRetryPolicy = endpoint.FailedRetryPolicy;
         }
+
+        public Guid EventRecordId { get; set; }
 
         public string EndpointName { set; get; }
 
-        public Uri EndpointUrl { set; get; }
+        [NotMapped]
+        public Uri EndpointUrl
+        {
+            set
+            {
+                EndpointUrlString = value.ToString();
+            }
+            get
+            {
+                if (EndpointUrlString.IsNullOrEmpty()) return null;
+
+                return new Uri(EndpointUrlString);
+            }
+        }
+
+        public string EndpointUrlString { set; get; }
 
         public ProtocolType NoticeProtocol { set; get; }
 
-        public string QueryString { set; get; }
+        [NotMapped]
+        public IRetryPolicy[] FailedRetryPolicy
+        {
+            set
+            {
+                FailedRetryPolicyString = JsonConvert.SerializeObject(value);
+            }
 
-        public IDictionary<string, object> Header { set; get; }
+            get
+            {
+                if (FailedRetryPolicyString.IsNullOrEmpty()) return Array.Empty<RetryPolicy>();
 
-        public object Data { set; get; }
+                return JsonConvert.DeserializeObject<IRetryPolicy[]>(FailedRetryPolicyString);
+            }
+        }
 
-        public bool NoticeResult { set; get; }
+        public string FailedRetryPolicyString { set; get; }
 
-        public ISubscription Subscription { set; get; }
+        public bool SubscriptionResult { set; get; }
 
+        [NotMapped]
         public IEndpointSubscriptionRecord[] EndpointSubscriptionRecords { set; get; }
+
+        public IRetryPolicy GetRetryPolicy(int retryCount = 1)
+        {
+            if (FailedRetryPolicy.IsNullOrEmpty()) return new RetryPolicy(0, RetryBehavior.Discard);
+            if (retryCount - 1 > FailedRetryPolicy.Length) return new RetryPolicy(0, RetryBehavior.Discard);
+
+            return FailedRetryPolicy[retryCount - 1];
+        }
     }
 }
