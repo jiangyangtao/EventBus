@@ -73,5 +73,17 @@ namespace EventBus.Core.Entitys
 
             return FailedRetryPolicy[retryCount - 1];
         }
+
+        /// <summary>
+        /// 订阅
+        /// </summary>
+        /// <param name="httpClientFactory"></param>
+        /// <returns></returns>
+        public async Task<EndpointSubscriptionRecord> Subscription(IHttpClientFactory httpClientFactory, EventRecord record)
+        {
+            var client = httpClientFactory.CreateClient();
+            var response = await client.PostAsync(EndpointUrl, record.BuilderHttpContent());
+
+        }
     }
 }

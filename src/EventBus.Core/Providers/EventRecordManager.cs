@@ -8,6 +8,7 @@ using EventBus.Storage.Abstractions.IRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,17 +18,20 @@ namespace EventBus.Core.Providers
     {
         private readonly IEventProvider _eventProvider;
         private readonly IApplicationProvider _applicationProvider;
-        private readonly IBufferQueue<IEndpointSubscriptionRecord> _endpointSubscriptionRecordQueue;
+        private readonly IBufferQueue<SubscriptionRecord> _subscriptionRecordQueue;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         public EventRecordManager(
             IRepository repository,
             IEventProvider eventProvider,
             IBufferQueueService bufferQueueService,
-            IApplicationProvider applicationProvider) : base(repository)
+            IApplicationProvider applicationProvider,
+            IHttpClientFactory httpClientFactory) : base(repository)
         {
             _eventProvider = eventProvider;
-            _endpointSubscriptionRecordQueue = bufferQueueService.CreateBufferQueue<IEndpointSubscriptionRecord>("subscription", async record => await PushAsync(record), 10, 100);
+            _subscriptionRecordQueue = bufferQueueService.CreateBufferQueue<SubscriptionRecord>("subscription", async record => await PushAsync(record), 10, 100);
             _applicationProvider = applicationProvider;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task PublishAsync(IEventRecord eventRecord)
@@ -36,33 +40,45 @@ namespace EventBus.Core.Providers
             if (e == null) return;
             if (e.Subscriptions.IsNullOrEmpty()) return;
 
-            await CreateAsync(new EventRecord(eventRecord), false);
+            await CreateAsync(new EventRecord(eventRecord));
 
-            var records = e.BuilderSubscriptionRecords(eventRecord);
-            await AddRangeAsync(records);
-            // TODO 发布事件
-        }
-
-        private Task PushAsync(IEndpointSubscriptionRecord record)
-        {
-            //if (record == null) return;
-
-            // TODO 实现订阅的消费
-            return Task.CompletedTask;
-        }
-
-        private async Task PutAsync(IEndpointSubscriptionRecord endpointSubscriptionRecord)
-        {
-            await _endpointSubscriptionRecordQueue.PutAsync(endpointSubscriptionRecord, default);
-        }
-
-        private async Task PutAsync(IEndpointSubscriptionRecord[] endpointSubscriptionRecords)
-        {
-            if (endpointSubscriptionRecords.IsNullOrEmpty()) return;
-
-            foreach (var endpointSubscriptionRecord in endpointSubscriptionRecords)
+            if (e.Subscriptions.NotNullAndEmpty())
             {
-                await PutAsync(endpointSubscriptionRecord);
+                var records = e.Subscriptions.Where(subscription => subscription.ApplicationEndpoint != null)
+                    .Select(subscription => new SubscriptionRecord(eventRecord, subscription.ApplicationEndpoint)).ToArray();
+
+                if (records.NotNullAndEmpty())
+                {
+                    await AddRangeAsync(records);
+                    await PutAsync(records);
+                }
+            }
+        }
+
+
+        private async Task PushAsync(SubscriptionRecord record)
+        {
+            if (record == null) return;
+
+            var endpointSubscription = await record.Subscription(_httpClientFactory);
+            if (endpointSubscription != null)
+            {
+
+            }
+        }
+
+        private async Task PutAsync(SubscriptionRecord record)
+        {
+            await _subscriptionRecordQueue.PutAsync(record, default);
+        }
+
+        private async Task PutAsync(SubscriptionRecord[] records)
+        {
+            if (records.IsNullOrEmpty()) return;
+
+            foreach (var record in records)
+            {
+                await PutAsync(record);
             }
         }
     }
