@@ -1,35 +1,37 @@
 ﻿using EventBus.Abstractions.IProviders;
 using EventBus.Core.Base;
 using EventBus.Core.Entitys;
+using EventBus.Extensions;
 using EventBus.Storage.Abstractions.IRepositories;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EventBus.Core.Providers
 {
     internal class RetryManager : BaseRepository<RetryData>, IRetryManager
     {
-        private readonly IRetryProvider _retryProvider;
+        private readonly ISubscriptionQueueProvider _subscriptionQueueProvider;
 
-        public RetryManager(IRepository repository, IRetryProvider retryProvider) : base(repository)
+        public RetryManager(IRepository repository,
+            ISubscriptionQueueProvider subscriptionQueueProvider) : base(repository)
         {
-            _retryProvider = retryProvider;
+            _subscriptionQueueProvider = subscriptionQueueProvider;
         }
 
         public async Task RetryAsync()
         {
             var datas = await Get(a => a.RetryTime <= DateTime.Now).ToArrayAsync();
-            // TODO 放入队列
+            if (datas.IsNullOrEmpty()) return;
+
+            var subscriptionRecordIds = datas.Select(a => a.SubscriptionRecordId).ToArray();
+            var subscriptionRecords = await Get<SubscriptionRecord>(a => subscriptionRecordIds.Contains(a.Id)).ToArrayAsync();
+            if (subscriptionRecordIds.NotNullAndEmpty()) await _subscriptionQueueProvider.PutAsync(subscriptionRecords);
         }
 
         public async Task RetryAsync(Guid retryDataId)
         {
             var data = await GetByIdAsync(retryDataId);
-            // TODO 放入队列
+            var subscriptionRecord = await GetByIdAsync<SubscriptionRecord>(data.SubscriptionRecordId);
+            if (subscriptionRecord != null) await _subscriptionQueueProvider.PutAsync(subscriptionRecord);
         }
     }
 }

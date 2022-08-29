@@ -1,5 +1,4 @@
 ﻿using EventBus.Abstractions.IProviders;
-using EventBus.Abstractions.IService;
 using EventBus.Core.Providers;
 using EventBus.Core.Services;
 using EventBus.Storage.Core;
@@ -25,12 +24,11 @@ namespace EventBus.Core
             services.AddScoped<IRetryManager, RetryManager>();
             services.AddScoped<IRetryProvider, RetryProvider>();
 
-            services.AddSingleton<IRetryQueueService, RetryQueueService>();
-            services.AddSingleton<ISubscriptionQueueService, SubscriptionQueueService>();
-
             services.AddSingleton<BufferQueueService>();
             services.AddSingleton<IBufferQueueService, BufferQueueService>();
             services.AddSingleton<IHostedService, BufferQueueService>();
+
+            services.AddSingleton<ISubscriptionQueueProvider, SubscriptionQueueProvider>();
 
             return services;
         }

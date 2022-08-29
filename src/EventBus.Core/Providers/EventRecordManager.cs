@@ -1,41 +1,24 @@
-﻿using EventBus.Abstractions.Enums;
-using EventBus.Abstractions.IModels;
+﻿using EventBus.Abstractions.IModels;
 using EventBus.Abstractions.IProviders;
-using EventBus.Abstractions.IService;
 using EventBus.Core.Base;
 using EventBus.Core.Entitys;
 using EventBus.Extensions;
 using EventBus.Storage.Abstractions.IRepositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EventBus.Core.Providers
 {
     internal class EventRecordManager : BaseRepository<EventRecord>, IEventRecordManager
     {
         private readonly IEventProvider _eventProvider;
-        private readonly IApplicationProvider _applicationProvider;
-        private readonly IRetryProvider _retryProvider;
-        private readonly IBufferQueue<SubscriptionRecord> _subscriptionRecordQueue;
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ISubscriptionQueueProvider _subscriptionQueueProvider;
 
         public EventRecordManager(
             IRepository repository,
             IEventProvider eventProvider,
-            IBufferQueueService bufferQueueService,
-            IApplicationProvider applicationProvider,
-            IHttpClientFactory httpClientFactory,
-            IRetryProvider retryProvider) : base(repository)
+            ISubscriptionQueueProvider subscriptionQueueProvider) : base(repository)
         {
             _eventProvider = eventProvider;
-            _subscriptionRecordQueue = bufferQueueService.CreateBufferQueue<SubscriptionRecord>("subscription", async record => await PushAsync(record), 10, 100);
-            _applicationProvider = applicationProvider;
-            _httpClientFactory = httpClientFactory;
-            _retryProvider = retryProvider;
+            _subscriptionQueueProvider = subscriptionQueueProvider;
         }
 
         public async Task PublishAsync(IEventRecord eventRecord)
@@ -54,48 +37,8 @@ namespace EventBus.Core.Providers
                 if (records.NotNullAndEmpty())
                 {
                     await AddRangeAsync(records);
-                    await PutAsync(records);
+                    await _subscriptionQueueProvider.PutAsync(records);
                 }
-            }
-        }
-
-
-        private async Task PushAsync(SubscriptionRecord record)
-        {
-            if (record == null) return;
-
-            var endpointSubscription = await record.Subscription(_httpClientFactory, record.GetSubscriptionContent());
-            if (endpointSubscription != null)
-            {
-                record.SubscriptionResult = endpointSubscription.IsSuccessStatusCode;
-                await UpdateAsync(record, false);
-                await CreateAsync(endpointSubscription);
-
-                if (endpointSubscription.IsSuccessStatusCode == false)
-                {
-                    var retryCount = await _retryProvider.GetRetryCountAsync(record.EventRecordId);
-                    var policy = record.GetRetryPolicy(retryCount);
-                    if (policy.Behavior == RetryBehavior.Retry)
-                    {
-                        var retryData = record.GetRetryData(policy);
-                        await CreateAsync(retryData);
-                    }
-                }
-            }
-        }
-
-        private async Task PutAsync(SubscriptionRecord record)
-        {
-            await _subscriptionRecordQueue.PutAsync(record, default);
-        }
-
-        private async Task PutAsync(SubscriptionRecord[] records)
-        {
-            if (records.IsNullOrEmpty()) return;
-
-            foreach (var record in records)
-            {
-                await PutAsync(record);
             }
         }
     }
