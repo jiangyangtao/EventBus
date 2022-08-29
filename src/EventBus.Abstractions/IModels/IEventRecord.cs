@@ -19,7 +19,7 @@ namespace EventBus.Abstractions.IModels
         /// <summary>
         /// 头信息
         /// </summary>
-        public IDictionary<string, object> Header { get; }
+        public IDictionary<string, string> Header { get; }
 
         /// <summary>
         /// 数据

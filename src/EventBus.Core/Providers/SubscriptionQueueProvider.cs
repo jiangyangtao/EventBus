@@ -33,7 +33,7 @@ namespace EventBus.Core.Providers
         {
             if (record == null) return;
 
-            var endpointSubscription = await record.Subscription(_httpClientFactory, record.GetSubscriptionContent());
+            var endpointSubscription = await record.Subscription(_httpClientFactory, record.GetSubscriptionContent(), record.GetSubscriptionHeader());
             if (endpointSubscription != null)
             {
                 record.SubscriptionResult = endpointSubscription.IsSuccessStatusCode;

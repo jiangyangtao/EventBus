@@ -3,6 +3,7 @@ using EventBus.Core.Base;
 using EventBus.Extensions;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
 namespace EventBus.Core.Entitys
 {
@@ -23,7 +24,7 @@ namespace EventBus.Core.Entitys
         public string QueryString { set; get; }
 
         [NotMapped]
-        public IDictionary<string, object> Header
+        public IDictionary<string, string> Header
         {
             set
             {
@@ -33,7 +34,7 @@ namespace EventBus.Core.Entitys
             {
                 if (HeaderString.IsNullOrEmpty()) return null;
 
-                return JsonConvert.DeserializeObject<IDictionary<string, object>>(HeaderString);
+                return JsonConvert.DeserializeObject<IDictionary<string, string>>(HeaderString);
             }
         }
 
@@ -71,8 +72,7 @@ namespace EventBus.Core.Entitys
 
         public HttpContent BuilderHttpContent()
         {
-            // TODO 实现一个 HttpContent
-            throw new NotImplementedException();
+            return new StringContent(DataString, Encoding.UTF8, "application/json");
         }
     }
 }

@@ -21,6 +21,7 @@ namespace EventBus.Core.Entitys
             SubscriptionProtocol = endpoint.SubscriptionProtocol;
             FailedRetryPolicy = endpoint.FailedRetryPolicy;
 
+            SubscriptionHeader = eventRecord.Header;
             SubscriptionContent = eventRecord.BuilderHttpContent();
         }
 
@@ -83,22 +84,32 @@ namespace EventBus.Core.Entitys
             return FailedRetryPolicy[retryCount - 1];
         }
 
+        private IDictionary<string, string> SubscriptionHeader { set; get; }
+
+        public IDictionary<string, string> GetSubscriptionHeader() => SubscriptionHeader;
+
         private HttpContent SubscriptionContent { set; get; }
 
-        public HttpContent GetSubscriptionContent()
-        {
-            return SubscriptionContent;
-        }
+        public HttpContent GetSubscriptionContent() => SubscriptionContent;
+
 
         /// <summary>
         /// 订阅
         /// </summary>
         /// <param name="httpClientFactory"></param>
         /// <returns></returns>
-        public async Task<EndpointSubscriptionRecord> Subscription(IHttpClientFactory httpClientFactory, HttpContent httpContent)
+        public async Task<EndpointSubscriptionRecord> Subscription(IHttpClientFactory httpClientFactory, HttpContent httpContent, IDictionary<string, string> header)
         {
             var client = httpClientFactory.CreateClient();
             client.Timeout = TimeSpan.FromSeconds(RequestTimeout);
+            if (header.NotNullAndEmpty())
+            {
+                foreach (var item in header)
+                {
+                    if (client.DefaultRequestHeaders.Contains(item.Key) == false)
+                        client.DefaultRequestHeaders.Add(item.Key, item.Value);
+                }
+            }
 
             var subscriptionTime = DateTime.Now;
             var watch = new Stopwatch();
