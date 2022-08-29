@@ -7,10 +7,6 @@ namespace EventBus.Core.Entitys
 {
     internal class EndpointSubscriptionRecord : BaseEntity<EndpointSubscriptionRecord>, IEndpointSubscriptionRecord
     {
-        public EndpointSubscriptionRecord()
-        {
-        }
-
         /// <summary>
         /// 
         /// </summary>

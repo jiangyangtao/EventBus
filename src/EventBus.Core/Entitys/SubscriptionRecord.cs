@@ -76,14 +76,6 @@ namespace EventBus.Core.Entitys
         [NotMapped]
         public IEndpointSubscriptionRecord[] EndpointSubscriptionRecords { set; get; }
 
-        public IRetryPolicy GetRetryPolicy(int retryCount = 1)
-        {
-            if (FailedRetryPolicy.IsNullOrEmpty()) return new RetryPolicy(0, RetryBehavior.Discard);
-            if (retryCount - 1 > FailedRetryPolicy.Length) return new RetryPolicy(0, RetryBehavior.Discard);
-
-            return FailedRetryPolicy[retryCount - 1];
-        }
-
         private IDictionary<string, string> SubscriptionHeader { set; get; }
 
         public IDictionary<string, string> GetSubscriptionHeader() => SubscriptionHeader;
@@ -92,6 +84,16 @@ namespace EventBus.Core.Entitys
 
         public HttpContent GetSubscriptionContent() => SubscriptionContent;
 
+        [NotMapped]
+        public SubscriptionType SubscriptionType { get; set; } = SubscriptionType.Automatic;
+
+        public IRetryPolicy GetRetryPolicy(int retryCount = 1)
+        {
+            if (FailedRetryPolicy.IsNullOrEmpty()) return new RetryPolicy(0, RetryBehavior.Discard);
+            if (retryCount - 1 > FailedRetryPolicy.Length) return new RetryPolicy(0, RetryBehavior.Discard);
+
+            return FailedRetryPolicy[retryCount - 1];
+        }
 
         /// <summary>
         /// 订阅
@@ -122,7 +124,7 @@ namespace EventBus.Core.Entitys
 
             return new EndpointSubscriptionRecord
             {
-                SubscriptionType = SubscriptionType.Automatic,
+                SubscriptionType = SubscriptionType,
                 SubscriptionTime = subscriptionTime,
                 IsSuccessStatusCode = response.IsSuccessStatusCode,
                 ResponseStatucCode = response.StatusCode.ToString(),

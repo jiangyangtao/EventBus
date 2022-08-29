@@ -3,6 +3,7 @@ using EventBus.Abstractions.Enums;
 using EventBus.Abstractions.IModels;
 using EventBus.Core.Base;
 using EventBus.Extensions;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBus.Core.Entitys
 {
@@ -30,6 +31,7 @@ namespace EventBus.Core.Entitys
 
         public ProtocolType EventProtocol { set; get; }
 
+        [NotMapped]
         public ISubscription[] Subscriptions { set; get; }
 
         public ISubscriptionRecord[] BuilderSubscriptionRecords(IEventRecord eventRecord)

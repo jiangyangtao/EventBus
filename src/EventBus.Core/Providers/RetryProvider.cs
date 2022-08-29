@@ -1,4 +1,5 @@
-﻿using EventBus.Abstractions.IModels;
+﻿using EventBus.Abstractions.Enums;
+using EventBus.Abstractions.IModels;
 using EventBus.Abstractions.IProviders;
 using EventBus.Core.Base;
 using EventBus.Core.Entitys;
@@ -37,7 +38,11 @@ namespace EventBus.Core.Providers
         {
             var data = await GetByIdAsync(retryDataId);
             var subscriptionRecord = await GetByIdAsync<SubscriptionRecord>(data.SubscriptionRecordId);
-            if (subscriptionRecord != null) await _subscriptionQueueProvider.PutAsync(subscriptionRecord);
+            if (subscriptionRecord != null)
+            {
+                subscriptionRecord.SubscriptionType = SubscriptionType.Manual;
+                await _subscriptionQueueProvider.PutAsync(subscriptionRecord);
+            }
 
             await DeleteAsync(data);
         }
@@ -55,11 +60,6 @@ namespace EventBus.Core.Providers
         public async Task<int> GetRetryCountAsync(Guid subscriptionRecordId)
         {
             return await Get<EndpointSubscriptionRecord>(a => a.SubscriptionRecordId == subscriptionRecordId).CountAsync();
-        }
-
-        public Task<IRetryData[]> GetToBeExecutedRetryAsync()
-        {
-            throw new NotImplementedException();
         }
     }
 }

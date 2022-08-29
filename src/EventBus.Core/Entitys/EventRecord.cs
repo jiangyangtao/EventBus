@@ -29,6 +29,7 @@ namespace EventBus.Core.Entitys
             set
             {
                 if (value.NotNullAndEmpty()) HeaderString = JsonConvert.SerializeObject(value, Formatting.Indented);
+                else HeaderString = string.Empty;
             }
             get
             {
@@ -46,6 +47,7 @@ namespace EventBus.Core.Entitys
             set
             {
                 if (value != null) DataString = JsonConvert.SerializeObject(value, Formatting.Indented);
+                else DataString = string.Empty;
             }
 
             get
