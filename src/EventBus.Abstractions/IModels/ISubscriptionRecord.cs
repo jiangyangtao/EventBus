@@ -24,9 +24,14 @@ namespace EventBus.Abstractions.IModels
         public Uri EndpointUrl { get; }
 
         /// <summary>
-        /// 通知协议
+        /// 订阅协议
         /// </summary>
-        public ProtocolType NoticeProtocol { get; }
+        public ProtocolType SubscriptionProtocol { get; }
+
+        /// <summary>
+        /// 请求超时时间，单位：秒
+        /// </summary>
+        public int RequestTimeout { get; }
 
         /// <summary>
         /// 失败的重试策略
@@ -49,5 +54,10 @@ namespace EventBus.Abstractions.IModels
         /// <param name="retryCount"></param>
         /// <returns></returns>
         public IRetryPolicy GetRetryPolicy(int retryCount = 1);
+
+        /// <summary>
+        /// 获取订阅内容
+        /// </summary>
+        public HttpContent GetSubscriptionContent();
     }
 }

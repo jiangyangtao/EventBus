@@ -15,17 +15,22 @@ namespace EventBus.Abstractions.IModels
         /// <summary>
         /// 通知类型
         /// </summary>
-        public NoticeType NoticeType { get; set; }
+        public SubscriptionType SubscriptionType { get; set; }
 
         /// <summary>
         /// 通知时间
         /// </summary>
-        public DateTime NoticeTime { get; }
+        public DateTime SubscriptionTime { get; }
 
         /// <summary>
         /// 响应时间
         /// </summary>
         public DateTime ResponseTime { get; }
+
+        /// <summary>
+        /// 是否成功状态码
+        /// </summary>
+        public bool IsSuccessStatusCode { set; get; }
 
         /// <summary>
         /// 响应的状态码

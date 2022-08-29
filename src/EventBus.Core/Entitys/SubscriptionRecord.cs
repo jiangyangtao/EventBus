@@ -4,6 +4,7 @@ using EventBus.Core.Base;
 using EventBus.Extensions;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 
 namespace EventBus.Core.Entitys
 {
@@ -16,8 +17,10 @@ namespace EventBus.Core.Entitys
             EventRecordId = eventRecord.Id;
             EndpointName = endpoint.EndpointName;
             EndpointUrl = endpoint.EndpointUrl;
-            NoticeProtocol = endpoint.NoticeProtocol;
+            SubscriptionProtocol = endpoint.SubscriptionProtocol;
             FailedRetryPolicy = endpoint.FailedRetryPolicy;
+
+            SubscriptionContent = eventRecord.BuilderHttpContent();
         }
 
         public Guid EventRecordId { get; set; }
@@ -41,14 +44,17 @@ namespace EventBus.Core.Entitys
 
         public string EndpointUrlString { set; get; }
 
-        public ProtocolType NoticeProtocol { set; get; }
+        public ProtocolType SubscriptionProtocol { set; get; }
+
+        public int RequestTimeout { set; get; }
 
         [NotMapped]
         public IRetryPolicy[] FailedRetryPolicy
         {
             set
             {
-                FailedRetryPolicyString = JsonConvert.SerializeObject(value);
+                if (value.IsNullOrEmpty()) FailedRetryPolicyString = string.Empty;
+                else FailedRetryPolicyString = JsonConvert.SerializeObject(value);
             }
 
             get
@@ -74,16 +80,47 @@ namespace EventBus.Core.Entitys
             return FailedRetryPolicy[retryCount - 1];
         }
 
+        private HttpContent SubscriptionContent { set; get; }
+
+        public HttpContent GetSubscriptionContent()
+        {
+            return SubscriptionContent;
+        }
+
         /// <summary>
         /// 订阅
         /// </summary>
         /// <param name="httpClientFactory"></param>
         /// <returns></returns>
-        public async Task<EndpointSubscriptionRecord> Subscription(IHttpClientFactory httpClientFactory, EventRecord record)
+        public async Task<EndpointSubscriptionRecord> Subscription(IHttpClientFactory httpClientFactory, HttpContent httpContent)
         {
             var client = httpClientFactory.CreateClient();
-            var response = await client.PostAsync(EndpointUrl, record.BuilderHttpContent());
+            client.Timeout = TimeSpan.FromSeconds(RequestTimeout);
 
+            var subscriptionTime = DateTime.Now;
+            var watch = new Stopwatch();
+            watch.Start();
+
+            var response = await client.PostAsync(EndpointUrl, httpContent);
+            watch.Stop();
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            return new EndpointSubscriptionRecord
+            {
+                SubscriptionType = SubscriptionType.Automatic,
+                SubscriptionTime = subscriptionTime,
+                IsSuccessStatusCode = response.IsSuccessStatusCode,
+                ResponseStatucCode = response.StatusCode.ToString(),
+                ResponseContent = content,
+                ResponseTime = DateTime.Now,
+                UsageTime = watch.ElapsedMilliseconds,
+            };
+        }
+
+        public RetryData GetRetryData(IRetryPolicy policy)
+        {
+            return new RetryData(Id, policy.RetryDelayUnit, policy.RetryDelayCount);
         }
     }
 }

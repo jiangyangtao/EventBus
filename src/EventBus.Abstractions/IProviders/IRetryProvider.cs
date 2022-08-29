@@ -23,5 +23,12 @@ namespace EventBus.Abstractions.IProviders
         /// <param name="evnetId"></param>
         /// <returns></returns>
         Task<IRetryData[]> GetEventRetryAsync(Guid evnetId);
+
+        /// <summary>
+        /// 获取重试次数
+        /// </summary>
+        /// <param name="subscriptionRecordId"></param>
+        /// <returns></returns>
+        Task<int> GetRetryCountAsync(Guid subscriptionRecordId);
     }
 }

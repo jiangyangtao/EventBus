@@ -14,14 +14,22 @@ namespace EventBus.Core.Entitys
         {
         }
 
-        public RetryPolicy(int intervalTime, RetryBehavior behavior)
+        public RetryPolicy(int retryDelayCount, RetryBehavior behavior)
         {
-            IntervalTime = intervalTime;
+            RetryDelayCount = retryDelayCount;
             Behavior = behavior;
         }
 
-        public int IntervalTime { get; set; }
+        public RetryDelayUnit RetryDelayUnit { get; set; } = RetryDelayUnit.Second;
 
-        public RetryBehavior Behavior { get; set; }
+        /// <summary>
+        /// 间隔总量
+        /// </summary>
+        public int RetryDelayCount { set; get; }
+
+        /// <summary>
+        /// 重试行为
+        /// </summary>
+        public RetryBehavior Behavior { set; get; }
     }
 }

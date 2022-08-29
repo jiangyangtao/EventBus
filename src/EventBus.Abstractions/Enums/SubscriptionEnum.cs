@@ -2,6 +2,14 @@
 
 namespace EventBus.Abstractions.Enums
 {
+    public enum RetryDelayUnit
+    {
+        Second,
+        Minute,
+        Hour,
+        Day
+    }
+
     public enum RetryBehavior
     {
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using EventBus.Abstractions.IModels;
+﻿using EventBus.Abstractions.Enums;
+using EventBus.Abstractions.IModels;
 using EventBus.Abstractions.IProviders;
 using EventBus.Abstractions.IService;
 using EventBus.Core.Base;
@@ -18,6 +19,7 @@ namespace EventBus.Core.Providers
     {
         private readonly IEventProvider _eventProvider;
         private readonly IApplicationProvider _applicationProvider;
+        private readonly IRetryProvider _retryProvider;
         private readonly IBufferQueue<SubscriptionRecord> _subscriptionRecordQueue;
         private readonly IHttpClientFactory _httpClientFactory;
 
@@ -26,12 +28,14 @@ namespace EventBus.Core.Providers
             IEventProvider eventProvider,
             IBufferQueueService bufferQueueService,
             IApplicationProvider applicationProvider,
-            IHttpClientFactory httpClientFactory) : base(repository)
+            IHttpClientFactory httpClientFactory,
+            IRetryProvider retryProvider) : base(repository)
         {
             _eventProvider = eventProvider;
             _subscriptionRecordQueue = bufferQueueService.CreateBufferQueue<SubscriptionRecord>("subscription", async record => await PushAsync(record), 10, 100);
             _applicationProvider = applicationProvider;
             _httpClientFactory = httpClientFactory;
+            _retryProvider = retryProvider;
         }
 
         public async Task PublishAsync(IEventRecord eventRecord)
@@ -60,10 +64,23 @@ namespace EventBus.Core.Providers
         {
             if (record == null) return;
 
-            var endpointSubscription = await record.Subscription(_httpClientFactory);
+            var endpointSubscription = await record.Subscription(_httpClientFactory, record.GetSubscriptionContent());
             if (endpointSubscription != null)
             {
+                record.SubscriptionResult = endpointSubscription.IsSuccessStatusCode;
+                await UpdateAsync(record, false);
+                await CreateAsync(endpointSubscription);
 
+                if (endpointSubscription.IsSuccessStatusCode == false)
+                {
+                    var retryCount = await _retryProvider.GetRetryCountAsync(record.EventRecordId);
+                    var policy = record.GetRetryPolicy(retryCount);
+                    if (policy.Behavior == RetryBehavior.Retry)
+                    {
+                        var retryData = record.GetRetryData(policy);
+                        await CreateAsync(retryData);
+                    }
+                }
             }
         }
 

@@ -13,13 +13,18 @@ namespace EventBus.Abstractions.IModels
     public interface IRetryPolicy
     {
         /// <summary>
-        /// 间隔时间，单位：分钟
+        /// 重试延迟单位
         /// </summary>
-        public int IntervalTime { set; get; }
+        public RetryDelayUnit RetryDelayUnit { get;  }
+
+        /// <summary>
+        /// 重试延迟总量
+        /// </summary>
+        public int RetryDelayCount {get; }
 
         /// <summary>
         /// 重试行为
         /// </summary>
-        public RetryBehavior Behavior { set; get; }
+        public RetryBehavior Behavior {get; }
     }
 }

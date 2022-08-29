@@ -43,7 +43,7 @@ namespace EventBus.Core.Providers
 
             endpoint.EndpointName = applicationEndpoint.EndpointName;
             endpoint.EndpointUrl = applicationEndpoint.EndpointUrl;
-            endpoint.NoticeProtocol = applicationEndpoint.NoticeProtocol;
+            endpoint.SubscriptionProtocol = applicationEndpoint.SubscriptionProtocol;
             endpoint.FailedRetryPolicy = applicationEndpoint.FailedRetryPolicy;
 
             await UpdateAsync(endpoint);

@@ -15,7 +15,7 @@ namespace EventBus.Abstractions.Enums
         gRPC,
     }
 
-    public enum NoticeType
+    public enum SubscriptionType
     {
         /// <summary>
         /// 自动

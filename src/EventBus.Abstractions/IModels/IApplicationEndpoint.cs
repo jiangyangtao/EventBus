@@ -19,9 +19,14 @@ namespace EventBus.Abstractions.IModels
         public Uri EndpointUrl { get; }
 
         /// <summary>
-        /// 通知协议
+        /// 订阅协议
         /// </summary>
-        public ProtocolType NoticeProtocol { get; }
+        public ProtocolType SubscriptionProtocol { get; }
+
+        /// <summary>
+        /// 请求超时时间
+        /// </summary>
+        public int RequestTimeout { get; }
 
         /// <summary>
         /// 所属应用

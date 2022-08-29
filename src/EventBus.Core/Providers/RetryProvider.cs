@@ -3,6 +3,7 @@ using EventBus.Abstractions.IProviders;
 using EventBus.Core.Base;
 using EventBus.Core.Entitys;
 using EventBus.Storage.Abstractions.IRepositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace EventBus.Core.Providers
 {
@@ -20,6 +21,11 @@ namespace EventBus.Core.Providers
         public Task<IRetryData> GetRetryAsync(Guid id)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<int> GetRetryCountAsync(Guid subscriptionRecordId)
+        {
+            return await Get<EndpointSubscriptionRecord>(a => a.SubscriptionRecordId == subscriptionRecordId).CountAsync();
         }
 
         public Task<IRetryData[]> GetToBeExecutedRetryAsync()

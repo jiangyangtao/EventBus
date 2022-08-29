@@ -11,11 +11,18 @@ namespace EventBus.Core.Entitys
         {
         }
 
-        public NoticeType NoticeType { get; set; } = NoticeType.Automatic;
+        /// <summary>
+        /// 
+        /// </summary>
+        public Guid SubscriptionRecordId { set; get; }
 
-        public DateTime NoticeTime { set; get; }
+        public SubscriptionType SubscriptionType { get; set; } = SubscriptionType.Automatic;
+
+        public DateTime SubscriptionTime { set; get; }
 
         public DateTime ResponseTime { set; get; }
+
+        public bool IsSuccessStatusCode { set; get; }
 
         public string ResponseStatucCode { set; get; }
 
@@ -27,6 +34,6 @@ namespace EventBus.Core.Entitys
         /// 订阅
         /// </summary>
         [NotMapped]
-        public ISubscription Subscription { get; }
+        public ISubscription Subscription { set; get; }
     }
 }

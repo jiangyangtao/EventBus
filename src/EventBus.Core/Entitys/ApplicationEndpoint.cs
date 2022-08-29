@@ -16,7 +16,7 @@ namespace EventBus.Core.Entitys
             EndpointName = endpoint.EndpointName;
             EndpointUrl = endpoint.EndpointUrl;
             ApplicationId = endpoint.Application.Id;
-            NoticeProtocol = endpoint.NoticeProtocol;
+            SubscriptionProtocol = endpoint.SubscriptionProtocol;
             Application = endpoint.Application;
             FailedRetryPolicy = endpoint.FailedRetryPolicy;
         }
@@ -40,9 +40,11 @@ namespace EventBus.Core.Entitys
 
         public string EndpointUrlString { set; get; }
 
+        public int RequestTimeout { set; get; }
+
         public Guid ApplicationId { set; get; }
 
-        public ProtocolType NoticeProtocol { set; get; }
+        public ProtocolType SubscriptionProtocol { set; get; }
 
         [NotMapped]
         public IApplication Application { set; get; }
@@ -64,5 +66,7 @@ namespace EventBus.Core.Entitys
         }
 
         public string FailedRetryPolicyString { set; get; }
+
+
     }
 }
