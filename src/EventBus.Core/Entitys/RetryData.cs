@@ -11,7 +11,12 @@ namespace EventBus.Core.Entitys
         {
         }
 
-        public RetryData(Guid subscriptionRecordId, RetryDelayUnit delayUnit, int delayCount)
+        public RetryData(
+            Guid eventId,
+            Guid eventRecordId,
+            Guid subscriptionRecordId,
+            RetryDelayUnit delayUnit,
+            int delayCount)
         {
             var retryDelay = TimeSpan.FromSeconds(delayCount);
             if (delayUnit == RetryDelayUnit.Minute)
@@ -31,6 +36,8 @@ namespace EventBus.Core.Entitys
 
 
             RetryTime = DateTime.Now.Add(retryDelay);
+            EventId = eventId;
+            EventRecordId = eventRecordId;
             SubscriptionRecordId = subscriptionRecordId;
         }
 
@@ -43,5 +50,9 @@ namespace EventBus.Core.Entitys
         /// 订阅的分组日志 Id
         /// </summary>
         public Guid SubscriptionRecordId { set; get; }
+
+        public Guid EventRecordId { set; get; }
+
+        public Guid EventId { set; get; }
     }
 }

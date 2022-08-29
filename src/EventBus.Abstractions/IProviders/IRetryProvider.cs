@@ -5,10 +5,17 @@ namespace EventBus.Abstractions.IProviders
     public interface IRetryProvider
     {
         /// <summary>
-        /// 获取要执行的重试数据
+        /// 重试
         /// </summary>
         /// <returns></returns>
-        Task<IRetryData[]> GetToBeExecutedRetryAsync();
+        Task RetryAsync();
+
+        /// <summary>
+        /// 重试一条数据
+        /// </summary>
+        /// <param name="retryDataId"></param>
+        /// <returns></returns>
+        Task RetryAsync(Guid retryDataId);
 
         /// <summary>
         /// 获取重试数据

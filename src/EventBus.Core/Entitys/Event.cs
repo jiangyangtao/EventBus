@@ -36,7 +36,7 @@ namespace EventBus.Core.Entitys
         {
             if (Subscriptions.IsNullOrEmpty()) return SubscriptionRecord.EmptyArray;
 
-            return Subscriptions.Where(a => a.ApplicationEndpoint != null).Select(a => new SubscriptionRecord(eventRecord, a.ApplicationEndpoint)).ToArray();
+            return Subscriptions.Where(a => a.ApplicationEndpoint != null).Select(a => new SubscriptionRecord(Id, eventRecord, a.ApplicationEndpoint)).ToArray();
         }
     }
 }

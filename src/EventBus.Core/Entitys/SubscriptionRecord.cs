@@ -12,8 +12,9 @@ namespace EventBus.Core.Entitys
     {
         public SubscriptionRecord() { }
 
-        public SubscriptionRecord(IEventRecord eventRecord, IApplicationEndpoint endpoint)
+        public SubscriptionRecord(Guid eventId, IEventRecord eventRecord, IApplicationEndpoint endpoint)
         {
+            EventId = eventId;
             EventRecordId = eventRecord.Id;
             EndpointName = endpoint.EndpointName;
             EndpointUrl = endpoint.EndpointUrl;
@@ -22,6 +23,8 @@ namespace EventBus.Core.Entitys
 
             SubscriptionContent = eventRecord.BuilderHttpContent();
         }
+
+        public Guid EventId { set; get; }
 
         public Guid EventRecordId { get; set; }
 
@@ -120,7 +123,7 @@ namespace EventBus.Core.Entitys
 
         public RetryData GetRetryData(IRetryPolicy policy)
         {
-            return new RetryData(Id, policy.RetryDelayUnit, policy.RetryDelayCount);
+            return new RetryData(EventId, EventRecordId, Id, policy.RetryDelayUnit, policy.RetryDelayCount);
         }
     }
 }

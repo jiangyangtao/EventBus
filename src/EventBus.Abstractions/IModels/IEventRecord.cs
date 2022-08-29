@@ -27,9 +27,9 @@ namespace EventBus.Abstractions.IModels
         public object Data { get; }
 
         /// <summary>
-        /// 发生时间
+        /// 记录时间
         /// </summary>
-        public DateTime OccurrenceTime { get; }
+        public DateTime RecordTime { get; }
 
         /// <summary>
         /// 订阅完成率

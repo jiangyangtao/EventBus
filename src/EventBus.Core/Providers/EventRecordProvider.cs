@@ -10,8 +10,36 @@ namespace EventBus.Core.Providers
 {
     internal class EventRecordProvider : BaseRepository<EventRecord>, IEventRecordProvider
     {
-        public EventRecordProvider(IRepository repository) : base(repository)
+        private readonly IEventProvider _eventProvider;
+        private readonly ISubscriptionQueueProvider _subscriptionQueueProvider;
+
+        public EventRecordProvider(IRepository repository,
+            IEventProvider eventProvider,
+            ISubscriptionQueueProvider subscriptionQueueProvider) : base(repository)
         {
+            _eventProvider = eventProvider;
+            _subscriptionQueueProvider = subscriptionQueueProvider;
+        }
+
+        public async Task PublishAsync(IEventRecord eventRecord)
+        {
+            var e = await _eventProvider.GetEventAsync(eventRecord.Event.Id);
+            if (e == null) return;
+            if (e.Subscriptions.IsNullOrEmpty()) return;
+
+            await CreateAsync(new EventRecord(e.Id, eventRecord));
+
+            if (e.Subscriptions.NotNullAndEmpty())
+            {
+                var records = e.Subscriptions.Where(subscription => subscription.ApplicationEndpoint != null)
+                    .Select(subscription => new SubscriptionRecord(e.Id, eventRecord, subscription.ApplicationEndpoint)).ToArray();
+
+                if (records.NotNullAndEmpty())
+                {
+                    await AddRangeAsync(records);
+                    await _subscriptionQueueProvider.PutAsync(records);
+                }
+            }
         }
 
         public async Task<IEventRecord> GetEventRecordAsync(Guid eventRecordId)

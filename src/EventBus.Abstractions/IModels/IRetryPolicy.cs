@@ -18,7 +18,7 @@ namespace EventBus.Abstractions.IModels
         public RetryDelayUnit RetryDelayUnit { get;  }
 
         /// <summary>
-        /// 重试延迟总量
+        /// 重试延迟量
         /// </summary>
         public int RetryDelayCount {get; }
 

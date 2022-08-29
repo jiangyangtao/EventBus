@@ -20,8 +20,6 @@ namespace EventBus.Core
             services.AddScoped<IEventProvider, EventProvider>();
             services.AddScoped<IEventManager, EventManager>();
             services.AddScoped<IEventRecordProvider, EventRecordProvider>();
-            services.AddScoped<IEventRecordManager, EventRecordManager>();
-            services.AddScoped<IRetryManager, RetryManager>();
             services.AddScoped<IRetryProvider, RetryProvider>();
 
             services.AddSingleton<BufferQueueService>();

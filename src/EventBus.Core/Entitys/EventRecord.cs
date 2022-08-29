@@ -10,10 +10,14 @@ namespace EventBus.Core.Entitys
     {
         public EventRecord() { }
 
-        public EventRecord(IEventRecord eventRecord)
+        public EventRecord(Guid eventId, IEventRecord eventRecord)
         {
-            QueryString = eventRecord.QueryString;
+            EventId = eventId;
 
+            QueryString = eventRecord.QueryString;
+            Data = eventRecord.Data;
+            Header = eventRecord.Header;
+            RecordTime = DateTime.Now;
         }
 
         public string QueryString { set; get; }
@@ -53,14 +57,16 @@ namespace EventBus.Core.Entitys
 
         public string DataString { set; get; }
 
-        public DateTime OccurrenceTime { set; get; }
+        public DateTime RecordTime { set; get; }
 
         public decimal SubscriptionCompletionRate { set; get; }
 
         public Guid EventId { set; get; }
 
+        [NotMapped]
         public IEvent Event { set; get; }
 
+        [NotMapped]
         public ISubscriptionRecord[] ISubscriptionRecords { set; get; }
 
         public HttpContent BuilderHttpContent()

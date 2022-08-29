@@ -2,6 +2,7 @@
 using EventBus.Abstractions.IProviders;
 using EventBus.Core.Base;
 using EventBus.Core.Entitys;
+using EventBus.Extensions;
 using EventBus.Storage.Abstractions.IRepositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,18 +10,46 @@ namespace EventBus.Core.Providers
 {
     internal class RetryProvider : BaseRepository<RetryData>, IRetryProvider
     {
-        public RetryProvider(IRepository repository) : base(repository)
+        private readonly ISubscriptionQueueProvider _subscriptionQueueProvider;
+
+        public RetryProvider(IRepository repository,
+            ISubscriptionQueueProvider subscriptionQueueProvider) : base(repository)
         {
+            _subscriptionQueueProvider = subscriptionQueueProvider;
         }
 
-        public Task<IRetryData[]> GetEventRetryAsync(Guid evnetId)
+        public async Task RetryAsync()
         {
-            throw new NotImplementedException();
+            var datas = await Get(a => a.RetryTime <= DateTime.Now).ToArrayAsync();
+            if (datas.IsNullOrEmpty()) return;
+
+            var subscriptionRecordIds = datas.Select(a => a.SubscriptionRecordId).ToArray();
+            var subscriptionRecords = await Get<SubscriptionRecord>(a => subscriptionRecordIds.Contains(a.Id)).ToArrayAsync();
+            if (subscriptionRecords.NotNullAndEmpty())
+            {
+                await _subscriptionQueueProvider.PutAsync(subscriptionRecords);
+            }
+
+            await DeleteRangeAsync(datas);
         }
 
-        public Task<IRetryData> GetRetryAsync(Guid id)
+        public async Task RetryAsync(Guid retryDataId)
         {
-            throw new NotImplementedException();
+            var data = await GetByIdAsync(retryDataId);
+            var subscriptionRecord = await GetByIdAsync<SubscriptionRecord>(data.SubscriptionRecordId);
+            if (subscriptionRecord != null) await _subscriptionQueueProvider.PutAsync(subscriptionRecord);
+
+            await DeleteAsync(data);
+        }
+
+        public async Task<IRetryData[]> GetEventRetryAsync(Guid evnetId)
+        {
+            return await Get(a => a.EventId == evnetId).ToArrayAsync();
+        }
+
+        public async Task<IRetryData> GetRetryAsync(Guid id)
+        {
+            return await GetByIdAsync(id);
         }
 
         public async Task<int> GetRetryCountAsync(Guid subscriptionRecordId)
