@@ -1,12 +1,12 @@
 ﻿
 
-namespace EventBus.Abstractions.Models
+namespace EventBus.Abstractions.IModels
 {
     /// <summary>
     /// 模型基类
     /// </summary>
-    public abstract class BaseModel
-    {     
+    public interface IBaseModel
+    {   
         /// <summary>
         /// 创建时间
         /// </summary>

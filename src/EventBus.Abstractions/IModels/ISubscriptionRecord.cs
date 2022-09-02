@@ -1,16 +1,16 @@
 ﻿using EventBus.Abstractions.Enums;
 
-namespace EventBus.Abstractions.Models
+namespace EventBus.Abstractions.IModels
 {
     /// <summary>
     /// 订阅记录
     /// </summary>
-    public class SubscriptionRecord : BaseModel
+    public interface ISubscriptionRecord : IBaseModel
     {
         /// <summary>
         /// 订阅记录 Id
         /// </summary>
-        public Guid SubscriptionRecordId { set; get; }
+        public Guid SubscriptionRecordId { get; }
 
         /// <summary>
         /// 接入点名称
@@ -35,7 +35,7 @@ namespace EventBus.Abstractions.Models
         /// <summary>
         /// 失败的重试策略
         /// </summary>
-        public RetryPolicy[] FailedRetryPolicy { get; }
+        public IRetryPolicy[] FailedRetryPolicy { get; }
 
         /// <summary>
         /// 订阅结果，true 成功，false 失败
@@ -45,6 +45,6 @@ namespace EventBus.Abstractions.Models
         /// <summary>
         /// 接入点的订阅记录
         /// </summary>
-        public EndpointSubscriptionRecord[] EndpointSubscriptionRecords { get; }
+        public IEndpointSubscriptionRecord[] EndpointSubscriptionRecords { get; }
     }
 }

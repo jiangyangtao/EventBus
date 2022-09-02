@@ -1,4 +1,4 @@
-﻿using EventBus.Abstractions.Models;
+﻿using EventBus.Abstractions.IModels;
 
 namespace EventBus.Abstractions.IProviders
 {
@@ -22,14 +22,14 @@ namespace EventBus.Abstractions.IProviders
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<RetryData> GetRetryAsync(Guid id);
+        Task<IRetryData> GetRetryAsync(Guid id);
 
         /// <summary>
         /// 获取事件的所有重试数据
         /// </summary>
         /// <param name="evnetId"></param>
         /// <returns></returns>
-        Task<RetryData[]> GetEventRetryAsync(Guid evnetId);
+        Task<IRetryData[]> GetEventRetryAsync(Guid evnetId);
 
         /// <summary>
         /// 获取重试次数

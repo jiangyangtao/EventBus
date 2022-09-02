@@ -1,42 +1,42 @@
 ﻿using EventBus.Abstractions.Enums;
 using System.Net;
 
-namespace EventBus.Abstractions.Models
+namespace EventBus.Abstractions.IModels
 {
     /// <summary>
     /// 事件
     /// </summary>
-    public class Event : BaseModel
+    public interface IEvent : IBaseModel
     {
         /// <summary>
         /// 事件 Id
         /// </summary>
-        public Guid EventId { get; set; }
+        public Guid EventId { get;  }
 
         /// <summary>
         /// 事件名称
         /// </summary>
-        public string EventName { set; get; }
+        public string EventName { get; }
 
         /// <summary>
         /// 是否启用IP地址白名单
         /// </summary>
-        public bool EnableIPAddressWhiteList { set; get; }
+        public bool EnableIPAddressWhiteList { get; }
 
         /// <summary>
         /// IP地址白名单
         /// </summary>
-        public string[] IPAddressWhiteList { set; get; }
+        public string[] IPAddressWhiteList {get; }
 
         /// <summary>
         /// 事件的协议
         /// </summary>
-        public ProtocolType EventProtocol { set; get; }
+        public ProtocolType EventProtocol {  get; }
 
         /// <summary>
         /// 订阅集
         /// </summary>
-        public Subscription[] Subscriptions { set; get; }
+        public ISubscription[] Subscriptions { get; }
 
         public bool VerifyIPAddress(IPAddress address)
         {

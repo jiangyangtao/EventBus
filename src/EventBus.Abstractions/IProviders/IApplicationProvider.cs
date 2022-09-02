@@ -1,4 +1,4 @@
-﻿using EventBus.Abstractions.Models;
+﻿using EventBus.Abstractions.IModels;
 
 namespace EventBus.Abstractions.IProviders
 {
@@ -7,26 +7,26 @@ namespace EventBus.Abstractions.IProviders
     /// </summary>
     public interface IApplicationProvider
     {
-        Task AddOrUpdateApplicationAsync(Application application);
+        Task AddOrUpdateApplicationAsync(IApplication application);
 
-        Task AddOrUpdateApplicationEndpointAsync(ApplicationEndpoint applicationEndpoint);
+        Task AddOrUpdateApplicationEndpointAsync(IApplicationEndpoint applicationEndpoint);
 
-        Task RemoveApplicationAsync(Application application);
+        Task RemoveApplicationAsync(IApplication application);
 
-        Task RemoveApplicationEndpointAsync(ApplicationEndpoint endpoint);
+        Task RemoveApplicationEndpointAsync(IApplicationEndpoint endpoint);
 
-        Task<Application> GetApplicationAsync(Guid applicationId);
+        Task<IApplication> GetApplicationAsync(Guid applicationId);
 
-        Task<Application> GetApplicationAsync(string applicationName);
+        Task<IApplication> GetApplicationAsync(string applicationName);
 
-        Task<Application[]> GetApplicationsAsync();
+        Task<IApplication[]> GetApplicationsAsync();
 
-        Task<Application[]> GetApplicationsAsync(int start, int count, string applicationName);
+        Task<IApplication[]> GetApplicationsAsync(int start, int count, string applicationName);
 
-        Task<ApplicationEndpoint> GetApplicationEndpointAsync(Guid applicationEndpointId);
+        Task<IApplicationEndpoint> GetApplicationEndpointAsync(Guid applicationEndpointId);
 
-        Task<ApplicationEndpoint[]> GetApplicationEndpointsAsync(Guid applicationId);
+        Task<IApplicationEndpoint[]> GetApplicationEndpointsAsync(Guid applicationId);
 
-        Task<ApplicationEndpoint[]> GetApplicationEndpointsAsync(int start, int count, string endpointName);
+        Task<IApplicationEndpoint[]> GetApplicationEndpointsAsync(int start, int count, string endpointName);
     }
 }

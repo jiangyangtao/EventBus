@@ -1,54 +1,54 @@
 ﻿using EventBus.Abstractions.Enums;
 
-namespace EventBus.Abstractions.Models
+namespace EventBus.Abstractions.IModels
 {
     /// <summary>
     /// 应用接入点
     /// </summary>
-    public class ApplicationEndpoint : BaseModel
+    public interface IApplicationEndpoint : IBaseModel
     {
         /// <summary>
         /// 应用接入点 Id
         /// </summary>
-        public Guid ApplicationEndpointId { get; set; }
+        public Guid ApplicationEndpointId { get; }
 
         /// <summary>
         /// 接入点名称
         /// </summary>
-        public string EndpointName { set; get; }
+        public string EndpointName { get; }
 
         /// <summary>
         /// 接入点地址
         /// </summary>
-        public Uri EndpointUrl { set; get; }
+        public Uri EndpointUrl { get; }
 
         /// <summary>
         /// 订阅协议
         /// </summary>
-        public ProtocolType SubscriptionProtocol { set; get; }
+        public ProtocolType SubscriptionProtocol { get; }
 
         /// <summary>
         /// 请求超时时间
         /// </summary>
-        public int RequestTimeout { set; get; }
+        public int RequestTimeout { get; }
 
         /// <summary>
         /// 应用Id
         /// </summary>
-        public Guid ApplicationId { set; get; }
+        public Guid ApplicationId { get; }
 
         /// <summary>
         /// 所属应用
         /// </summary>
-        public Application Application { set; get; }
+        public IApplication Application { get; }
 
         /// <summary>
         /// 失败的重试策略
         /// </summary>
-        public RetryPolicy[] FailedRetryPolicy { set; get; }
+        public IRetryPolicy[] FailedRetryPolicy { get; }
     }
 
-    public class RetryPolicy
+    public interface IRetryPolicy
     {
         /// <summary>
         /// 重试延迟单位

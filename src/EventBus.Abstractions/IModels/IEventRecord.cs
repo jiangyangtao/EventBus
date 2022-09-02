@@ -5,52 +5,52 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventBus.Abstractions.Models
+namespace EventBus.Abstractions.IModels
 {
     /// <summary>
     /// 事件记录
     /// </summary>
-    public class EventRecord : BaseModel
+    public interface IEventRecord : IBaseModel
     {
         /// <summary>
         /// 事件记录 Id
         /// </summary>
-        public Guid EventRecordId { get; set; }
+        public Guid EventRecordId { get;  }
 
         /// <summary>
         /// 查询参数
         /// </summary>
-        public string QueryString { set; get; }
+        public string QueryString {  get; }
 
         /// <summary>
         /// 头信息
         /// </summary>
-        public IDictionary<string, string> Header { set; get; }
+        public IDictionary<string, string> Header {  get; }
 
         /// <summary>
         /// 数据
         /// </summary>
-        public object Data { set; get; }
+        public object Data {get; }
 
         /// <summary>
         /// 记录时间
         /// </summary>
-        public DateTime RecordTime { set; get; }
+        public DateTime RecordTime {  get; }
 
         /// <summary>
         /// 订阅完成率
         /// </summary>
-        public decimal SubscriptionCompletionRate { set; get; }
+        public decimal SubscriptionCompletionRate {  get; }
 
         /// <summary>
         /// 事件
         /// </summary>
-        public Event Event { set; get; }
+        public IEvent Event { get; }
 
         /// <summary>
         /// 事件的订阅记录
         /// </summary>
-        public SubscriptionRecord[] ISubscriptionRecords { set; get; }
+        public ISubscriptionRecord[] ISubscriptionRecords {  get; }
 
         public HttpContent BuilderHttpContent()
         {

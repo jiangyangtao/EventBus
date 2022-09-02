@@ -1,4 +1,4 @@
-﻿using EventBus.Abstractions.Models;
+﻿using EventBus.Abstractions.IModels;
 
 namespace EventBus.Abstractions.IProviders
 {
@@ -9,12 +9,12 @@ namespace EventBus.Abstractions.IProviders
         /// </summary>
         /// <param name="eventRecord"></param>
         /// <returns></returns>
-        Task PublishAsync(EventRecord eventRecord);
+        Task PublishAsync(IEventRecord eventRecord);
 
-        Task<EventRecord> GetEventRecordAsync(Guid eventRecordId);
+        Task<IEventRecord> GetEventRecordAsync(Guid eventRecordId);
 
-        Task<EventRecord[]> GetEventRecordsAsync(Guid eventId);
+        Task<IEventRecord[]> GetEventRecordsAsync(Guid eventId);
 
-        Task<EventRecord[]> GetEventRecordsAsync(int start, int count, DateTime? begin, DateTime? end);
+        Task<IEventRecord[]> GetEventRecordsAsync(int start, int count, DateTime? begin, DateTime? end);
     }
 }

@@ -1,4 +1,4 @@
-﻿using EventBus.Abstractions.Models;
+﻿using EventBus.Abstractions.IModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,20 +12,20 @@ namespace EventBus.Abstractions.IProviders
     /// </summary>
     public interface IEventProvider
     {
-        Task AddOrUpdateAsync(Event data);
+        Task AddOrUpdateAsync(IEvent data);
 
-        Task RemoveAsync(Event data);
+        Task RemoveAsync(IEvent data);
 
-        Task<Event> GetEventAsync(Guid eventId, bool isInclude = true);
+        Task<IEvent> GetEventAsync(Guid eventId, bool isInclude = true);
 
-        Task<Event> GetEventAsync(string eventName);
+        Task<IEvent> GetEventAsync(string eventName);
 
-        Task<Event[]> GetEventsAsync();
+        Task<IEvent[]> GetEventsAsync();
 
-        Task<Event[]> GetEventsAsync(int start, int count, string eventName);
+        Task<IEvent[]> GetEventsAsync(int start, int count, string eventName);
 
-        Task<Subscription> GetSubscriptionAsync(Guid subscriptionId);
+        Task<ISubscription> GetSubscriptionAsync(Guid subscriptionId);
 
-        Task<Subscription[]> GetSubscriptionsAsync(Guid eventId);
+        Task<ISubscription[]> GetSubscriptionsAsync(Guid eventId);
     }
 }

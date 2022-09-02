@@ -1,25 +1,25 @@
 ﻿
 
-namespace EventBus.Abstractions.Models
+namespace EventBus.Abstractions.IModels
 {
     /// <summary>
     /// 订阅
     /// </summary>
-    public class Subscription : BaseModel
+    public interface ISubscription : IBaseModel
     {
         /// <summary>
         /// 订阅 Id
         /// </summary>
-        public Guid SubscriptionId { set; get; }
+        public Guid SubscriptionId {  get; }
 
         /// <summary>
         /// 事件
         /// </summary>
-        public Event Event { get;  }
+        public IEvent Event { get;  }
 
         /// <summary>
         /// 应用订阅的接入点
         /// </summary>
-        public ApplicationEndpoint ApplicationEndpoint { get; }
+        public IApplicationEndpoint ApplicationEndpoint { get; }
     }
 }

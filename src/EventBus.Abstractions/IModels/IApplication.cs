@@ -4,26 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventBus.Abstractions.Models
+namespace EventBus.Abstractions.IModels
 {
     /// <summary>
     /// 应用
     /// </summary>
-    public class Application : BaseModel
+    public interface IApplication : IBaseModel
     {
         /// <summary>
         /// 应用 Id
         /// </summary>
-        public Guid ApplicationId { set; get; }
+        public Guid ApplicationId { get; }
 
         /// <summary>
         /// 应用名
         /// </summary>
-        public string ApplicationName { set; get; }
+        public string ApplicationName { get; }
 
         /// <summary>
         /// 拥有的接入点
         /// </summary>
-        public ApplicationEndpoint[] ApplicationEndpoints { set; get; }
+        public IApplicationEndpoint[] ApplicationEndpoints {  get; }
     }
 }
