@@ -46,21 +46,5 @@ namespace EventBus.Abstractions.Models
         /// 接入点的订阅记录
         /// </summary>
         public EndpointSubscriptionRecord[] EndpointSubscriptionRecords { get; }
-
-        /// <summary>
-        /// 获取重试策略
-        /// </summary>
-        /// <param name="retryCount"></param>
-        /// <returns></returns>
-        public RetryPolicy GetRetryPolicy(int retryCount = 1) { 
-        
-        }
-
-        /// <summary>
-        /// 获取订阅内容
-        /// </summary>
-        public HttpContent GetSubscriptionContent() { 
-        
-        }
     }
 }

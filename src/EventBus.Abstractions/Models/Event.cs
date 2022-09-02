@@ -38,14 +38,11 @@ namespace EventBus.Abstractions.Models
         /// </summary>
         public Subscription[] Subscriptions { set; get; }
 
-        public SubscriptionRecord[] BuilderSubscriptionRecords(EventRecord eventRecord)
-        {
-
-        }
-
         public bool VerifyIPAddress(IPAddress address)
         {
+            if (EnableIPAddressWhiteList == false) return true;
 
+            return IPAddressWhiteList.Any(a => a == address.ToString());
         }
     }
 }

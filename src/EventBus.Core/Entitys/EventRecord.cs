@@ -71,10 +71,5 @@ namespace EventBus.Core.Entitys
 
         [NotMapped]
         public Abstractions.IModels.SubscriptionRecord[] ISubscriptionRecords { set; get; }
-
-        public HttpContent BuilderHttpContent()
-        {
-            return new StringContent(DataString, Encoding.UTF8, "application/json");
-        }
     }
 }

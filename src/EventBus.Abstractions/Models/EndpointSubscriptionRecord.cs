@@ -5,7 +5,7 @@ namespace EventBus.Abstractions.Models
     /// <summary>
     /// 接入点的订阅记录
     /// </summary>
-    public class EndpointSubscriptionRecord
+    public class EndpointSubscriptionRecord : BaseModel
     {
         /// <summary>
         /// 接入点的订阅记录 Id

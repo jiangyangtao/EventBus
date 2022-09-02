@@ -1,4 +1,4 @@
-﻿using EventBus.Abstractions.IModels;
+﻿using EventBus.Abstractions.Models;
 
 namespace EventBus.Abstractions.IProviders
 {

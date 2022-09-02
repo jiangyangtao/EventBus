@@ -9,7 +9,7 @@ namespace EventBus.Abstractions.Models
     /// <summary>
     /// 重试
     /// </summary>
-    public class RetryData
+    public class RetryData : BaseModel
     {
         /// <summary>
         /// 重试 Id

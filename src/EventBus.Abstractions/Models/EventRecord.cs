@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -53,7 +54,10 @@ namespace EventBus.Abstractions.Models
 
         public HttpContent BuilderHttpContent()
         {
+            var content = string.Empty;
+            if (Data != null) content = JsonConvert.SerializeObject(Data);
 
+            return new StringContent(content, Encoding.UTF8, "application/json");
         }
 
     }
