@@ -6,7 +6,7 @@ namespace EventBus.API.Controllers
     {
         public IActionResult Index()
         {
-            return Ok();
+            return Ok("Hello, EventBus");
         }
     }
 }

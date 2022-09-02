@@ -1,5 +1,6 @@
 ﻿using EventBus.Abstractions.IModels;
 using EventBus.Core.Base;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBus.Core.Entitys
 {
@@ -9,6 +10,7 @@ namespace EventBus.Core.Entitys
 
         public string ApplicationName { set; get; }
 
+        [NotMapped]
         public IApplicationEndpoint[] ApplicationEndpoints { set; get; }
     }
 }

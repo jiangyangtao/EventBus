@@ -1,5 +1,5 @@
 ﻿using EventBus.Abstractions.Enums;
-using EventBus.Abstractions.IModels;
+using System.Net;
 
 namespace EventBus.Abstractions.IModels
 {
@@ -34,5 +34,7 @@ namespace EventBus.Abstractions.IModels
         public ISubscription[] Subscriptions { get; }
 
         ISubscriptionRecord[] BuilderSubscriptionRecords(IEventRecord eventRecord);
+
+        bool VerifyIPAddress(IPAddress address);
     }
 }

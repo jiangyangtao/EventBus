@@ -4,6 +4,7 @@ using EventBus.Abstractions.IModels;
 using EventBus.Core.Base;
 using EventBus.Extensions;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Net;
 
 namespace EventBus.Core.Entitys
 {
@@ -39,6 +40,13 @@ namespace EventBus.Core.Entitys
             if (Subscriptions.IsNullOrEmpty()) return SubscriptionRecord.EmptyArray;
 
             return Subscriptions.Where(a => a.ApplicationEndpoint != null).Select(a => new SubscriptionRecord(Id, eventRecord, a.ApplicationEndpoint)).ToArray();
+        }
+
+        public bool VerifyIPAddress(IPAddress address)
+        {
+            if (EnableIPAddressWhiteList == false) return true;
+
+            return IPAddressWhiteList.Any(a => a == address.ToString());
         }
     }
 }

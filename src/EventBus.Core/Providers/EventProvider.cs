@@ -42,13 +42,16 @@ namespace EventBus.Core.Providers
             }
         }
 
-        public async Task<IEvent> GetEventAsync(Guid eventId)
+        public async Task<IEvent> GetEventAsync(Guid eventId, bool isInclude = true)
         {
             var e = await GetByIdAsync(eventId);
             if (e == null) return null;
 
-            var subscriptions = await GetSubscriptionsAsync(eventId);
-            if (subscriptions.NotNullAndEmpty()) e.Subscriptions = subscriptions;
+            if (isInclude)
+            {
+                var subscriptions = await GetSubscriptionsAsync(eventId);
+                if (subscriptions.NotNullAndEmpty()) e.Subscriptions = subscriptions;
+            }
 
             return e;
         }
