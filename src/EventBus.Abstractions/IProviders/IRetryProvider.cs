@@ -22,14 +22,14 @@ namespace EventBus.Abstractions.IProviders
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<IRetryData> GetRetryAsync(Guid id);
+        Task<RetryData> GetRetryAsync(Guid id);
 
         /// <summary>
         /// 获取事件的所有重试数据
         /// </summary>
         /// <param name="evnetId"></param>
         /// <returns></returns>
-        Task<IRetryData[]> GetEventRetryAsync(Guid evnetId);
+        Task<RetryData[]> GetEventRetryAsync(Guid evnetId);
 
         /// <summary>
         /// 获取重试次数

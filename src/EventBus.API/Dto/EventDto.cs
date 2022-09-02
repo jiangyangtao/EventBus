@@ -4,7 +4,7 @@ using System.Net;
 
 namespace EventBus.API.Dto
 {
-    public class EventDto : IEvent
+    public class EventDto : Event
     {
         public EventDto(Guid id)
         {
@@ -21,13 +21,13 @@ namespace EventBus.API.Dto
 
         public ProtocolType EventProtocol => throw new NotImplementedException();
 
-        public ISubscription[] Subscriptions => throw new NotImplementedException();
+        public Subscription[] Subscriptions => throw new NotImplementedException();
 
         public DateTime CreateTime => throw new NotImplementedException();
 
         public DateTime UpdateTime => throw new NotImplementedException();
 
-        public ISubscriptionRecord[] BuilderSubscriptionRecords(IEventRecord eventRecord)
+        public SubscriptionRecord[] BuilderSubscriptionRecords(EventRecord eventRecord)
         {
             throw new NotImplementedException();
         }

@@ -1,31 +1,31 @@
 ﻿using EventBus.Abstractions.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace EventBus.Abstractions.IModels
+namespace EventBus.Abstractions.Models
 {
     /// <summary>
     /// 接入点的订阅记录
     /// </summary>
-    public interface IEndpointSubscriptionRecord
+    public class EndpointSubscriptionRecord
     {
+        /// <summary>
+        /// 接入点的订阅记录 Id
+        /// </summary>
+        public Guid EndpointSubscriptionRecordId { get; set; }
+
         /// <summary>
         /// 通知类型
         /// </summary>
-        public SubscriptionType SubscriptionType { get; set; }
+        public SubscriptionType SubscriptionType { set; get; }
 
         /// <summary>
         /// 通知时间
         /// </summary>
-        public DateTime SubscriptionTime { get; }
+        public DateTime SubscriptionTime { set; get; }
 
         /// <summary>
         /// 响应时间
         /// </summary>
-        public DateTime ResponseTime { get; }
+        public DateTime ResponseTime { set; get; }
 
         /// <summary>
         /// 是否成功状态码
@@ -35,19 +35,19 @@ namespace EventBus.Abstractions.IModels
         /// <summary>
         /// 响应的状态码
         /// </summary>
-        public string ResponseStatucCode { get; }
+        public string ResponseStatucCode { set; get; }
 
         /// <summary>
         /// 响应内容
         /// </summary>
-        public object ResponseContent { get; }
+        public object ResponseContent { set; get; }
 
         /// <summary>
         /// 耗时，单位：秒
         /// </summary>
-        public long UsageTime { get; }
+        public long UsageTime { set; get; }
 
 
-        public ISubscription Subscription { get; }
+        public Subscription Subscription { set; get; }
     }
 }

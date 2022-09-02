@@ -2,7 +2,7 @@
 
 namespace EventBus.API.Dto
 {
-    public class EventRecordDto : IEventRecord
+    public class EventRecordDto : EventRecord
     {
         public EventRecordDto(Guid eventId, object data, HttpRequest request)
         {
@@ -23,9 +23,9 @@ namespace EventBus.API.Dto
 
         public decimal SubscriptionCompletionRate { set; get; }
 
-        public IEvent Event { set; get; }
+        public Event Event { set; get; }
 
-        public ISubscriptionRecord[] ISubscriptionRecords { set; get; }
+        public SubscriptionRecord[] ISubscriptionRecords { set; get; }
 
         public Guid Id { set; get; }
 

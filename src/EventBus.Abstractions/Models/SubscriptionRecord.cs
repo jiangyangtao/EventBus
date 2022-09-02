@@ -1,18 +1,17 @@
 ﻿using EventBus.Abstractions.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace EventBus.Abstractions.IModels
+namespace EventBus.Abstractions.Models
 {
     /// <summary>
     /// 订阅记录
     /// </summary>
-    public interface ISubscriptionRecord : IBaseModel
+    public class SubscriptionRecord : BaseModel
     {
+        /// <summary>
+        /// 订阅记录 Id
+        /// </summary>
+        public Guid SubscriptionRecordId { set; get; }
+
         /// <summary>
         /// 接入点名称
         /// </summary>
@@ -36,7 +35,7 @@ namespace EventBus.Abstractions.IModels
         /// <summary>
         /// 失败的重试策略
         /// </summary>
-        public IRetryPolicy[] FailedRetryPolicy { get; }
+        public RetryPolicy[] FailedRetryPolicy { get; }
 
         /// <summary>
         /// 订阅结果，true 成功，false 失败
@@ -46,18 +45,22 @@ namespace EventBus.Abstractions.IModels
         /// <summary>
         /// 接入点的订阅记录
         /// </summary>
-        public IEndpointSubscriptionRecord[] EndpointSubscriptionRecords { get; }
+        public EndpointSubscriptionRecord[] EndpointSubscriptionRecords { get; }
 
         /// <summary>
         /// 获取重试策略
         /// </summary>
         /// <param name="retryCount"></param>
         /// <returns></returns>
-        public IRetryPolicy GetRetryPolicy(int retryCount = 1);
+        public RetryPolicy GetRetryPolicy(int retryCount = 1) { 
+        
+        }
 
         /// <summary>
         /// 获取订阅内容
         /// </summary>
-        public HttpContent GetSubscriptionContent();
+        public HttpContent GetSubscriptionContent() { 
+        
+        }
     }
 }

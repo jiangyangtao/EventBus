@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBus.Core.Entitys
 {
-    internal class EndpointSubscriptionRecord : BaseEntity<EndpointSubscriptionRecord>, IEndpointSubscriptionRecord
+    internal class EndpointSubscriptionRecord : BaseEntity<EndpointSubscriptionRecord>, Abstractions.IModels.EndpointSubscriptionRecord
     {
         /// <summary>
         /// 
@@ -30,6 +30,6 @@ namespace EventBus.Core.Entitys
         /// 订阅
         /// </summary>
         [NotMapped]
-        public ISubscription Subscription { set; get; }
+        public Abstractions.IModels.Subscription Subscription { set; get; }
     }
 }

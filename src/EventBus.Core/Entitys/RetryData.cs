@@ -5,7 +5,7 @@ using EventBus.Core.Base;
 namespace EventBus.Core.Entitys
 {
 
-    internal class RetryData : BaseEntity<RetryData>, IRetryData
+    internal class RetryData : BaseEntity<RetryData>, Abstractions.IModels.RetryData
     {
         public RetryData()
         {

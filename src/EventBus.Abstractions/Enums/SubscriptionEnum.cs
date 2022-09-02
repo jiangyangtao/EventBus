@@ -4,9 +4,24 @@ namespace EventBus.Abstractions.Enums
 {
     public enum RetryDelayUnit
     {
+        /// <summary>
+        /// 秒
+        /// </summary>
         Second,
+
+        /// <summary>
+        /// 分
+        /// </summary>
         Minute,
+
+        /// <summary>
+        /// 时
+        /// </summary>
         Hour,
+
+        /// <summary>
+        /// 天
+        /// </summary>
         Day
     }
 

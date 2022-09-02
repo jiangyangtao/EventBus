@@ -8,13 +8,13 @@ using System.Net;
 
 namespace EventBus.Core.Entitys
 {
-    internal class Event : BaseEntity<Event>, IEvent
+    internal class Event : BaseEntity<Event>, Abstractions.IModels.Event
     {
         public Event()
         {
         }
 
-        public Event(IEvent e)
+        public Event(Abstractions.IModels.Event e)
         {
             EventName = e.EventName;
             EnableIPAddressWhiteList = e.EnableIPAddressWhiteList;
@@ -33,9 +33,9 @@ namespace EventBus.Core.Entitys
         public ProtocolType EventProtocol { set; get; }
 
         [NotMapped]
-        public ISubscription[] Subscriptions { set; get; }
+        public Abstractions.IModels.Subscription[] Subscriptions { set; get; }
 
-        public ISubscriptionRecord[] BuilderSubscriptionRecords(IEventRecord eventRecord)
+        public Abstractions.IModels.SubscriptionRecord[] BuilderSubscriptionRecords(Abstractions.IModels.EventRecord eventRecord)
         {
             if (Subscriptions.IsNullOrEmpty()) return SubscriptionRecord.EmptyArray;
 

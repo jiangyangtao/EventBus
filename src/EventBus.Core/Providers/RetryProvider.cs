@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventBus.Core.Providers
 {
-    internal class RetryProvider : BaseRepository<RetryData>, IRetryProvider
+    internal class RetryProvider : BaseRepository<Entitys.RetryData>, IRetryProvider
     {
         private readonly ISubscriptionQueueProvider _subscriptionQueueProvider;
 
@@ -47,12 +47,12 @@ namespace EventBus.Core.Providers
             await DeleteAsync(data);
         }
 
-        public async Task<IRetryData[]> GetEventRetryAsync(Guid evnetId)
+        public async Task<Abstractions.IModels.RetryData[]> GetEventRetryAsync(Guid evnetId)
         {
             return await Get(a => a.EventId == evnetId).ToArrayAsync();
         }
 
-        public async Task<IRetryData> GetRetryAsync(Guid id)
+        public async Task<Abstractions.IModels.RetryData> GetRetryAsync(Guid id)
         {
             return await GetByIdAsync(id);
         }

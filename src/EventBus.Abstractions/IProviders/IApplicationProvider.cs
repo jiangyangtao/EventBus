@@ -7,26 +7,26 @@ namespace EventBus.Abstractions.IProviders
     /// </summary>
     public interface IApplicationProvider
     {
-        Task AddOrUpdateApplicationAsync(IApplication application);
+        Task AddOrUpdateApplicationAsync(Application application);
 
-        Task AddOrUpdateApplicationEndpointAsync(IApplicationEndpoint applicationEndpoint);
+        Task AddOrUpdateApplicationEndpointAsync(ApplicationEndpoint applicationEndpoint);
 
-        Task RemoveApplicationAsync(IApplication application);
+        Task RemoveApplicationAsync(Application application);
 
-        Task RemoveApplicationEndpointAsync(IApplicationEndpoint endpoint);
+        Task RemoveApplicationEndpointAsync(ApplicationEndpoint endpoint);
 
-        Task<IApplication> GetApplicationAsync(Guid applicationId);
+        Task<Application> GetApplicationAsync(Guid applicationId);
 
-        Task<IApplication> GetApplicationAsync(string applicationName);
+        Task<Application> GetApplicationAsync(string applicationName);
 
-        Task<IApplication[]> GetApplicationsAsync();
+        Task<Application[]> GetApplicationsAsync();
 
-        Task<IApplication[]> GetApplicationsAsync(int start, int count, string applicationName);
+        Task<Application[]> GetApplicationsAsync(int start, int count, string applicationName);
 
-        Task<IApplicationEndpoint> GetApplicationEndpointAsync(Guid applicationEndpointId);
+        Task<ApplicationEndpoint> GetApplicationEndpointAsync(Guid applicationEndpointId);
 
-        Task<IApplicationEndpoint[]> GetApplicationEndpointsAsync(Guid applicationId);
+        Task<ApplicationEndpoint[]> GetApplicationEndpointsAsync(Guid applicationId);
 
-        Task<IApplicationEndpoint[]> GetApplicationEndpointsAsync(int start, int count, string endpointName);
+        Task<ApplicationEndpoint[]> GetApplicationEndpointsAsync(int start, int count, string endpointName);
     }
 }

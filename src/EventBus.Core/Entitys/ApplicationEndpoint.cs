@@ -7,11 +7,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBus.Core.Entitys
 {
-    internal class ApplicationEndpoint : BaseEntity<ApplicationEndpoint>, IApplicationEndpoint
+    internal class ApplicationEndpoint : BaseEntity<ApplicationEndpoint>, Abstractions.IModels.ApplicationEndpoint
     {
         public ApplicationEndpoint() { }
 
-        public ApplicationEndpoint(IApplicationEndpoint endpoint)
+        public ApplicationEndpoint(Abstractions.IModels.ApplicationEndpoint endpoint)
         {
             EndpointName = endpoint.EndpointName;
             EndpointUrl = endpoint.EndpointUrl;
@@ -47,10 +47,10 @@ namespace EventBus.Core.Entitys
         public ProtocolType SubscriptionProtocol { set; get; }
 
         [NotMapped]
-        public IApplication Application { set; get; }
+        public Abstractions.IModels.Application Application { set; get; }
 
         [NotMapped]
-        public IRetryPolicy[] FailedRetryPolicy
+        public Abstractions.IModels.RetryPolicy[] FailedRetryPolicy
         {
             set
             {
@@ -61,7 +61,7 @@ namespace EventBus.Core.Entitys
             {
                 if (FailedRetryPolicyString.IsNullOrEmpty()) return Array.Empty<RetryPolicy>();
 
-                return JsonConvert.DeserializeObject<IRetryPolicy[]>(FailedRetryPolicyString);
+                return JsonConvert.DeserializeObject<RetryPolicy[]>(FailedRetryPolicyString);
             }
         }
 

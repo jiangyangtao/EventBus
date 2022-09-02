@@ -12,20 +12,20 @@ namespace EventBus.Abstractions.IProviders
     /// </summary>
     public interface IEventProvider
     {
-        Task AddOrUpdateAsync(IEvent data);
+        Task AddOrUpdateAsync(Event data);
 
-        Task RemoveAsync(IEvent data);
+        Task RemoveAsync(Event data);
 
-        Task<IEvent> GetEventAsync(Guid eventId, bool isInclude = true);
+        Task<Event> GetEventAsync(Guid eventId, bool isInclude = true);
 
-        Task<IEvent> GetEventAsync(string eventName);
+        Task<Event> GetEventAsync(string eventName);
 
-        Task<IEvent[]> GetEventsAsync();
+        Task<Event[]> GetEventsAsync();
 
-        Task<IEvent[]> GetEventsAsync(int start, int count, string eventName);
+        Task<Event[]> GetEventsAsync(int start, int count, string eventName);
 
-        Task<ISubscription> GetSubscriptionAsync(Guid subscriptionId);
+        Task<Subscription> GetSubscriptionAsync(Guid subscriptionId);
 
-        Task<ISubscription[]> GetSubscriptionsAsync(Guid eventId);
+        Task<Subscription[]> GetSubscriptionsAsync(Guid eventId);
     }
 }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBus.Core.Base
 {
-    internal abstract class BaseEntity<TEntity> : IBaseModel, IEntity
+    internal abstract class BaseEntity<TEntity> : BaseModel, IEntity
     {
         public BaseEntity()
         {

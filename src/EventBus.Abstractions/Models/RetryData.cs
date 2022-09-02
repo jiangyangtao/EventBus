@@ -4,10 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventBus.Abstractions.IModels
+namespace EventBus.Abstractions.Models
 {
-    public interface IRetryData
+    /// <summary>
+    /// 重试
+    /// </summary>
+    public class RetryData
     {
+        /// <summary>
+        /// 重试 Id
+        /// </summary>
+        public Guid RetryDataId { set; get; }
+
         /// <summary>
         /// 重试时间
         /// </summary>

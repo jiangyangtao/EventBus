@@ -8,11 +8,11 @@ using System.Diagnostics;
 
 namespace EventBus.Core.Entitys
 {
-    internal class SubscriptionRecord : BaseEntity<SubscriptionRecord>, ISubscriptionRecord
+    internal class SubscriptionRecord : BaseEntity<SubscriptionRecord>, Abstractions.IModels.SubscriptionRecord
     {
         public SubscriptionRecord() { }
 
-        public SubscriptionRecord(Guid eventId, IEventRecord eventRecord, IApplicationEndpoint endpoint)
+        public SubscriptionRecord(Guid eventId, Abstractions.IModels.EventRecord eventRecord, Abstractions.IModels.ApplicationEndpoint endpoint)
         {
             EventId = eventId;
             EventRecordId = eventRecord.Id;
@@ -53,7 +53,7 @@ namespace EventBus.Core.Entitys
         public int RequestTimeout { set; get; }
 
         [NotMapped]
-        public IRetryPolicy[] FailedRetryPolicy
+        public Abstractions.IModels.RetryPolicy[] FailedRetryPolicy
         {
             set
             {
@@ -65,7 +65,7 @@ namespace EventBus.Core.Entitys
             {
                 if (FailedRetryPolicyString.IsNullOrEmpty()) return Array.Empty<RetryPolicy>();
 
-                return JsonConvert.DeserializeObject<IRetryPolicy[]>(FailedRetryPolicyString);
+                return JsonConvert.DeserializeObject<RetryPolicy[]>(FailedRetryPolicyString);
             }
         }
 
@@ -74,7 +74,7 @@ namespace EventBus.Core.Entitys
         public bool SubscriptionResult { set; get; }
 
         [NotMapped]
-        public IEndpointSubscriptionRecord[] EndpointSubscriptionRecords { set; get; }
+        public Abstractions.IModels.EndpointSubscriptionRecord[] EndpointSubscriptionRecords { set; get; }
 
         private IDictionary<string, string> SubscriptionHeader { set; get; }
 
@@ -87,7 +87,7 @@ namespace EventBus.Core.Entitys
         [NotMapped]
         public SubscriptionType SubscriptionType { get; set; } = SubscriptionType.Automatic;
 
-        public IRetryPolicy GetRetryPolicy(int retryCount = 1)
+        public Abstractions.IModels.RetryPolicy GetRetryPolicy(int retryCount = 1)
         {
             if (FailedRetryPolicy.IsNullOrEmpty()) return new RetryPolicy(0, RetryBehavior.Discard);
             if (retryCount - 1 > FailedRetryPolicy.Length) return new RetryPolicy(0, RetryBehavior.Discard);
@@ -134,7 +134,7 @@ namespace EventBus.Core.Entitys
             };
         }
 
-        public RetryData GetRetryData(IRetryPolicy policy)
+        public RetryData GetRetryData(Abstractions.IModels.RetryPolicy policy)
         {
             return new RetryData(EventId, EventRecordId, Id, policy.RetryDelayUnit, policy.RetryDelayCount);
         }

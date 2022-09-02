@@ -3,7 +3,7 @@ using EventBus.Abstractions.IModels;
 
 namespace EventBus.Core.Entitys
 {
-    internal class RetryPolicy : IRetryPolicy
+    internal class RetryPolicy : Abstractions.IModels.RetryPolicy
     {
         public RetryPolicy()
         {

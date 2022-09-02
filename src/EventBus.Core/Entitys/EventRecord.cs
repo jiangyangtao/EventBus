@@ -7,11 +7,11 @@ using System.Text;
 
 namespace EventBus.Core.Entitys
 {
-    internal class EventRecord : BaseEntity<EventRecord>, IEventRecord
+    internal class EventRecord : BaseEntity<EventRecord>, Abstractions.IModels.EventRecord
     {
         public EventRecord() { }
 
-        public EventRecord(Guid eventId, IEventRecord eventRecord)
+        public EventRecord(Guid eventId, Abstractions.IModels.EventRecord eventRecord)
         {
             EventId = eventId;
 
@@ -67,10 +67,10 @@ namespace EventBus.Core.Entitys
         public Guid EventId { set; get; }
 
         [NotMapped]
-        public IEvent Event { set; get; }
+        public Abstractions.IModels.Event Event { set; get; }
 
         [NotMapped]
-        public ISubscriptionRecord[] ISubscriptionRecords { set; get; }
+        public Abstractions.IModels.SubscriptionRecord[] ISubscriptionRecords { set; get; }
 
         public HttpContent BuilderHttpContent()
         {
