@@ -17,6 +17,31 @@ namespace EventBus.Core.Providers
             _applicationProvider = applicationProvider;
         }
 
+        public async Task AddOrUpdateAsync(IEvent data)
+        {
+            var e = await Get(a => a.EventName == data.EventName).FirstOrDefaultAsync();
+            if (e == null)
+            {
+                await CreateAsync(new Event(data));
+                return;
+            }
+
+            e.EventName = e.EventName;
+            e.EnableIPAddressWhiteList = e.EnableIPAddressWhiteList;
+            e.IPAddressWhiteList = e.IPAddressWhiteList;
+            e.EventProtocol = e.EventProtocol;
+            await UpdateAsync(e);
+        }
+
+        public async Task RemoveAsync(IEvent data)
+        {
+            var e = await GetEventAsync(data.EventName);
+            if (e != null)
+            {
+                await DeleteAsync(a => a.Id == e.Id);
+            }
+        }
+
         public async Task<IEvent> GetEventAsync(Guid eventId)
         {
             var e = await GetByIdAsync(eventId);

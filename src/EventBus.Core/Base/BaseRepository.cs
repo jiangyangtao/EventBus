@@ -183,10 +183,8 @@ namespace EventBus.Core.Base
         /// <param name="entity"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        protected async Task<TEntity> CreateAsync(TEntity entity, bool isCommit = true)
-        {
-            return await base.CreateAsync(entity, isCommit);
-        }
+        protected async Task<TEntity> CreateAsync(TEntity entity, bool isCommit = true) => await base.CreateAsync(entity, isCommit);
+
 
         /// <summary>
         /// 批量添加
@@ -195,10 +193,8 @@ namespace EventBus.Core.Base
         /// <param name="entities"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        protected async Task<long> AddRangeAsync(List<TEntity> entities, bool isCommit = true)
-        {
-            return await base.AddRangeAsync(entities, isCommit);
-        }
+        protected async Task<long> AddRangeAsync(List<TEntity> entities, bool isCommit = true) => await base.AddRangeAsync(entities, isCommit);
+
 
         /// <summary>
         /// 批量添加
@@ -207,10 +203,8 @@ namespace EventBus.Core.Base
         /// <param name="entities"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        protected async Task<long> AddRangeAsync(TEntity[] entities, bool isCommit = true)
-        {
-            return await base.AddRangeAsync(entities, isCommit);
-        }
+        protected async Task<long> AddRangeAsync(TEntity[] entities, bool isCommit = true) => await base.AddRangeAsync(entities, isCommit);
+
 
         /// <summary>
         /// 修改
@@ -219,10 +213,8 @@ namespace EventBus.Core.Base
         /// <param name="entity"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        protected async Task<TEntity> UpdateAsync(TEntity entity, bool isCommit = true)
-        {
-            return await base.UpdateAsync(entity, isCommit);
-        }
+        protected async Task<TEntity> UpdateAsync(TEntity entity, bool isCommit = true) => await base.UpdateAsync(entity, isCommit);
+
 
         /// <summary>
         /// 根据条件删除
@@ -231,10 +223,8 @@ namespace EventBus.Core.Base
         /// <param name="predicate"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        protected async Task<long> DeleteAsync(Expression<Func<TEntity, bool>> predicate, bool isCommit = true)
-        {
-            return await base.DeleteAsync(predicate, isCommit);
-        }
+        protected async Task<long> DeleteAsync(Expression<Func<TEntity, bool>> predicate, bool isCommit = true) => await base.DeleteAsync(predicate, isCommit);
+
 
         /// <summary>
         /// 删除一条数据
@@ -243,10 +233,8 @@ namespace EventBus.Core.Base
         /// <param name="entity"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        protected async Task<long> DeleteAsync(TEntity entity, bool isCommit = true)
-        {
-            return await base.DeleteAsync(entity, isCommit);
-        }
+        protected async Task<long> DeleteAsync(TEntity entity, bool isCommit = true) => await base.DeleteAsync(entity, isCommit);
+
 
         /// <summary>
         /// 删除一个对象的所有数据
@@ -254,10 +242,8 @@ namespace EventBus.Core.Base
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        protected async Task<long> DeleteAsync(bool isCommit = true)
-        {
-            return await base.DeleteAsync<TEntity>(isCommit);
-        }
+        protected async Task<long> DeleteAsync(bool isCommit = true) => await DeleteAsync<TEntity>(isCommit);
+
 
         /// <summary>
         /// 批量删除
@@ -266,10 +252,8 @@ namespace EventBus.Core.Base
         /// <param name="entities"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        protected Task<long> DeleteRangeAsync(ICollection<TEntity> entities, bool isCommit = true)
-        {
-            return base.DeleteRangeAsync(entities, isCommit);
-        }
+        protected Task<long> DeleteRangeAsync(ICollection<TEntity> entities, bool isCommit = true) => base.DeleteRangeAsync(entities, isCommit);
+
 
         /// <summary>
         /// 获取一条数据
@@ -277,10 +261,7 @@ namespace EventBus.Core.Base
         /// <typeparam name="TSource"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        protected async Task<TEntity> GetByIdAsync(Guid id)
-        {
-            return await base.GetByIdAsync<TEntity>(id);
-        }
+        protected async Task<TEntity> GetByIdAsync(Guid id) => await GetByIdAsync<TEntity>(id);
 
 
         /// <summary>
@@ -289,20 +270,16 @@ namespace EventBus.Core.Base
         /// <typeparam name="TSource"></typeparam>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        protected async Task<TEntity> GetByIdAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            return await base.GetByIdAsync(predicate);
-        }
+        protected async Task<TEntity> GetByIdAsync(Expression<Func<TEntity, bool>> predicate) => await base.GetByIdAsync(predicate);
+
 
         /// <summary>
         /// 获取一个 IQueryable
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        protected IQueryable<TEntity> Get()
-        {
-            return base.Get<TEntity>();
-        }
+        protected IQueryable<TEntity> Get() => Get<TEntity>();
+
 
         /// <summary>
         /// 获取一个 IQueryable
@@ -311,9 +288,7 @@ namespace EventBus.Core.Base
         /// <param name="predicate"></param>
         /// <param name="include"></param>
         /// <returns></returns>
-        protected IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> predicate)
-        {
-            return base.Get(predicate);
-        }
+        protected IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> predicate) => base.Get(predicate);
+
     }
 }

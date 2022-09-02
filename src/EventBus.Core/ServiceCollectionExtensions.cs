@@ -17,7 +17,6 @@ namespace EventBus.Core
             services.AddStorage(configuration);
             services.AddScoped<IApplicationProvider, ApplicationProvider>();
             services.AddScoped<IEventProvider, EventProvider>();
-            services.AddScoped<IEventManager, EventManager>();
             services.AddScoped<IEventRecordProvider, EventRecordProvider>();
             services.AddScoped<IRetryProvider, RetryProvider>();
 
