@@ -15,7 +15,6 @@ namespace EventBus.Core
             PrintProjectName();
 
             services.AddStorage(configuration);
-            services.AddScoped<IApplicationManager, ApplicationManager>();
             services.AddScoped<IApplicationProvider, ApplicationProvider>();
             services.AddScoped<IEventProvider, EventProvider>();
             services.AddScoped<IEventManager, EventManager>();
