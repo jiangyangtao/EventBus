@@ -1,5 +1,7 @@
 ﻿using EventBus.Extensions;
 using EventBus.Storage.Abstractions;
+using EventBus.Storage.Abstractions.IRepositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -27,18 +29,27 @@ namespace EventBus.Storage.Core
             if (connectionString.IsNullOrEmpty())
                 throw new NullReferenceException("Database ConnectionString can not be empty.");
 
-            var assembly = Assembly.Load($"EventBus.Storage.{storageType}");
-            var types = assembly.GetTypes();
-            foreach (var type in types)
+            services.AddDbContext<EventBusDBContext>(options =>
             {
-                var interfaceType = type.GetInterface(nameof(IStorageInitialization), true);
-                if (interfaceType != null)
+                var builder = options.UseLazyLoadingProxies();
+                if (storageType == StorageType.Sqlite)
                 {
-                    var storageInitialization = (IStorageInitialization)Activator.CreateInstance(type);
-                    if (storageInitialization != null) storageInitialization.Initialize(services, connectionString);
+                    builder.UseSqlite(connectionString);
                 }
-            }
 
+                if (storageType == StorageType.MySql)
+                {
+                    var serverVersiohn = ServerVersion.AutoDetect(connectionString);
+                    builder.UseMySql(connectionString, serverVersiohn);
+                }
+
+                if (storageType == StorageType.SqlServer)
+                {
+                    builder.UseSqlServer(connectionString);
+                }
+
+            });
+            services.AddScoped<IRepository, Repository>();
             return services;
         }
     }

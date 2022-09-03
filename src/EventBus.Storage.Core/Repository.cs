@@ -1,16 +1,15 @@
 ﻿using EventBus.Extensions;
 using EventBus.Storage.Abstractions.IRepositories;
-using EventBus.Storage.MySql;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace EventBus.Storage.Mysql
+namespace EventBus.Storage.Core
 {
-    internal class MySqlRepository : IRepository
+    internal class Repository : IRepository
     {
-        private readonly MySqlDBContext _dbContext;
+        private readonly EventBusDBContext _dbContext;
 
-        public MySqlRepository(MySqlDBContext dbContext)
+        public Repository(EventBusDBContext dbContext)
         {
             _dbContext = dbContext;
         }

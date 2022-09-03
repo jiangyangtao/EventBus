@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventBus.Core.Providers
 {
-    internal class RetryProvider : BaseRepository<Entitys.RetryData>, IRetryProvider
+    internal class RetryProvider : BaseRepository<RetryData>, IRetryProvider
     {
         private readonly ISubscriptionQueueProvider _subscriptionQueueProvider;
 

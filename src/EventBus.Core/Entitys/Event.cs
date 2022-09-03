@@ -35,13 +35,6 @@ namespace EventBus.Core.Entitys
         [NotMapped]
         public ISubscription[] Subscriptions { set; get; }
 
-        public ISubscriptionRecord[] BuilderSubscriptionRecords(IEventRecord eventRecord)
-        {
-            if (Subscriptions.IsNullOrEmpty()) return SubscriptionRecord.EmptyArray;
-
-            return Subscriptions.Where(a => a.ApplicationEndpoint != null).Select(a => new SubscriptionRecord(Id, eventRecord, a.ApplicationEndpoint)).ToArray();
-        }
-
         public bool VerifyIPAddress(IPAddress address)
         {
             if (EnableIPAddressWhiteList == false) return true;

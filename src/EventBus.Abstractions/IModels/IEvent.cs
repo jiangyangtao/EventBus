@@ -21,23 +21,18 @@ namespace EventBus.Abstractions.IModels
         /// <summary>
         /// IP地址白名单
         /// </summary>
-        public string[] IPAddressWhiteList {get; }
+        public string[] IPAddressWhiteList { get; }
 
         /// <summary>
         /// 事件的协议
         /// </summary>
-        public ProtocolType EventProtocol {  get; }
+        public ProtocolType EventProtocol { get; }
 
         /// <summary>
         /// 订阅集
         /// </summary>
         public ISubscription[] Subscriptions { get; }
 
-        public bool VerifyIPAddress(IPAddress address)
-        {
-            if (EnableIPAddressWhiteList == false) return true;
-
-            return IPAddressWhiteList.Any(a => a == address.ToString());
-        }
+        public bool VerifyIPAddress(IPAddress address);
     }
 }

@@ -22,8 +22,8 @@ namespace EventBus.Core.Providers
 
         public SubscriptionQueueProvider(
             IRepository repository,
-               IBufferQueueService bufferQueueService,
-               IHttpClientFactory httpClientFactory) : base(repository)
+            IBufferQueueService bufferQueueService,
+            IHttpClientFactory httpClientFactory) : base(repository)
         {
             _subscriptionRecordQueue = bufferQueueService.CreateBufferQueue<SubscriptionRecord>("subscription", async record => await PushAsync(record), 10, 100);
             _httpClientFactory = httpClientFactory;

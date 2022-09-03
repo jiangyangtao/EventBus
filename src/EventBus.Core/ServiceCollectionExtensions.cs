@@ -18,16 +18,17 @@ namespace EventBus.Core
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddStorage(configuration);
-            services.AddScoped<IApplicationProvider, ApplicationProvider>();
-            services.AddScoped<IEventProvider, EventProvider>();
-            services.AddScoped<IEventRecordProvider, EventRecordProvider>();
-            services.AddScoped<IRetryProvider, RetryProvider>();
+  
 
             services.AddSingleton<BufferQueueService>();
             services.AddSingleton<IBufferQueueService, BufferQueueService>();
             services.AddSingleton<IHostedService, BufferQueueService>();
-
             services.AddSingleton<ISubscriptionQueueProvider, SubscriptionQueueProvider>();
+
+            services.AddScoped<IApplicationProvider, ApplicationProvider>();
+            services.AddScoped<IEventProvider, EventProvider>();
+            services.AddScoped<IEventRecordProvider, EventRecordProvider>();
+            services.AddScoped<IRetryProvider, RetryProvider>();
 
             return services;
         }

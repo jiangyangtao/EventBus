@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -10,13 +10,16 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.8" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.8" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="6.0.8" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.8" />
+	<PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EventBus.Storage.MongoDB\EventBus.Storage.MongoDB.csproj" />
-    <ProjectReference Include="..\EventBus.Storage.Mysql\EventBus.Storage.MySql.csproj" />
-    <ProjectReference Include="..\EventBus.Storage.Sqlite\EventBus.Storage.Sqlite.csproj" />
-    <ProjectReference Include="..\EventBus.Storage.SqlServer\EventBus.Storage.SqlServer.csproj" />
+    <ProjectReference Include="..\EventBus.Storage.Abstractions\EventBus.Storage.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>
