@@ -11,7 +11,6 @@ services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
-services.AddHttpClient();
 services.AddEventBus(configuration);
 
 var app = builder.Build();
@@ -23,6 +22,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseRouting();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -31,7 +31,6 @@ app.MapControllers();
 
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapControllers();
     endpoints.MapGet("/", async context =>
     {
         await context.Response.WriteAsync("Hello, EventBus");

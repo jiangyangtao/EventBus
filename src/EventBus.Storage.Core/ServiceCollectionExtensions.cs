@@ -1,10 +1,8 @@
 ﻿using EventBus.Extensions;
-using EventBus.Storage.Abstractions;
 using EventBus.Storage.Abstractions.IRepositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 namespace EventBus.Storage.Core
 {

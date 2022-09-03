@@ -1,4 +1,5 @@
 ﻿using EventBus.Storage.Abstractions.IRepositories;
+using Microsoft.Extensions.DependencyInjection;
 using System.Linq.Expressions;
 
 namespace EventBus.Core.Base
@@ -6,11 +7,22 @@ namespace EventBus.Core.Base
     internal abstract class BaseRepository
     {
         protected readonly IRepository _repository;
+        
+        protected BaseRepository(IServiceScopeFactory serviceScopeFactory)
+        {
+            _repository = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IRepository>();
+        }
+
+        protected BaseRepository(IServiceProvider serviceProvider)
+        {
+            _repository = serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IRepository>();
+        }
 
         protected BaseRepository(IRepository repository)
         {
             _repository = repository;
         }
+
 
         /// <summary>
         /// 创建一条数据

@@ -3,7 +3,6 @@ using EventBus.Core.Base;
 using EventBus.Core.Entitys;
 using EventBus.Core.Services;
 using EventBus.Extensions;
-using EventBus.Storage.Abstractions.IRepositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventBus.Core.Providers
@@ -21,9 +20,9 @@ namespace EventBus.Core.Providers
         private readonly IBufferQueue<SubscriptionRecord> _subscriptionRecordQueue;
 
         public SubscriptionQueueProvider(
-            IRepository repository,
+            IServiceProvider serviceProvider,
             IBufferQueueService bufferQueueService,
-            IHttpClientFactory httpClientFactory) : base(repository)
+            IHttpClientFactory httpClientFactory) : base(serviceProvider)
         {
             _subscriptionRecordQueue = bufferQueueService.CreateBufferQueue<SubscriptionRecord>("subscription", async record => await PushAsync(record), 10, 100);
             _httpClientFactory = httpClientFactory;

@@ -15,11 +15,10 @@ namespace EventBus.Core
         {
             PrintProjectName();
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
+            services.AddHttpClient();
             services.AddStorage(configuration);
-  
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<BufferQueueService>();
             services.AddSingleton<IBufferQueueService, BufferQueueService>();
             services.AddSingleton<IHostedService, BufferQueueService>();
