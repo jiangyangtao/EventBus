@@ -8,11 +8,11 @@ using System.Diagnostics;
 
 namespace EventBus.Core.Entitys
 {
-    internal class SubscriptionRecord : BaseEntity<SubscriptionRecord>, Abstractions.IModels.SubscriptionRecord
+    internal class SubscriptionRecord : BaseEntity<SubscriptionRecord>, ISubscriptionRecord
     {
         public SubscriptionRecord() { }
 
-        public SubscriptionRecord(Guid eventId, Abstractions.IModels.EventRecord eventRecord, Abstractions.IModels.ApplicationEndpoint endpoint)
+        public SubscriptionRecord(Guid eventId, IEventRecord eventRecord, IApplicationEndpoint endpoint)
         {
             EventId = eventId;
             EventRecordId = eventRecord.Id;
@@ -53,7 +53,7 @@ namespace EventBus.Core.Entitys
         public int RequestTimeout { set; get; }
 
         [NotMapped]
-        public Abstractions.IModels.RetryPolicy[] FailedRetryPolicy
+        public IRetryPolicy[] FailedRetryPolicy
         {
             set
             {
@@ -74,7 +74,7 @@ namespace EventBus.Core.Entitys
         public bool SubscriptionResult { set; get; }
 
         [NotMapped]
-        public Abstractions.IModels.EndpointSubscriptionRecord[] EndpointSubscriptionRecords { set; get; }
+        public IEndpointSubscriptionRecord[] EndpointSubscriptionRecords { set; get; }
 
         private IDictionary<string, string> SubscriptionHeader { set; get; }
 
@@ -87,7 +87,7 @@ namespace EventBus.Core.Entitys
         [NotMapped]
         public SubscriptionType SubscriptionType { get; set; } = SubscriptionType.Automatic;
 
-        public Abstractions.IModels.RetryPolicy GetRetryPolicy(int retryCount = 1)
+        public IRetryPolicy GetRetryPolicy(int retryCount = 1)
         {
             if (FailedRetryPolicy.IsNullOrEmpty()) return new RetryPolicy(0, RetryBehavior.Discard);
             if (retryCount - 1 > FailedRetryPolicy.Length) return new RetryPolicy(0, RetryBehavior.Discard);
@@ -134,7 +134,7 @@ namespace EventBus.Core.Entitys
             };
         }
 
-        public RetryData GetRetryData(Abstractions.IModels.RetryPolicy policy)
+        public RetryData GetRetryData(IRetryPolicy policy)
         {
             return new RetryData(EventId, EventRecordId, Id, policy.RetryDelayUnit, policy.RetryDelayCount);
         }

@@ -7,11 +7,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBus.Core.Entitys
 {
-    internal class ApplicationEndpoint : BaseEntity<ApplicationEndpoint>, Abstractions.IModels.ApplicationEndpoint
+    internal class ApplicationEndpoint : BaseEntity<ApplicationEndpoint>, IApplicationEndpoint
     {
         public ApplicationEndpoint() { }
 
-        public ApplicationEndpoint(Abstractions.IModels.ApplicationEndpoint endpoint)
+        public ApplicationEndpoint(IApplicationEndpoint endpoint)
         {
             EndpointName = endpoint.EndpointName;
             EndpointUrl = endpoint.EndpointUrl;
@@ -47,10 +47,10 @@ namespace EventBus.Core.Entitys
         public ProtocolType SubscriptionProtocol { set; get; }
 
         [NotMapped]
-        public Abstractions.IModels.Application Application { set; get; }
+        public IApplication Application { set; get; }
 
         [NotMapped]
-        public Abstractions.IModels.RetryPolicy[] FailedRetryPolicy
+        public IRetryPolicy[] FailedRetryPolicy
         {
             set
             {

@@ -9,7 +9,7 @@ namespace EventBus.Abstractions.IProviders
         /// </summary>
         /// <param name="eventRecord"></param>
         /// <returns></returns>
-        Task PublishAsync(IEventRecord eventRecord);
+        Task PublishAsync(Guid eventId);
 
         Task<IEventRecord> GetEventRecordAsync(Guid eventRecordId);
 

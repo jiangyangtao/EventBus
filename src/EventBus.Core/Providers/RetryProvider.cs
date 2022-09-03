@@ -47,12 +47,12 @@ namespace EventBus.Core.Providers
             await DeleteAsync(data);
         }
 
-        public async Task<Abstractions.IModels.RetryData[]> GetEventRetryAsync(Guid evnetId)
+        public async Task<IRetryData[]> GetEventRetryAsync(Guid evnetId)
         {
             return await Get(a => a.EventId == evnetId).ToArrayAsync();
         }
 
-        public async Task<Abstractions.IModels.RetryData> GetRetryAsync(Guid id)
+        public async Task<IRetryData> GetRetryAsync(Guid id)
         {
             return await GetByIdAsync(id);
         }

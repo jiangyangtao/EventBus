@@ -8,11 +8,6 @@ namespace EventBus.Abstractions.IModels
     public interface IApplicationEndpoint : IBaseModel
     {
         /// <summary>
-        /// 应用接入点 Id
-        /// </summary>
-        public Guid ApplicationEndpointId { get; }
-
-        /// <summary>
         /// 接入点名称
         /// </summary>
         public string EndpointName { get; }

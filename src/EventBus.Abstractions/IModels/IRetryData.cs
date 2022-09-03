@@ -12,11 +12,6 @@ namespace EventBus.Abstractions.IModels
     public interface IRetryData : IBaseModel
     {
         /// <summary>
-        /// 重试 Id
-        /// </summary>
-        public Guid RetryDataId { get; }
-
-        /// <summary>
         /// 重试时间
         /// </summary>
         public DateTime RetryTime { get; }

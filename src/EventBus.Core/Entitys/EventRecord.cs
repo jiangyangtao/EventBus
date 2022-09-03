@@ -1,23 +1,27 @@
 ﻿using EventBus.Abstractions.IModels;
 using EventBus.Core.Base;
 using EventBus.Extensions;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Net.Http;
 using System.Text;
 
 namespace EventBus.Core.Entitys
 {
-    internal class EventRecord : BaseEntity<EventRecord>, Abstractions.IModels.EventRecord
+    internal class EventRecord : BaseEntity<EventRecord>, IEventRecord
     {
         public EventRecord() { }
 
-        public EventRecord(Guid eventId, Abstractions.IModels.EventRecord eventRecord)
+        public EventRecord(Guid eventId, HttpRequest request)
         {
             EventId = eventId;
+            QueryString = request.QueryString.ToString();
 
-            QueryString = eventRecord.QueryString;
-            Data = eventRecord.Data;
-            Header = eventRecord.Header;
+            var streamReader = new StreamReader(request.Body);
+            Data = streamReader.ReadToEnd();
+
+            Header = request.Headers.ToDictionary(a => a.Key, a => a.Value.ToString());
             RecordTime = DateTime.Now;
         }
 
@@ -41,24 +45,7 @@ namespace EventBus.Core.Entitys
 
         public string HeaderString { set; get; }
 
-        [NotMapped]
-        public object Data
-        {
-            set
-            {
-                if (value != null) DataString = JsonConvert.SerializeObject(value, Formatting.Indented);
-                else DataString = string.Empty;
-            }
-
-            get
-            {
-                if (DataString.IsNullOrEmpty()) return null;
-
-                return JsonConvert.DeserializeObject(DataString);
-            }
-        }
-
-        public string DataString { set; get; }
+        public string Data { set; get; }
 
         public DateTime RecordTime { set; get; }
 
@@ -67,9 +54,14 @@ namespace EventBus.Core.Entitys
         public Guid EventId { set; get; }
 
         [NotMapped]
-        public Abstractions.IModels.Event Event { set; get; }
+        public IEvent Event { set; get; }
 
         [NotMapped]
-        public Abstractions.IModels.SubscriptionRecord[] ISubscriptionRecords { set; get; }
+        public ISubscriptionRecord[] ISubscriptionRecords { set; get; }
+
+        public HttpContent BuilderHttpContent()
+        {
+            return new StringContent(Data, Encoding.UTF8, "application/json");
+        }
     }
 }

@@ -8,18 +8,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventBus.Core.Providers
 {
-    internal class ApplicationProvider : BaseRepository<Entitys.Application>, IApplicationProvider
+    internal class ApplicationProvider : BaseRepository<Application>, IApplicationProvider
     {
         public ApplicationProvider(IRepository repository) : base(repository)
         {
         }
 
-        public async Task AddOrUpdateApplicationAsync(Abstractions.IModels.Application application)
+        public async Task AddOrUpdateApplicationAsync(IApplication application)
         {
             var data = await GetByIdAsync(application.Id);
             if (data == null)
             {
-                await CreateAsync(new Entitys.Application()
+                await CreateAsync(new Application()
                 {
                     ApplicationName = application.ApplicationName,
                 });
@@ -30,12 +30,12 @@ namespace EventBus.Core.Providers
             await UpdateAsync(data);
         }
 
-        public async Task AddOrUpdateApplicationEndpointAsync(Abstractions.IModels.ApplicationEndpoint applicationEndpoint)
+        public async Task AddOrUpdateApplicationEndpointAsync(IApplicationEndpoint applicationEndpoint)
         {
-            var endpoint = await GetByIdAsync<Entitys.ApplicationEndpoint>(applicationEndpoint.Id);
+            var endpoint = await GetByIdAsync<ApplicationEndpoint>(applicationEndpoint.Id);
             if (endpoint == null)
             {
-                await CreateAsync(new Entitys.ApplicationEndpoint(applicationEndpoint));
+                await CreateAsync(new ApplicationEndpoint(applicationEndpoint));
             }
 
             endpoint.EndpointName = applicationEndpoint.EndpointName;
@@ -46,7 +46,7 @@ namespace EventBus.Core.Providers
             await UpdateAsync(endpoint);
         }
 
-        public async Task RemoveApplicationAsync(Abstractions.IModels.Application application)
+        public async Task RemoveApplicationAsync(IApplication application)
         {
             var app = await GetApplicationAsync(application.Id);
             if (app != null)
@@ -55,7 +55,7 @@ namespace EventBus.Core.Providers
             }
         }
 
-        public async Task RemoveApplicationEndpointAsync(Abstractions.IModels.ApplicationEndpoint endpoint)
+        public async Task RemoveApplicationEndpointAsync(IApplicationEndpoint endpoint)
         {
             var applicationEndpoint = await GetApplicationEndpointAsync(endpoint.Id);
             if (applicationEndpoint != null)
@@ -65,7 +65,7 @@ namespace EventBus.Core.Providers
         }
 
 
-        public async Task<Abstractions.IModels.Application> GetApplicationAsync(Guid applicationId)
+        public async Task<IApplication> GetApplicationAsync(Guid applicationId)
         {
             var application = await GetByIdAsync(applicationId);
             if (application == null) return null;
@@ -73,7 +73,7 @@ namespace EventBus.Core.Providers
             return application;
         }
 
-        public async Task<Abstractions.IModels.Application> GetApplicationAsync(string applicationName)
+        public async Task<IApplication> GetApplicationAsync(string applicationName)
         {
             var application = await Get(a => a.ApplicationName == applicationName).FirstOrDefaultAsync();
             if (application == null) return null;
@@ -81,53 +81,53 @@ namespace EventBus.Core.Providers
             return application;
         }
 
-        public async Task<Abstractions.IModels.ApplicationEndpoint> GetApplicationEndpointAsync(Guid applicationEndpointId)
+        public async Task<IApplicationEndpoint> GetApplicationEndpointAsync(Guid applicationEndpointId)
         {
-            var applicationEndpoint = await GetByIdAsync<Entitys.ApplicationEndpoint>(applicationEndpointId);
+            var applicationEndpoint = await GetByIdAsync<ApplicationEndpoint>(applicationEndpointId);
             if (applicationEndpoint == null) return null;
 
             return applicationEndpoint;
         }
 
-        public async Task<Abstractions.IModels.ApplicationEndpoint[]> GetApplicationEndpointsAsync(Guid applicationId)
+        public async Task<IApplicationEndpoint[]> GetApplicationEndpointsAsync(Guid applicationId)
         {
             var applicationEndpoints = await Get<ApplicationEndpoint>().Where(a => a.ApplicationId == applicationId).ToArrayAsync();
-            if (applicationEndpoints.IsNullOrEmpty()) return Entitys.ApplicationEndpoint.EmptyArray;
+            if (applicationEndpoints.IsNullOrEmpty()) return ApplicationEndpoint.EmptyArray;
 
             foreach (var applicationEndpoint in applicationEndpoints)
             {
-                applicationEndpoint.Application = new Entitys.Application() { Id = applicationEndpoint.ApplicationId };
+                applicationEndpoint.Application = new Application() { Id = applicationEndpoint.ApplicationId };
             }
 
             return applicationEndpoints;
         }
 
-        public async Task<Abstractions.IModels.ApplicationEndpoint[]> GetApplicationEndpointsAsync(int start, int count, string endpointName)
+        public async Task<IApplicationEndpoint[]> GetApplicationEndpointsAsync(int start, int count, string endpointName)
         {
-            var query = Get<Entitys.ApplicationEndpoint>();
+            var query = Get<ApplicationEndpoint>();
             if (endpointName.NotNullAndEmpty()) query.Where(a => a.EndpointName.Contains(endpointName));
 
             var applicationEndpoints = await query.Skip(start).Take(count).ToArrayAsync();
-            if (applicationEndpoints.IsNullOrEmpty()) return Entitys.ApplicationEndpoint.EmptyArray;
+            if (applicationEndpoints.IsNullOrEmpty()) return ApplicationEndpoint.EmptyArray;
 
             return applicationEndpoints;
         }
 
-        public async Task<Abstractions.IModels.Application[]> GetApplicationsAsync()
+        public async Task<IApplication[]> GetApplicationsAsync()
         {
             var applications = await Get().ToArrayAsync();
-            if (applications.IsNullOrEmpty()) return Entitys.Application.EmptyArray;
+            if (applications.IsNullOrEmpty()) return Application.EmptyArray;
 
             return applications;
         }
 
-        public async Task<Abstractions.IModels.Application[]> GetApplicationsAsync(int start, int count, string applicationName)
+        public async Task<IApplication[]> GetApplicationsAsync(int start, int count, string applicationName)
         {
             var query = Get();
             if (applicationName.NotNullAndEmpty()) query.Where(a => a.ApplicationName.Contains(applicationName));
 
             var applications = await query.Skip(start).Take(count).ToArrayAsync();
-            if (applications.IsNullOrEmpty()) return Entitys.Application.EmptyArray;
+            if (applications.IsNullOrEmpty()) return Application.EmptyArray;
 
             return applications;
         }

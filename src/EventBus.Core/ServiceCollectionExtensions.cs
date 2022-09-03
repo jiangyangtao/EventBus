@@ -2,6 +2,7 @@
 using EventBus.Core.Providers;
 using EventBus.Core.Services;
 using EventBus.Storage.Core;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,6 +14,8 @@ namespace EventBus.Core
         public static IServiceCollection AddEventBus(this IServiceCollection services, IConfiguration configuration)
         {
             PrintProjectName();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddStorage(configuration);
             services.AddScoped<IApplicationProvider, ApplicationProvider>();

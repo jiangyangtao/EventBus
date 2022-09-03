@@ -9,11 +9,6 @@ namespace EventBus.Abstractions.IModels
     public interface IEvent : IBaseModel
     {
         /// <summary>
-        /// 事件 Id
-        /// </summary>
-        public Guid EventId { get;  }
-
-        /// <summary>
         /// 事件名称
         /// </summary>
         public string EventName { get; }

@@ -1,16 +1,17 @@
-﻿using EventBus.Abstractions.Models;
+﻿using EventBus.Abstractions.IModels;
 using EventBus.Core.Base;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBus.Core.Entitys
 {
-    internal class Application : BaseEntity<Application>
+    internal class Application : BaseEntity<Application>, IApplication
     {
         public Application() { }
 
         public string ApplicationName { set; get; }
 
         [NotMapped]
-        public ApplicationEndpoint[] ApplicationEndpoints { set; get; }
+        public IApplicationEndpoint[] ApplicationEndpoints { set; get; }
     }
 }

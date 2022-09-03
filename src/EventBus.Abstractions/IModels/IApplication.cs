@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace EventBus.Abstractions.IModels
 {
@@ -11,11 +7,6 @@ namespace EventBus.Abstractions.IModels
     /// </summary>
     public interface IApplication : IBaseModel
     {
-        /// <summary>
-        /// 应用 Id
-        /// </summary>
-        public Guid ApplicationId { get; }
-
         /// <summary>
         /// 应用名
         /// </summary>

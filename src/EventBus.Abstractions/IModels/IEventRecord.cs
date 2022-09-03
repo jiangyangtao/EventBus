@@ -1,9 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace EventBus.Abstractions.IModels
 {
@@ -12,11 +7,6 @@ namespace EventBus.Abstractions.IModels
     /// </summary>
     public interface IEventRecord : IBaseModel
     {
-        /// <summary>
-        /// 事件记录 Id
-        /// </summary>
-        public Guid EventRecordId { get;  }
-
         /// <summary>
         /// 查询参数
         /// </summary>
@@ -30,7 +20,7 @@ namespace EventBus.Abstractions.IModels
         /// <summary>
         /// 数据
         /// </summary>
-        public object Data {get; }
+        public string Data {get; }
 
         /// <summary>
         /// 记录时间
@@ -52,13 +42,7 @@ namespace EventBus.Abstractions.IModels
         /// </summary>
         public ISubscriptionRecord[] ISubscriptionRecords {  get; }
 
-        public HttpContent BuilderHttpContent()
-        {
-            var content = string.Empty;
-            if (Data != null) content = JsonConvert.SerializeObject(Data);
-
-            return new StringContent(content, Encoding.UTF8, "application/json");
-        }
+        public HttpContent BuilderHttpContent();
 
     }
 }

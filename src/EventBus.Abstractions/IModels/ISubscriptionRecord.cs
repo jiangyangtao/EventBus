@@ -8,11 +8,6 @@ namespace EventBus.Abstractions.IModels
     public interface ISubscriptionRecord : IBaseModel
     {
         /// <summary>
-        /// 订阅记录 Id
-        /// </summary>
-        public Guid SubscriptionRecordId { get; }
-
-        /// <summary>
         /// 接入点名称
         /// </summary>
         public string EndpointName { get; }

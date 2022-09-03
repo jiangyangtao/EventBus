@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventBus.Core.Providers
 {
-    internal class EventProvider : BaseRepository<Entitys.Event>, IEventProvider
+    internal class EventProvider : BaseRepository<Event>, IEventProvider
     {
         private readonly IApplicationProvider _applicationProvider;
 
@@ -17,12 +17,12 @@ namespace EventBus.Core.Providers
             _applicationProvider = applicationProvider;
         }
 
-        public async Task AddOrUpdateAsync(Abstractions.IModels.Event data)
+        public async Task AddOrUpdateAsync(IEvent data)
         {
             var e = await Get(a => a.EventName == data.EventName).FirstOrDefaultAsync();
             if (e == null)
             {
-                await CreateAsync(new Entitys.Event(data));
+                await CreateAsync(new Event(data));
                 return;
             }
 
@@ -33,7 +33,7 @@ namespace EventBus.Core.Providers
             await UpdateAsync(e);
         }
 
-        public async Task RemoveAsync(Abstractions.IModels.Event data)
+        public async Task RemoveAsync(IEvent data)
         {
             var e = await GetEventAsync(data.EventName);
             if (e != null)
@@ -42,7 +42,7 @@ namespace EventBus.Core.Providers
             }
         }
 
-        public async Task<Abstractions.IModels.Event> GetEventAsync(Guid eventId, bool isInclude = true)
+        public async Task<IEvent> GetEventAsync(Guid eventId, bool isInclude = true)
         {
             var e = await GetByIdAsync(eventId);
             if (e == null) return null;
@@ -56,46 +56,46 @@ namespace EventBus.Core.Providers
             return e;
         }
 
-        public async Task<Abstractions.IModels.Event> GetEventAsync(string eventName)
+        public async Task<IEvent> GetEventAsync(string eventName)
         {
             return await Get(a => a.EventName == eventName).FirstOrDefaultAsync();
         }
 
-        public async Task<Abstractions.IModels.Event[]> GetEventsAsync()
+        public async Task<IEvent[]> GetEventsAsync()
         {
             var events = await Get().ToArrayAsync();
-            if (events.IsNullOrEmpty()) return Entitys.Event.EmptyArray;
+            if (events.IsNullOrEmpty()) return Event.EmptyArray;
 
             return events;
         }
 
-        public async Task<Abstractions.IModels.Event[]> GetEventsAsync(int start, int count, string eventName)
+        public async Task<IEvent[]> GetEventsAsync(int start, int count, string eventName)
         {
             var query = Get();
             if (eventName.NotNullAndEmpty()) query.Where(a => a.EventName.Contains(eventName));
 
             var events = await query.Skip(start).Take(count).ToArrayAsync();
-            if (events.IsNullOrEmpty()) return Entitys.Event.EmptyArray;
+            if (events.IsNullOrEmpty()) return Event.EmptyArray;
 
             return events;
         }
 
-        public async Task<Abstractions.IModels.Subscription> GetSubscriptionAsync(Guid subscriptionId)
+        public async Task<ISubscription> GetSubscriptionAsync(Guid subscriptionId)
         {
-            return await GetByIdAsync<Entitys.Subscription>(subscriptionId);
+            return await GetByIdAsync<Subscription>(subscriptionId);
         }
 
-        public async Task<Abstractions.IModels.Subscription[]> GetSubscriptionsAsync(Guid eventId)
+        public async Task<ISubscription[]> GetSubscriptionsAsync(Guid eventId)
         {
             var subscriptions = await Get<Subscription>(a => a.EvnetId == eventId).ToArrayAsync();
-            if (subscriptions.IsNullOrEmpty()) return Entitys.Subscription.EmptyArray;
+            if (subscriptions.IsNullOrEmpty()) return Subscription.EmptyArray;
 
             var endpoints = await _applicationProvider.GetApplicationEndpointsAsync(eventId);
-            if (endpoints.IsNullOrEmpty()) return Entitys.Subscription.EmptyArray;
+            if (endpoints.IsNullOrEmpty()) return Subscription.EmptyArray;
 
             foreach (var subscription in subscriptions)
             {
-                subscription.Event = new Entitys.Event() { Id = subscription.EvnetId };
+                subscription.Event = new Event() { Id = subscription.EvnetId };
 
                 var applicationEndpoint = endpoints.FirstOrDefault(a => a.Id == subscription.ApplicationEndpointId);
                 if (applicationEndpoint != null)

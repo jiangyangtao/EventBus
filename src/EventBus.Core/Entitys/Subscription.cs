@@ -4,16 +4,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBus.Core.Entitys
 {
-    internal class Subscription : BaseEntity<Subscription>, Abstractions.IModels.Subscription
+    internal class Subscription : BaseEntity<Subscription>, ISubscription
     {
         public Guid EvnetId { get; set; }
 
         [NotMapped]
-        public Abstractions.IModels.Event Event { get; set; }
+        public IEvent Event { get; set; }
 
         public Guid ApplicationEndpointId { get; set; }
 
         [NotMapped]
-        public Abstractions.IModels.ApplicationEndpoint ApplicationEndpoint { get; set; }
+        public IApplicationEndpoint ApplicationEndpoint { get; set; }
     }
 }
