@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBus.Core.Entitys
 {
-    internal class Application : BaseEntity<Application>, IApplication
+    public class Application : BaseEntity<Application>, IApplication
     {
         public Application() { }
 

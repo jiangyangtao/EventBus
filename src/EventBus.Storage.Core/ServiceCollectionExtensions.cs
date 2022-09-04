@@ -1,5 +1,6 @@
 ﻿using EventBus.Extensions;
 using EventBus.Storage.Abstractions.IRepositories;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,7 +49,23 @@ namespace EventBus.Storage.Core
 
             });
             services.AddScoped<IRepository, Repository>();
+
+
+
             return services;
+        }
+
+        /// <summary>
+        /// 初始化数据库
+        /// </summary>
+        /// <param name="applicationBuilder"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder InitializationDatabase(this IApplicationBuilder applicationBuilder)
+        {
+            var serviceScope = applicationBuilder.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            var db = serviceScope.ServiceProvider.GetRequiredService<EventBusDBContext>();
+            db.Database.EnsureCreated();
+            return applicationBuilder;
         }
     }
 }

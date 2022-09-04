@@ -16,7 +16,7 @@ namespace EventBus.API.Controllers
         }
 
         [HttpPut("/{eventId}")]
-        [HttpPost("/Put/{eventId}")]
+        [HttpPost("/{eventId}")]
         public async Task<IActionResult> Put(Guid eventId)
         {
             var e = await _eventProvider.GetEventAsync(eventId, false);

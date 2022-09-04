@@ -8,8 +8,10 @@ using System.Net;
 
 namespace EventBus.Core.Entitys
 {
-    internal class Event : BaseEntity<Event>, IEvent
+    public class Event : BaseEntity<Event>, IEvent
     {
+        private readonly string ArraySeparator = ",";
+
         public Event()
         {
         }
@@ -28,7 +30,23 @@ namespace EventBus.Core.Entitys
 
         public bool EnableIPAddressWhiteList { set; get; }
 
-        public string[] IPAddressWhiteList { set; get; }
+        [NotMapped]
+        public string[] IPAddressWhiteList
+        {
+            set
+            {
+                if (value.NotNullAndEmpty()) IPAddressWhiteListContent = string.Join(ArraySeparator, value);
+                else IPAddressWhiteListContent = string.Empty;
+            }
+            get
+            {
+                if (IPAddressWhiteListContent.IsNullOrEmpty()) return Array.Empty<string>();
+
+                return IPAddressWhiteListContent.Split(ArraySeparator);
+            }
+        }
+
+        public string IPAddressWhiteListContent { set; get; }
 
         public ProtocolType EventProtocol { set; get; }
 

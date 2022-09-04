@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBus.Core.Entitys
 {
-    internal class ApplicationEndpoint : BaseEntity<ApplicationEndpoint>, IApplicationEndpoint
+    public class ApplicationEndpoint : BaseEntity<ApplicationEndpoint>, IApplicationEndpoint
     {
         public ApplicationEndpoint() { }
 

@@ -35,7 +35,7 @@ namespace EventBus.Abstractions.IModels
         /// <summary>
         /// 响应内容
         /// </summary>
-        public object ResponseContent {  get; }
+        public string ResponseContent {  get; }
 
         /// <summary>
         /// 耗时，单位：秒

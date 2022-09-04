@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace EventBus.Core.Entitys
 {
-    internal class SubscriptionRecord : BaseEntity<SubscriptionRecord>, ISubscriptionRecord
+    public class SubscriptionRecord : BaseEntity<SubscriptionRecord>, ISubscriptionRecord
     {
         public SubscriptionRecord() { }
 
@@ -57,19 +57,19 @@ namespace EventBus.Core.Entitys
         {
             set
             {
-                if (value.IsNullOrEmpty()) FailedRetryPolicyString = string.Empty;
-                else FailedRetryPolicyString = JsonConvert.SerializeObject(value);
+                if (value.IsNullOrEmpty()) FailedRetryPolicyContent = string.Empty;
+                else FailedRetryPolicyContent = JsonConvert.SerializeObject(value);
             }
 
             get
             {
-                if (FailedRetryPolicyString.IsNullOrEmpty()) return Array.Empty<RetryPolicy>();
+                if (FailedRetryPolicyContent.IsNullOrEmpty()) return Array.Empty<RetryPolicy>();
 
-                return JsonConvert.DeserializeObject<RetryPolicy[]>(FailedRetryPolicyString);
+                return JsonConvert.DeserializeObject<RetryPolicy[]>(FailedRetryPolicyContent);
             }
         }
 
-        public string FailedRetryPolicyString { set; get; }
+        public string FailedRetryPolicyContent { set; get; }
 
         public bool SubscriptionResult { set; get; }
 

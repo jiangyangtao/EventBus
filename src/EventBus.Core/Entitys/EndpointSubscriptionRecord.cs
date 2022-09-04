@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBus.Core.Entitys
 {
-    internal class EndpointSubscriptionRecord : BaseEntity<EndpointSubscriptionRecord>, IEndpointSubscriptionRecord
+    public class EndpointSubscriptionRecord : BaseEntity<EndpointSubscriptionRecord>, IEndpointSubscriptionRecord
     {
         /// <summary>
         /// 
@@ -22,7 +22,7 @@ namespace EventBus.Core.Entitys
 
         public string ResponseStatucCode { set; get; }
 
-        public object ResponseContent { set; get; }
+        public string ResponseContent { set; get; }
 
         public long UsageTime { set; get; }
 

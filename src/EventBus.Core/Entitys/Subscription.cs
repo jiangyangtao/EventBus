@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBus.Core.Entitys
 {
-    internal class Subscription : BaseEntity<Subscription>, ISubscription
+    public class Subscription : BaseEntity<Subscription>, ISubscription
     {
         public Guid EvnetId { get; set; }
 

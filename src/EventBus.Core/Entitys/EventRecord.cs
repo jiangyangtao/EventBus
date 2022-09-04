@@ -9,7 +9,7 @@ using System.Text;
 
 namespace EventBus.Core.Entitys
 {
-    internal class EventRecord : BaseEntity<EventRecord>, IEventRecord
+    public class EventRecord : BaseEntity<EventRecord>, IEventRecord
     {
         public EventRecord() { }
 

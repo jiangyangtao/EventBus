@@ -20,6 +20,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseEventBus();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

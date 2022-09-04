@@ -2,6 +2,7 @@
 using EventBus.Core.Providers;
 using EventBus.Core.Services;
 using EventBus.Storage.Core;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,12 @@ namespace EventBus.Core
             services.AddScoped<IRetryProvider, RetryProvider>();
 
             return services;
+        }
+
+        public static IApplicationBuilder UseEventBus(this IApplicationBuilder applicationBuilder)
+        {
+            applicationBuilder.InitializationDatabase();
+            return applicationBuilder;
         }
 
         /// <summary>

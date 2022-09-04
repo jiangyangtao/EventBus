@@ -1,4 +1,6 @@
-﻿using EventBus.Storage.Abstractions.IRepositories;
+﻿using Castle.DynamicProxy;
+using EventBus.Extensions;
+using EventBus.Storage.Abstractions.IRepositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace EventBus.Storage.Core
@@ -11,12 +13,14 @@ namespace EventBus.Storage.Core
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes().Where(t => t.GetInterfaces().Contains(typeof(IEntity)))).ToArray();
-            foreach (var v in types)
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var entityTypes = assemblies.SelectMany(assemblie => assemblie.GetTypes().Where(t => t.HasInterface<IEntity>())).ToArray();
+            var types = entityTypes.Where(a => a.HasInterface<IProxyTargetAccessor>() == false).ToArray();  // 去除懒加载创建的实体代理
+            foreach (var t in types)
             {
-                if (v.IsAbstract) continue;
+                if (t.IsAbstract) continue;
 
-                modelBuilder.Entity(v);
+                modelBuilder.Entity(t);
             }
 
             base.OnModelCreating(modelBuilder);
