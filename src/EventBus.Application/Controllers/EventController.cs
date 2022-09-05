@@ -2,7 +2,7 @@
 using EventBus.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EventBus.API.Controllers
+namespace EventBus.Application.Controllers
 {
     public class EventController : Controller
     {

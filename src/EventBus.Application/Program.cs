@@ -8,6 +8,8 @@ builder.Services.AddRazorPages();
 
 var services = builder.Services;
 var configuration = builder.Configuration;
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
 services.AddEventBus(configuration);
 
 
