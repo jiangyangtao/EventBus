@@ -1,4 +1,6 @@
 using EventBus.Core;
+using EventBus.Extensions;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,23 @@ builder.Services.AddRazorPages();
 
 var services = builder.Services;
 var configuration = builder.Configuration;
+
+services.Configure<ApiBehaviorOptions>(options =>
+{
+    // 模型校验失败处理
+    options.InvalidModelStateResponseFactory = (context) =>
+    {
+        var errorMessage = context.ModelState.GetValidationSummary();
+        return new JsonResult(new
+        {
+            Success = false,
+            Status = 400,
+            Msg = errorMessage,
+            Data = string.Empty,
+        });
+    };
+});
+
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 services.AddEventBus(configuration);

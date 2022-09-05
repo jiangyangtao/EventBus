@@ -1,10 +1,11 @@
 ﻿using EventBus.Abstractions.IProviders;
+using EventBus.Application.Controllers.Base;
 using EventBus.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventBus.Application.Controllers
 {
-    public class EventController : Controller
+    public class EventController : BaseApiController
     {
         private readonly IEventProvider _eventProvider;
         private readonly IEventRecordProvider _eventRecordProvider;
@@ -19,6 +20,8 @@ namespace EventBus.Application.Controllers
         [HttpPost("/{eventId}")]
         public async Task<IActionResult> Put(Guid eventId)
         {
+            if (eventId == Guid.Empty) return NotFound();
+
             var e = await _eventProvider.GetEventAsync(eventId, false);
             if (e == null) return NotFound();
 
