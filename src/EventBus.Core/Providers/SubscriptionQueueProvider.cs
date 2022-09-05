@@ -36,6 +36,7 @@ namespace EventBus.Core.Providers
             if (endpointSubscription != null)
             {
                 record.SubscriptionResult = endpointSubscription.IsSuccessStatusCode;
+
                 await UpdateAsync(record, false);
                 await CreateAsync(endpointSubscription);
 
@@ -49,7 +50,31 @@ namespace EventBus.Core.Providers
                         await CreateAsync(retryData);
                     }
                 }
+
+                if (endpointSubscription.IsSuccessStatusCode) // 如果成功就更新订阅成功率
+                {
+                    await UpdateSubscriptionSuccessRate(record.EventRecordId);
+                }
             }
+        }
+
+        /// <summary>
+        /// 更新订阅成功率
+        /// </summary>
+        /// <param name="eventRecordId"></param>
+        /// <returns></returns>
+        private async Task UpdateSubscriptionSuccessRate(Guid eventRecordId)
+        {
+            var eventRecord = await GetByIdAsync<EventRecord>(eventRecordId);
+            if (eventRecord == null) return;
+
+            var subscriptions = await Get<SubscriptionRecord>(a => a.EventRecordId == eventRecordId).ToArrayAsync();
+            if (subscriptions.IsNullOrEmpty()) return;
+
+            var successCount = subscriptions.Count(a => a.SubscriptionResult);
+            eventRecord.SubscriptionCompletionRate = decimal.Round(successCount / subscriptions.Length, 2);  // 订阅成功率 = 成功数量 / 总数
+
+            await UpdateAsync(eventRecord);
         }
 
         private async Task<int> GetRetryCountAsync(Guid subscriptionRecordId)
