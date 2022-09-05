@@ -188,6 +188,14 @@ namespace EventBus.Core.Base
         {
         }
 
+        protected BaseRepository(IServiceScopeFactory serviceScopeFactory) : base(serviceScopeFactory)
+        {            
+        }
+
+        protected BaseRepository(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
+        }
+
         /// <summary>
         /// 创建一条数据
         /// </summary>

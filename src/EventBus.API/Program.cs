@@ -30,12 +30,9 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseEndpoints(endpoints =>
+app.MapGet("/", async context =>
 {
-    endpoints.MapGet("/", async context =>
-    {
-        await context.Response.WriteAsync("Hello, EventBus");
-    });
+    await context.Response.WriteAsync("Hello, EventBus");
 });
 
 app.Run();
