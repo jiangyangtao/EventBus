@@ -455,3 +455,6 @@ $RECYCLE.BIN/
 /src/EventBus.API/eventbus.db
 /src/EventBus.API/eventbus.db-shm
 /src/EventBus.API/eventbus.db-wal
+/src/EventBus.Application/eventbus.db
+/src/EventBus.Application/eventbus.db-shm
+/src/EventBus.Application/eventbus.db-wal

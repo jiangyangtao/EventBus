@@ -10,6 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="eventbus.db" />
+    <None Remove="eventbus.db-shm" />
+    <None Remove="eventbus.db-wal" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
   </ItemGroup>
 
