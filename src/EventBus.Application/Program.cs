@@ -1,16 +1,27 @@
 using EventBus.Core;
 using EventBus.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages();
-
+//builder.Services.AddRazorPages();
 
 var services = builder.Services;
 var configuration = builder.Configuration;
 
+services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.Formatting = Formatting.Indented;
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+    options.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss";
+    //options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+    //options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
+    //options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+});
 services.Configure<ApiBehaviorOptions>(options =>
 {
     // 模型校验失败处理
@@ -41,14 +52,25 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseEventBus();
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
+app.UseEventBus();
 app.UseRouting();
+app.UseHttpsRedirection();
+//app.UseStaticFiles();
 
 app.UseAuthorization();
 
-app.MapRazorPages();
+app.MapControllers();
+
+app.MapGet("/", async context =>
+{
+    await context.Response.WriteAsync("Hello, EventBus");
+});
+//app.MapRazorPages();
 
 app.Run();

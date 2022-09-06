@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EventBus.Application.Controllers.Base;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EventBus.Application.Controllers
 {
-    [Route("[controller]/[action]")]
-    [ApiController]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
+        [HttpGet]
         public IActionResult Index()
         {
             return View();

@@ -14,28 +14,34 @@ namespace EventBus.Core.Providers
         {
         }
 
-        public async Task AddOrUpdateApplicationAsync(IApplication application)
+        public async Task<Guid> AddOrUpdateApplicationAsync(Guid applicationId, string applicationName)
         {
-            var data = await GetByIdAsync(application.Id);
-            if (data == null)
-            {
-                await CreateAsync(new Application()
-                {
-                    ApplicationName = application.ApplicationName,
-                });
-                return;
-            }
+            if (applicationId.IsEmpty()) return await AddApplicationAsync(applicationName);
 
-            data.ApplicationName = application.ApplicationName;
+            var data = await GetByIdAsync(applicationId);
+            if (data == null) return await AddApplicationAsync(applicationName);
+
+            data.ApplicationName = applicationName;
             await UpdateAsync(data);
+
+            return data.Id;
         }
 
-        public async Task AddOrUpdateApplicationEndpointAsync(IApplicationEndpoint applicationEndpoint)
+        private async Task<Guid> AddApplicationAsync(string applicationName)
+        {
+            var application = new Application(applicationName);
+            await CreateAsync(application);
+
+            return application.Id;
+        }
+
+        public async Task<Guid> AddOrUpdateApplicationEndpointAsync(IApplicationEndpoint applicationEndpoint)
         {
             var endpoint = await GetByIdAsync<ApplicationEndpoint>(applicationEndpoint.Id);
             if (endpoint == null)
             {
-                await CreateAsync(new ApplicationEndpoint(applicationEndpoint));
+                endpoint = new ApplicationEndpoint(applicationEndpoint);
+                await CreateAsync(endpoint);
             }
 
             endpoint.EndpointName = applicationEndpoint.EndpointName;
@@ -44,23 +50,25 @@ namespace EventBus.Core.Providers
             endpoint.FailedRetryPolicy = applicationEndpoint.FailedRetryPolicy;
 
             await UpdateAsync(endpoint);
+
+            return endpoint.Id;
         }
 
-        public async Task RemoveApplicationAsync(IApplication application)
+        public async Task RemoveApplicationAsync(Guid applicationId)
         {
-            var app = await GetApplicationAsync(application.Id);
+            var app = await GetApplicationAsync(applicationId);
             if (app != null)
             {
-                await DeleteAsync(a => a.Id == application.Id);
+                await DeleteAsync(a => a.Id == applicationId);
             }
         }
 
-        public async Task RemoveApplicationEndpointAsync(IApplicationEndpoint endpoint)
+        public async Task RemoveApplicationEndpointAsync(Guid applicationEndpointId)
         {
-            var applicationEndpoint = await GetApplicationEndpointAsync(endpoint.Id);
+            var applicationEndpoint = await GetApplicationEndpointAsync(applicationEndpointId);
             if (applicationEndpoint != null)
             {
-                await DeleteAsync(a => a.Id == endpoint.Id);
+                await DeleteAsync(a => a.Id == applicationEndpointId);
             }
         }
 
@@ -130,6 +138,14 @@ namespace EventBus.Core.Providers
             if (applications.IsNullOrEmpty()) return Application.EmptyArray;
 
             return applications;
+        }
+
+        public async Task<long> GetApplicationCountAsync(string applicationName)
+        {
+            var query = Get();
+            if (applicationName.NotNullAndEmpty()) query.Where(a => a.ApplicationName.Contains(applicationName));
+
+            return await query.CountAsync();
         }
     }
 }

@@ -9,6 +9,11 @@ namespace EventBus.Core.Entitys
     {
         public Application() { }
 
+        public Application(string applicationName)
+        {
+            ApplicationName = applicationName;
+        }
+
         public string ApplicationName { set; get; }
 
         [NotMapped]

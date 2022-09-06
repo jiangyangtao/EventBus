@@ -16,9 +16,9 @@ namespace EventBus.Application.Controllers
             _eventRecordProvider = eventRecordProvider;
         }
 
-        [HttpPut("/{eventId}")]
-        [HttpPost("/{eventId}")]
-        public async Task<IActionResult> Put(Guid eventId)
+        [HttpPut("{eventId}")]
+        [HttpPost("{eventId}")]
+        public async Task<IActionResult> Publish(Guid eventId)
         {
             if (eventId == Guid.Empty) return NotFound();
 

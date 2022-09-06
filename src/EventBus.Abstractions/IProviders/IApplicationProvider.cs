@@ -7,13 +7,13 @@ namespace EventBus.Abstractions.IProviders
     /// </summary>
     public interface IApplicationProvider
     {
-        Task AddOrUpdateApplicationAsync(IApplication application);
+        Task<Guid> AddOrUpdateApplicationAsync(Guid applicationId, string applicationName);
 
-        Task AddOrUpdateApplicationEndpointAsync(IApplicationEndpoint applicationEndpoint);
+        Task<Guid> AddOrUpdateApplicationEndpointAsync(IApplicationEndpoint applicationEndpoint);
 
-        Task RemoveApplicationAsync(IApplication application);
+        Task RemoveApplicationAsync(Guid applicationId);
 
-        Task RemoveApplicationEndpointAsync(IApplicationEndpoint endpoint);
+        Task RemoveApplicationEndpointAsync(Guid applicationEndpointId);
 
         Task<IApplication> GetApplicationAsync(Guid applicationId);
 
@@ -22,6 +22,8 @@ namespace EventBus.Abstractions.IProviders
         Task<IApplication[]> GetApplicationsAsync();
 
         Task<IApplication[]> GetApplicationsAsync(int start, int count, string applicationName);
+
+        Task<long> GetApplicationCountAsync(string applicationName);
 
         Task<IApplicationEndpoint> GetApplicationEndpointAsync(Guid applicationEndpointId);
 
