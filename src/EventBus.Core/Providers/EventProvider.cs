@@ -17,13 +17,14 @@ namespace EventBus.Core.Providers
             _applicationProvider = applicationProvider;
         }
 
-        public async Task AddOrUpdateAsync(IEvent data)
+        public async Task<Guid> AddOrUpdateAsync(IEvent data)
         {
             var e = await Get(a => a.EventName == data.EventName).FirstOrDefaultAsync();
             if (e == null)
             {
-                await CreateAsync(new Event(data));
-                return;
+                e = new Event(data);
+                await CreateAsync(e);
+                return e.Id;
             }
 
             e.EventName = e.EventName;
@@ -31,11 +32,13 @@ namespace EventBus.Core.Providers
             e.IPAddressWhiteList = e.IPAddressWhiteList;
             e.EventProtocol = e.EventProtocol;
             await UpdateAsync(e);
+
+            return e.Id;
         }
 
-        public async Task RemoveAsync(IEvent data)
+        public async Task RemoveAsync(Guid eventId)
         {
-            var e = await GetEventAsync(data.EventName);
+            var e = await GetByIdAsync(eventId);
             if (e != null)
             {
                 await DeleteAsync(a => a.Id == e.Id);
@@ -105,6 +108,14 @@ namespace EventBus.Core.Providers
             }
 
             return subscriptions.Where(a => a.ApplicationEndpoint != null).ToArray();
+        }
+
+        public async Task<long> GetEventCountAsync(string eventName)
+        {
+            var query = Get();
+            if (eventName.NotNullAndEmpty()) query.Where(a => a.EventName.Contains(eventName));
+
+            return await query.CountAsync();
         }
     }
 }

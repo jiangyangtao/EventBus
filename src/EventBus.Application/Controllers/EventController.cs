@@ -1,5 +1,6 @@
 ﻿using EventBus.Abstractions.IProviders;
 using EventBus.Application.Controllers.Base;
+using EventBus.Application.Dto;
 using EventBus.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,6 +32,49 @@ namespace EventBus.Application.Controllers
 
             await _eventRecordProvider.PublishAsync(e.Id);
             return Ok();
+        }
+
+        [HttpPost]
+        public async Task<EventDtoBase> Add([FromBody] EventAddDto e)
+        {
+            var id = await _eventProvider.AddOrUpdateAsync(e.GetEvent());
+            return new EventDtoBase { EventId = id };
+        }
+
+        [HttpDelete("{eventId}")]
+        public async Task<IActionResult> Delete(Guid eventId)
+        {
+            if (eventId == Guid.Empty) return NotFound();
+
+            await _eventProvider.RemoveAsync(eventId);
+            return NoContent();
+        }
+
+        [HttpPut("{eventId}")]
+        public async Task<IActionResult> Modify([FromBody] EventAddDto e, Guid eventId)
+        {
+            if (eventId == Guid.Empty) return NotFound();
+
+            await _eventProvider.AddOrUpdateAsync(e.GetEvent(eventId));
+            return Ok();
+        }
+
+        [HttpGet]
+        public async Task<EventResult> Get([FromQuery] EventDtoBase query)
+        {
+            var e = await _eventProvider.GetEventAsync(query.EventId);
+            if (e == null) return null;
+
+            return new EventResult(e);
+        }
+
+        [HttpGet]
+        public async Task<EventPaginationResult> List([FromQuery] EventQueryDto query)
+        {
+            var events = await _eventProvider.GetEventsAsync(query.startIndex, query.count, query.EventName);
+            var count = await _eventProvider.GetEventCountAsync(query.EventName);
+
+            return new EventPaginationResult(count, events);
         }
     }
 }
