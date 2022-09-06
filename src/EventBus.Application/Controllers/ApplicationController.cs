@@ -17,12 +17,12 @@ namespace EventBus.Application.Controllers
         [HttpPost]
         public async Task<ApplicationDtoBase> Add([FromBody] ApplicationDto application)
         {
-            var id = await _applicationProvider.AddOrUpdateApplicationAsync(Guid.Empty, application.applicationName);
-            return new ApplicationDtoBase() { applicationId = id };
+            var id = await _applicationProvider.AddOrUpdateApplicationAsync(Guid.Empty, application.ApplicationName);
+            return new ApplicationDtoBase() { ApplicationId = id };
         }
 
         [HttpDelete("{applicationId}")]
-        public async Task<IActionResult> Remove(Guid applicationId)
+        public async Task<IActionResult> Delete(Guid applicationId)
         {
             if (applicationId == Guid.Empty) return NotFound();
 
@@ -38,14 +38,14 @@ namespace EventBus.Application.Controllers
             var data = await _applicationProvider.GetApplicationAsync(applicationId);
             if (data == null) return NotFound();
 
-            await _applicationProvider.AddOrUpdateApplicationAsync(applicationId, application.applicationName);
+            await _applicationProvider.AddOrUpdateApplicationAsync(applicationId, application.ApplicationName);
             return Ok();
         }
 
         [HttpGet]
         public async Task<ApplicationResult> Get([FromQuery] ApplicationDtoBase query)
         {
-            var application = await _applicationProvider.GetApplicationAsync(query.applicationId);
+            var application = await _applicationProvider.GetApplicationAsync(query.ApplicationId);
             if (application == null) return null;
 
             return new ApplicationResult(application);
@@ -54,8 +54,8 @@ namespace EventBus.Application.Controllers
         [HttpGet]
         public async Task<ApplicationPaginationResult> List([FromQuery] ApplicationQueryDto query)
         {
-            var applications = await _applicationProvider.GetApplicationsAsync(query.startIndex, query.count, query.applicationName);
-            var count = await _applicationProvider.GetApplicationCountAsync(query.applicationName);
+            var applications = await _applicationProvider.GetApplicationsAsync(query.startIndex, query.count, query.ApplicationName);
+            var count = await _applicationProvider.GetApplicationCountAsync(query.ApplicationName);
 
             return new ApplicationPaginationResult(count, applications);
         }

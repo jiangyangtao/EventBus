@@ -46,6 +46,7 @@ namespace EventBus.Core.Providers
 
             endpoint.EndpointName = applicationEndpoint.EndpointName;
             endpoint.EndpointUrl = applicationEndpoint.EndpointUrl;
+            endpoint.RequestTimeout = applicationEndpoint.RequestTimeout;
             endpoint.SubscriptionProtocol = applicationEndpoint.SubscriptionProtocol;
             endpoint.FailedRetryPolicy = applicationEndpoint.FailedRetryPolicy;
 
@@ -144,6 +145,14 @@ namespace EventBus.Core.Providers
         {
             var query = Get();
             if (applicationName.NotNullAndEmpty()) query.Where(a => a.ApplicationName.Contains(applicationName));
+
+            return await query.CountAsync();
+        }
+
+        public async Task<long> GetApplicationEndpointCountAsync(string endpointName)
+        {
+            var query = Get<ApplicationEndpoint>();
+            if (endpointName.NotNullAndEmpty()) query.Where(a => a.EndpointName.Contains(endpointName));
 
             return await query.CountAsync();
         }

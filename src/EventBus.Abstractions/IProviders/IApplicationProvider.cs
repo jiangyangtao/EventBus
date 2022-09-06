@@ -30,5 +30,7 @@ namespace EventBus.Abstractions.IProviders
         Task<IApplicationEndpoint[]> GetApplicationEndpointsAsync(Guid applicationId);
 
         Task<IApplicationEndpoint[]> GetApplicationEndpointsAsync(int start, int count, string endpointName);
+
+        Task<long> GetApplicationEndpointCountAsync(string endpointName);
     }
 }

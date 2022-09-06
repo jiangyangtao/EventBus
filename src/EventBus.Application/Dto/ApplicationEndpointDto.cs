@@ -6,7 +6,7 @@ namespace EventBus.Application.Dto
 {
     public class ApplicationEndpointDtoBase
     {
-        public Guid applicationEndpointId { set; get; }
+        public Guid ApplicationEndpointId { set; get; }
     }
 
     public class ApplicationEndpointDto : IApplicationEndpoint
@@ -35,28 +35,28 @@ namespace EventBus.Application.Dto
     public class ApplicationEndpointAddDto
     {
         [Required, MaxLength(100)]
-        public string endpointName { set; get; }
+        public string EndpointName { set; get; }
 
-        public Uri endpointUrl { set; get; }
+        public Uri EndpointUrl { set; get; }
 
-        public ProtocolType? subscriptionProtocol { set; get; }
+        public ProtocolType? SubscriptionProtocol { set; get; }
 
-        public int requestTimeout { set; get; }
+        public int RequestTimeout { set; get; }
 
-        public Guid applicationId { set; get; }
+        public Guid ApplicationId { set; get; }
 
-        public RetryPolicyDto[] failedRetryPolicy { set; get; }
+        public RetryPolicyDto[] FailedRetryPolicy { set; get; }
 
         private ApplicationEndpointDto BuildApplicationEndpoint()
         {
             return new ApplicationEndpointDto
             {
-                EndpointName = endpointName,
-                EndpointUrl = endpointUrl,
-                SubscriptionProtocol = subscriptionProtocol.Value,
-                RequestTimeout = requestTimeout,
-                ApplicationId = applicationId,
-                FailedRetryPolicy = failedRetryPolicy
+                EndpointName = EndpointName,
+                EndpointUrl = EndpointUrl,
+                SubscriptionProtocol = SubscriptionProtocol.Value,
+                RequestTimeout = RequestTimeout,
+                ApplicationId = ApplicationId,
+                FailedRetryPolicy = FailedRetryPolicy
             };
         }
 
@@ -71,25 +71,26 @@ namespace EventBus.Application.Dto
         }
     }
 
-    public class ApplicationEndpointModifyDto : ApplicationEndpointAddDto
+    public class ApplicationEndpointQueryDto : PagingParameter
     {
-        public Guid applicationEndpointId { set; get; }
-
-        internal override IApplicationEndpoint GetApplicationEndpoint() => GetApplicationEndpoint(applicationEndpointId);
+        [Required, MaxLength(100)]
+        public string EndpointName { set; get; }
     }
 
-    public class ApplicationEndpointResult : ApplicationEndpointModifyDto
+    public class ApplicationEndpointResult : ApplicationEndpointAddDto
     {
         public ApplicationEndpointResult(IApplicationEndpoint applicationEndpoint)
         {
-            applicationEndpointId = applicationEndpoint.Id;
-            applicationId = applicationEndpoint.ApplicationId;
-            endpointName = applicationEndpoint.EndpointName;
-            endpointUrl = applicationEndpoint.EndpointUrl;
-            subscriptionProtocol = applicationEndpoint.SubscriptionProtocol;
-            requestTimeout = applicationEndpoint.RequestTimeout;
-            failedRetryPolicy = applicationEndpoint.FailedRetryPolicy.Select(a => new RetryPolicyDto(a)).ToArray();
+            ApplicationEndpointId = applicationEndpoint.Id;
+            ApplicationId = applicationEndpoint.ApplicationId;
+            EndpointName = applicationEndpoint.EndpointName;
+            EndpointUrl = applicationEndpoint.EndpointUrl;
+            SubscriptionProtocol = applicationEndpoint.SubscriptionProtocol;
+            RequestTimeout = applicationEndpoint.RequestTimeout;
+            FailedRetryPolicy = applicationEndpoint.FailedRetryPolicy.Select(a => new RetryPolicyDto(a)).ToArray();
         }
+
+        public Guid ApplicationEndpointId { set; get; }
     }
 
     public class ApplicationEndpointPaginationResult : PaginationResult<ApplicationEndpointResult>
