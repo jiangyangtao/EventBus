@@ -44,10 +44,10 @@ namespace EventBus.Application.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        public async Task<ApplicationEndpointResult> Get([FromQuery] ApplicationEndpointDtoBase query)
+        [HttpGet("{applicationEndpointId}")]
+        public async Task<ApplicationEndpointResult> Get(Guid applicationEndpointId)
         {
-            var applicationEndpoint = await _applicationProvider.GetApplicationEndpointAsync(query.ApplicationEndpointId);
+            var applicationEndpoint = await _applicationProvider.GetApplicationEndpointAsync(applicationEndpointId);
             if (applicationEndpoint == null) return null;
 
             return new ApplicationEndpointResult(applicationEndpoint);

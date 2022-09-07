@@ -59,10 +59,10 @@ namespace EventBus.Application.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        public async Task<EventResult> Get([FromQuery] EventDtoBase query)
+        [HttpGet("{eventId}")]
+        public async Task<EventResult> Get(Guid eventId)
         {
-            var e = await _eventProvider.GetEventAsync(query.EventId);
+            var e = await _eventProvider.GetEventAsync(eventId);
             if (e == null) return null;
 
             return new EventResult(e);

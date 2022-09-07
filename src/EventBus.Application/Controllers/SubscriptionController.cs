@@ -40,10 +40,10 @@ namespace EventBus.Application.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        public async Task<SubscriptionResult> Get([FromQuery] SubscriptionDtoBase query)
+        [HttpGet("{subscriptionId}")]
+        public async Task<SubscriptionResult> Get(Guid subscriptionId)
         {
-            var subscription = await _subscriptionProvider.GetSubscriptionAsync(query.SubscriptionId);
+            var subscription = await _subscriptionProvider.GetSubscriptionAsync(subscriptionId);
             if (subscription == null) return null;
 
             return new SubscriptionResult(subscription);

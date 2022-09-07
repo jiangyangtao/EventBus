@@ -42,10 +42,10 @@ namespace EventBus.Application.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        public async Task<ApplicationResult> Get([FromQuery] ApplicationDtoBase query)
+        [HttpGet("{applicationId}")]
+        public async Task<ApplicationResult> Get(Guid applicationId)
         {
-            var application = await _applicationProvider.GetApplicationAsync(query.ApplicationId);
+            var application = await _applicationProvider.GetApplicationAsync(applicationId);
             if (application == null) return null;
 
             return new ApplicationResult(application);
