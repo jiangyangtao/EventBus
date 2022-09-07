@@ -1,6 +1,7 @@
 ﻿using EventBus.Abstractions.Enums;
 using EventBus.Abstractions.IModels;
 using EventBus.Core.Base;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBus.Core.Entitys
 {
@@ -54,5 +55,15 @@ namespace EventBus.Core.Entitys
         public Guid EventRecordId { set; get; }
 
         public Guid EventId { set; get; }
+
+
+        [NotMapped]
+        public IEvent Event { set; get; }
+
+        [NotMapped]
+        public IEventRecord EventRecord { set; get; }
+
+        [NotMapped]
+        public ISubscriptionRecord SubscriptionRecord { set; get; }
     }
 }

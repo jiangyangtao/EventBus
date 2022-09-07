@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace EventBus.Abstractions.IModels
 {
@@ -20,5 +16,11 @@ namespace EventBus.Abstractions.IModels
         /// 订阅的分组日志 Id
         /// </summary>
         public Guid SubscriptionRecordId { get; }
+
+        public IEventRecord EventRecord { get; }
+
+        public IEvent Event { get; }
+
+        public ISubscriptionRecord SubscriptionRecord { get; }
     }
 }

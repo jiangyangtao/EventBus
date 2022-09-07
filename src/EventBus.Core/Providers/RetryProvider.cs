@@ -61,5 +61,45 @@ namespace EventBus.Core.Providers
         {
             return await Get<EndpointSubscriptionRecord>(a => a.SubscriptionRecordId == subscriptionRecordId).CountAsync();
         }
+
+        public async Task<IRetryData[]> GetRetryDatasAsync(string eventName, string endpointName, int start, int count)
+        {
+            var query = await BuildQueryAsync(eventName, endpointName);
+
+            var retryDatas = await query.Skip(start).Take(count).ToArrayAsync();
+            if (retryDatas.IsNullOrEmpty()) return RetryData.EmptyArray;
+
+            return retryDatas;
+        }
+
+        private async Task<IQueryable<RetryData>> BuildQueryAsync(string eventName, string endpointName)
+        {
+            var eventIds = Array.Empty<Guid>();
+            var subscriptionRecordIds = Array.Empty<Guid>();
+            if (endpointName.NotNullAndEmpty())
+            {
+                var events = await Get<Event>(a => a.EventName.Contains(eventName)).ToArrayAsync();
+                eventIds = events.Select(a => a.Id).ToArray();
+            }
+
+            if (endpointName.NotNullAndEmpty())
+            {
+                var subscriptionRecords = await Get<SubscriptionRecord>(a => a.EndpointName.Contains(endpointName)).ToArrayAsync();
+                subscriptionRecordIds = subscriptionRecords.Select(a => a.Id).ToArray();
+            }
+
+            var query = Get();
+            if (eventIds.NotNullAndEmpty()) query.Where(a => eventIds.Contains(a.EventId));
+            if (subscriptionRecordIds.NotNullAndEmpty()) query.Where(a => subscriptionRecordIds.Contains(a.SubscriptionRecordId));
+
+            return query;
+        }
+
+        public async Task<long> GetRetryDataCountAsync(string eventName, string endpointName)
+        {
+            var query = await BuildQueryAsync(eventName, endpointName);
+
+            return await query.CountAsync();
+        }
     }
 }
