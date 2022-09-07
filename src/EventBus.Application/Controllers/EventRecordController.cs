@@ -1,6 +1,7 @@
 ﻿using EventBus.Abstractions.IProviders;
 using EventBus.Application.Controllers.Base;
 using EventBus.Application.Dto;
+using EventBus.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventBus.Application.Controllers
@@ -21,6 +22,24 @@ namespace EventBus.Application.Controllers
             var count = await _eventRecordProvider.GetEventRecordCountAsync(query.BeginTime, query.EndTime);
 
             return new EventRecordPaginationResult(count, records);
+        }
+
+        [HttpGet("{eventRecordId}")]
+        public async Task<SubscriptionRecordResult[]> GetSubscriptionRecord(Guid eventRecordId)
+        {
+            var records = await _eventRecordProvider.GetSubscriptionRecordsAsync(eventRecordId);
+            if (records.IsNullOrEmpty()) return Array.Empty<SubscriptionRecordResult>();
+
+            return records.Select(a => new SubscriptionRecordResult(a)).ToArray();
+        }
+
+        [HttpGet("{subscriptionRecordId}")]
+        public async Task<EndpointSubscriptionRecordResult[]> GetEndpointSubscriptionRecord(Guid subscriptionRecordId)
+        {
+            var records = await _eventRecordProvider.GetEndpointSubscriptionRecordsAsync(subscriptionRecordId);
+            if (records.IsNullOrEmpty()) return Array.Empty<EndpointSubscriptionRecordResult>();
+
+            return records.Select(a => new EndpointSubscriptionRecordResult(a)).ToArray();
         }
     }
 }

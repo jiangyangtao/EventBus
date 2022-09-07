@@ -81,5 +81,23 @@ namespace EventBus.Core.Providers
 
             return await query.CountAsync();
         }
+
+        public async Task<ISubscriptionRecord[]> GetSubscriptionRecordsAsync(Guid eventRecordId)
+        {
+            var records = await Get<SubscriptionRecord>(a => a.EventRecordId == eventRecordId).ToArrayAsync();
+            if (records.IsNullOrEmpty()) return SubscriptionRecord.EmptyArray;
+
+            return records;
+        }
+
+        public async Task<IEndpointSubscriptionRecord[]> GetEndpointSubscriptionRecordsAsync(Guid subscriptionRecordId)
+        {
+            var records = await Get<EndpointSubscriptionRecord>(a => a.SubscriptionRecordId == subscriptionRecordId).ToArrayAsync();
+            if (records.IsNullOrEmpty()) return EndpointSubscriptionRecord.EmptyArray;
+
+            return records;
+        }
+
+     
     }
 }

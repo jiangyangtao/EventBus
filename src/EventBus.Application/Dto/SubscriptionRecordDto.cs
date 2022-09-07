@@ -8,9 +8,9 @@ namespace EventBus.Application.Dto
         public Guid SubscriptionRecordId { get; set; }
     }
 
-    public class SubscriptionRecordResult : SubscriptionRecordDtoBase
+    public class SubscriptionRecordDto : SubscriptionRecordDtoBase
     {
-        public SubscriptionRecordResult(ISubscriptionRecord record)
+        public SubscriptionRecordDto(ISubscriptionRecord record)
         {
             SubscriptionRecordId = record.Id;
             EndpointName = record.EndpointName;
@@ -52,11 +52,11 @@ namespace EventBus.Application.Dto
         public bool SubscriptionResult { get; }
     }
 
-    public class SubscriptionRecordPaginationResult : PaginationResult<SubscriptionRecordResult>
+    public class SubscriptionRecordResult : SubscriptionRecordDto
     {
-        public SubscriptionRecordPaginationResult(long count, ISubscriptionRecord[] records) : base(count)
+        public SubscriptionRecordResult(ISubscriptionRecord record):base(record)
         {
-            List = records.Select(a => new SubscriptionRecordResult(a)).ToArray();
+
         }
     }
 }
