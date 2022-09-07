@@ -74,5 +74,13 @@ namespace EventBus.Core.Providers
 
             return evnetRecords;
         }
+
+        public async Task<long> GetEventRecordCountAsync(DateTime? begin, DateTime? end)
+        {
+            var query = Get();
+            if (begin.HasValue && end.HasValue) query.Where(a => a.CreateTime > begin.Value && a.CreateTime < end.Value);
+
+            return await query.CountAsync();
+        }
     }
 }

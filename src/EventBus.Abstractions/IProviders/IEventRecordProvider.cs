@@ -16,5 +16,7 @@ namespace EventBus.Abstractions.IProviders
         Task<IEventRecord[]> GetEventRecordsAsync(Guid eventId);
 
         Task<IEventRecord[]> GetEventRecordsAsync(int start, int count, DateTime? begin, DateTime? end);
+
+        Task<long> GetEventRecordCountAsync(DateTime? begin, DateTime? end);
     }
 }

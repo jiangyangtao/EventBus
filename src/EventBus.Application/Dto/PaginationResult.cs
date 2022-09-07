@@ -7,6 +7,7 @@ namespace EventBus.Application.Dto
         public PaginationResult(long count)
         {
             TotalCount = count;
+            List = Array.Empty<T>();
         }
 
         /// <summary>
