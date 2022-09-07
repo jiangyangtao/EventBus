@@ -12,14 +12,14 @@ namespace EventBus.Core.Entitys
     {
         public SubscriptionRecord() { }
 
-        public SubscriptionRecord(Guid eventId, IEventRecord eventRecord, IApplicationEndpoint endpoint)
+        public SubscriptionRecord(Guid eventId, IEventRecord eventRecord, ISubscription subscript)
         {
             EventId = eventId;
             EventRecordId = eventRecord.Id;
-            EndpointName = endpoint.EndpointName;
-            EndpointUrl = endpoint.EndpointUrl;
-            SubscriptionProtocol = endpoint.SubscriptionProtocol;
-            FailedRetryPolicy = endpoint.FailedRetryPolicy;
+            EndpointName = subscript.EndpointName;
+            EndpointUrl = subscript.EndpointUrl;
+            SubscriptionProtocol = subscript.SubscriptionProtocol;
+            FailedRetryPolicy = subscript.FailedRetryPolicy;
 
             SubscriptionHeader = eventRecord.Header;
             SubscriptionContent = eventRecord.BuilderHttpContent();

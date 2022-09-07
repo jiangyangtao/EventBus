@@ -54,19 +54,17 @@ namespace EventBus.Core.Entitys
         {
             set
             {
-                FailedRetryPolicyString = JsonConvert.SerializeObject(value);
+                FailedRetryPolicyContent = JsonConvert.SerializeObject(value);
             }
 
             get
             {
-                if (FailedRetryPolicyString.IsNullOrEmpty()) return Array.Empty<RetryPolicy>();
+                if (FailedRetryPolicyContent.IsNullOrEmpty()) return Array.Empty<RetryPolicy>();
 
-                return JsonConvert.DeserializeObject<RetryPolicy[]>(FailedRetryPolicyString);
+                return JsonConvert.DeserializeObject<RetryPolicy[]>(FailedRetryPolicyContent);
             }
         }
 
-        public string FailedRetryPolicyString { set; get; }
-
-
+        public string FailedRetryPolicyContent { set; get; }
     }
 }

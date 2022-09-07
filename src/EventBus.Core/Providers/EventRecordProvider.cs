@@ -37,8 +37,7 @@ namespace EventBus.Core.Providers
 
             if (e.Subscriptions.NotNullAndEmpty())
             {
-                var records = e.Subscriptions.Where(subscription => subscription.ApplicationEndpoint != null)
-                    .Select(subscription => new SubscriptionRecord(e.Id, eventRecord, subscription.ApplicationEndpoint)).ToArray();
+                var records = e.Subscriptions.Select(subscription => new SubscriptionRecord(e.Id, eventRecord, subscription)).ToArray();
 
                 if (records.NotNullAndEmpty())
                 {

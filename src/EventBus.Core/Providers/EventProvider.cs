@@ -10,11 +10,11 @@ namespace EventBus.Core.Providers
 {
     internal class EventProvider : BaseRepository<Event>, IEventProvider
     {
-        private readonly IApplicationProvider _applicationProvider;
+        private readonly ISubscriptionProvider _subscriptionProvider;
 
-        public EventProvider(IRepository repository, IApplicationProvider applicationProvider) : base(repository)
+        public EventProvider(IRepository repository, ISubscriptionProvider subscriptionProvider) : base(repository)
         {
-            _applicationProvider = applicationProvider;
+            _subscriptionProvider = subscriptionProvider;
         }
 
         public async Task<Guid> AddOrUpdateAsync(IEvent data)
@@ -52,7 +52,7 @@ namespace EventBus.Core.Providers
 
             if (isInclude)
             {
-                var subscriptions = await GetSubscriptionsAsync(eventId);
+                var subscriptions = await _subscriptionProvider.GetSubscriptionsAsync(eventId);
                 if (subscriptions.NotNullAndEmpty()) e.Subscriptions = subscriptions;
             }
 
@@ -81,33 +81,6 @@ namespace EventBus.Core.Providers
             if (events.IsNullOrEmpty()) return Event.EmptyArray;
 
             return events;
-        }
-
-        public async Task<ISubscription> GetSubscriptionAsync(Guid subscriptionId)
-        {
-            return await GetByIdAsync<Subscription>(subscriptionId);
-        }
-
-        public async Task<ISubscription[]> GetSubscriptionsAsync(Guid eventId)
-        {
-            var subscriptions = await Get<Subscription>(a => a.EvnetId == eventId).ToArrayAsync();
-            if (subscriptions.IsNullOrEmpty()) return Subscription.EmptyArray;
-
-            var endpoints = await _applicationProvider.GetApplicationEndpointsAsync(eventId);
-            if (endpoints.IsNullOrEmpty()) return Subscription.EmptyArray;
-
-            foreach (var subscription in subscriptions)
-            {
-                subscription.Event = new Event() { Id = subscription.EvnetId };
-
-                var applicationEndpoint = endpoints.FirstOrDefault(a => a.Id == subscription.ApplicationEndpointId);
-                if (applicationEndpoint != null)
-                {
-                    subscription.ApplicationEndpoint = applicationEndpoint;
-                }
-            }
-
-            return subscriptions.Where(a => a.ApplicationEndpoint != null).ToArray();
         }
 
         public async Task<long> GetEventCountAsync(string eventName)

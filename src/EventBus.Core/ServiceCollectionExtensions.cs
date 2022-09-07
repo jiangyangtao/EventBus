@@ -29,6 +29,7 @@ namespace EventBus.Core
             services.AddScoped<IEventProvider, EventProvider>();
             services.AddScoped<IEventRecordProvider, EventRecordProvider>();
             services.AddScoped<IRetryProvider, RetryProvider>();
+            services.AddScoped<ISubscriptionProvider, SubscriptionProvider>();
 
             return services;
         }

@@ -1,4 +1,5 @@
-﻿
+﻿using EventBus.Abstractions.Enums;
+
 
 namespace EventBus.Abstractions.IModels
 {
@@ -8,13 +9,33 @@ namespace EventBus.Abstractions.IModels
     public interface ISubscription : IBaseModel
     {
         /// <summary>
-        /// 事件
+        /// 接入点名称
         /// </summary>
-        public IEvent Event { get;  }
+        public string EndpointName { get; }
 
         /// <summary>
-        /// 应用订阅的接入点
+        /// 接入点地址
         /// </summary>
-        public IApplicationEndpoint ApplicationEndpoint { get; }
+        public Uri EndpointUrl { get; }
+
+        /// <summary>
+        /// 订阅协议
+        /// </summary>
+        public ProtocolType SubscriptionProtocol { get; }
+
+        /// <summary>
+        /// 请求超时时间
+        /// </summary>
+        public int RequestTimeout { get; }
+
+        /// <summary>
+        /// 失败的重试策略
+        /// </summary>
+        public IRetryPolicy[] FailedRetryPolicy { get; }
+
+        /// <summary>
+        /// 事件
+        /// </summary>
+        public IEvent Event { get; }
     }
 }
