@@ -1,11 +1,19 @@
 ﻿using EventBus.Abstractions.IModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace EventBus.Application.Dto
 {
-    public class EventRecordDto
+    public class EventRecordDtoBase
+    {
+        [Required]
+        public Guid EventRecordId { get; set; }
+    }
+
+    public class EventRecordDto : EventRecordDtoBase
     {
         public EventRecordDto(IEventRecord record)
         {
+            EventRecordId = record.Id;
             QueryString = record.QueryString;
             Header = record.Header;
             Data = record.Data;

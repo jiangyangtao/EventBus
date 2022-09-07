@@ -15,5 +15,7 @@ namespace EventBus.Abstractions.IProviders
         Task<long> GetSubscriptionCountAsync(Guid eventId, string endpointName);
 
         Task<ISubscription[]> GetSubscriptionsAsync(Guid eventId);
+
+        Task<ISubscriptionRecord[]> GetSubscriptionRecordsAsync(Guid eventRecordId);
     }
 }

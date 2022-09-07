@@ -1,0 +1,62 @@
+﻿using EventBus.Abstractions.Enums;
+using EventBus.Abstractions.IModels;
+
+namespace EventBus.Application.Dto
+{
+    public class SubscriptionRecordDtoBase
+    {
+        public Guid SubscriptionRecordId { get; set; }
+    }
+
+    public class SubscriptionRecordResult : SubscriptionRecordDtoBase
+    {
+        public SubscriptionRecordResult(ISubscriptionRecord record)
+        {
+            SubscriptionRecordId = record.Id;
+            EndpointName = record.EndpointName;
+            EndpointUrl = record.EndpointUrl;
+            SubscriptionProtocol = record.SubscriptionProtocol;
+            RequestTimeout = record.RequestTimeout;
+            FailedRetryPolicy = record.FailedRetryPolicy;
+            SubscriptionResult = record.SubscriptionResult;
+        }
+
+        /// <summary>
+        /// 接入点名称
+        /// </summary>
+        public string EndpointName { get; }
+
+        /// <summary>
+        /// 接入点地址
+        /// </summary>
+        public Uri EndpointUrl { get; }
+
+        /// <summary>
+        /// 订阅协议
+        /// </summary>
+        public ProtocolType SubscriptionProtocol { get; }
+
+        /// <summary>
+        /// 请求超时时间，单位：秒
+        /// </summary>
+        public int RequestTimeout { get; }
+
+        /// <summary>
+        /// 失败的重试策略
+        /// </summary>
+        public IRetryPolicy[] FailedRetryPolicy { get; }
+
+        /// <summary>
+        /// 订阅结果，true 成功，false 失败
+        /// </summary>
+        public bool SubscriptionResult { get; }
+    }
+
+    public class SubscriptionRecordPaginationResult : PaginationResult<SubscriptionRecordResult>
+    {
+        public SubscriptionRecordPaginationResult(long count, ISubscriptionRecord[] records) : base(count)
+        {
+            List = records.Select(a => new SubscriptionRecordResult(a)).ToArray();
+        }
+    }
+}
