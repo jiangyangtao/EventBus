@@ -5,6 +5,8 @@ namespace EventBus.Application.Dto
 {
     public class RetryPolicyDto : IRetryPolicy
     {
+        public RetryPolicyDto() { }
+
         public RetryPolicyDto(IRetryPolicy retryPolicy)
         {
             RetryDelayCount = retryPolicy.RetryDelayCount;

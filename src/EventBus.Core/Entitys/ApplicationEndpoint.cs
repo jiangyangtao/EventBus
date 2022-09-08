@@ -15,7 +15,7 @@ namespace EventBus.Core.Entitys
         {
             EndpointName = endpoint.EndpointName;
             EndpointUrl = endpoint.EndpointUrl;
-            ApplicationId = endpoint.Application.Id;
+            ApplicationId = endpoint.ApplicationId;
             SubscriptionProtocol = endpoint.SubscriptionProtocol;
             Application = endpoint.Application;
             FailedRetryPolicy = endpoint.FailedRetryPolicy;

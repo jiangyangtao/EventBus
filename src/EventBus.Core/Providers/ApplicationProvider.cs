@@ -51,7 +51,6 @@ namespace EventBus.Core.Providers
             endpoint.FailedRetryPolicy = applicationEndpoint.FailedRetryPolicy;
 
             await UpdateAsync(endpoint);
-
             return endpoint.Id;
         }
 

@@ -56,7 +56,7 @@ namespace EventBus.Application.Dto
                 SubscriptionProtocol = SubscriptionProtocol.Value,
                 RequestTimeout = RequestTimeout,
                 ApplicationId = ApplicationId,
-                FailedRetryPolicy = FailedRetryPolicy
+                FailedRetryPolicy = FailedRetryPolicy,
             };
         }
 
@@ -73,7 +73,6 @@ namespace EventBus.Application.Dto
 
     public class ApplicationEndpointQueryDto : PagingParameter
     {
-        [Required, MaxLength(100)]
         public string EndpointName { set; get; }
     }
 
