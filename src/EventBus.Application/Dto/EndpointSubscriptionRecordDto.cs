@@ -1,5 +1,7 @@
 ﻿using EventBus.Abstractions.Enums;
 using EventBus.Abstractions.IModels;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
 
 namespace EventBus.Application.Dto
@@ -27,6 +29,7 @@ namespace EventBus.Application.Dto
         /// <summary>
         /// 通知类型
         /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
         public SubscriptionType SubscriptionType { get; }
 
         /// <summary>

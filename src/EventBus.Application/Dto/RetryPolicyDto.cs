@@ -1,5 +1,7 @@
 ﻿using EventBus.Abstractions.Enums;
 using EventBus.Abstractions.IModels;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace EventBus.Application.Dto
 {
@@ -14,10 +16,12 @@ namespace EventBus.Application.Dto
             Behavior = retryPolicy.Behavior;
         }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public RetryDelayUnit RetryDelayUnit { set; get; }
 
         public int RetryDelayCount { set; get; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public RetryBehavior Behavior { set; get; }
     }
 }

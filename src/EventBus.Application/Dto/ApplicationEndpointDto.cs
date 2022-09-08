@@ -1,5 +1,7 @@
 ﻿using EventBus.Abstractions.Enums;
 using EventBus.Abstractions.IModels;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
 
 namespace EventBus.Application.Dto
@@ -39,6 +41,7 @@ namespace EventBus.Application.Dto
 
         public Uri EndpointUrl { set; get; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         public ProtocolType? SubscriptionProtocol { set; get; }
 
         public int RequestTimeout { set; get; }

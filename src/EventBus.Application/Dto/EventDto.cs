@@ -1,5 +1,7 @@
 ﻿using EventBus.Abstractions.Enums;
 using EventBus.Abstractions.IModels;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 
@@ -46,6 +48,7 @@ namespace EventBus.Application.Dto
         public string[] IPAddressWhiteList { get; set; }
 
         [Required]
+        [JsonConverter(typeof(StringEnumConverter))]
         public ProtocolType? EventProtocol { get; set; }
 
         private EventDto BuildEvent() => new EventDto

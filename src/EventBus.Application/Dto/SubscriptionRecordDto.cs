@@ -1,5 +1,7 @@
 ﻿using EventBus.Abstractions.Enums;
 using EventBus.Abstractions.IModels;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace EventBus.Application.Dto
 {
@@ -34,6 +36,7 @@ namespace EventBus.Application.Dto
         /// <summary>
         /// 订阅协议
         /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
         public ProtocolType SubscriptionProtocol { get; }
 
         /// <summary>
@@ -54,7 +57,7 @@ namespace EventBus.Application.Dto
 
     public class SubscriptionRecordResult : SubscriptionRecordDto
     {
-        public SubscriptionRecordResult(ISubscriptionRecord record):base(record)
+        public SubscriptionRecordResult(ISubscriptionRecord record) : base(record)
         {
 
         }
