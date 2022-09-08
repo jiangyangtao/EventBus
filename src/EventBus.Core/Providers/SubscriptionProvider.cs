@@ -34,21 +34,37 @@ namespace EventBus.Core.Providers
             return await GetByIdAsync<Subscription>(subscriptionId);
         }
 
-        public async Task<long> GetSubscriptionCountAsync(Guid eventId, string endpointName)
+        public async Task<long> GetSubscriptionCountAsync(Guid? eventId, string endpointName)
         {
-            var query = Get(a => a.EventId == eventId);
-            if (endpointName.NotNullAndEmpty()) query.Where(a => a.EndpointName.Contains(endpointName));
-
+            var query = BuildQueryable(eventId, endpointName);
             return await query.CountAsync();
         }
 
-        public async Task<ISubscription[]> GetSubscriptionsAsync(Guid eventId, string endpointName, int start, int count)
+        private IQueryable<Subscription> BuildQueryable(Guid? eventId, string endpointName)
         {
-            var query = Get(a => a.EventId == eventId);
+            var query = Get();
+            if (eventId.HasValue) query.Where(a => a.EventId == eventId);
             if (endpointName.NotNullAndEmpty()) query.Where(a => a.EndpointName.Contains(endpointName));
+
+            return query;
+        }
+
+        public async Task<ISubscription[]> GetSubscriptionsAsync(Guid? eventId, string endpointName, int start, int count)
+        {
+            var query = BuildQueryable(eventId, endpointName);
 
             var subscriptions = await query.Skip(start).Take(count).ToArrayAsync();
             if (subscriptions.IsNullOrEmpty()) return Subscription.EmptyArray;
+
+            var eventIds = subscriptions.Select(a => a.EventId).ToArray();
+            if (eventIds.NotNullAndEmpty())
+            {
+                var events = await Get<Event>(a => eventIds.Contains(a.Id)).ToArrayAsync();
+                foreach (var subscription in subscriptions)
+                {
+                    subscription.Event = events.FirstOrDefault(a => a.Id == subscription.EventId);
+                }
+            }
 
             return subscriptions;
         }
@@ -63,7 +79,7 @@ namespace EventBus.Core.Providers
 
         public async Task RemoveAsync(Guid subscriptionId)
         {
-            await GetByIdAsync(a => a.Id == subscriptionId);
+            await DeleteAsync(a => a.Id == subscriptionId);
         }
     }
 }

@@ -10,9 +10,9 @@ namespace EventBus.Abstractions.IProviders
 
         Task<ISubscription> GetSubscriptionAsync(Guid subscriptionId);
 
-        Task<ISubscription[]> GetSubscriptionsAsync(Guid eventId, string endpointName, int start, int count);
+        Task<ISubscription[]> GetSubscriptionsAsync(Guid? eventId, string endpointName, int start, int count);
 
-        Task<long> GetSubscriptionCountAsync(Guid eventId, string endpointName);
+        Task<long> GetSubscriptionCountAsync(Guid? eventId, string endpointName);
 
         Task<ISubscription[]> GetSubscriptionsAsync(Guid eventId);
     }

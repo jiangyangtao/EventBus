@@ -79,13 +79,14 @@ namespace EventBus.Application.Dto
     {
         public EventResult(IEvent e)
         {
+            EventId = e.Id;
             EventName = e.EventName;
             EventProtocol = e.EventProtocol;
             EnableIPAddressWhiteList = e.EnableIPAddressWhiteList;
             IPAddressWhiteList = e.IPAddressWhiteList;
         }
 
-        public string EventId { get; set; }
+        public Guid EventId { get; set; }
     }
 
     public class EventPaginationResult : PaginationResult<EventResult>

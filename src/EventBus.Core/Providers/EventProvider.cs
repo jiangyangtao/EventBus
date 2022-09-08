@@ -27,10 +27,10 @@ namespace EventBus.Core.Providers
                 return e.Id;
             }
 
-            e.EventName = e.EventName;
-            e.EnableIPAddressWhiteList = e.EnableIPAddressWhiteList;
-            e.IPAddressWhiteList = e.IPAddressWhiteList;
-            e.EventProtocol = e.EventProtocol;
+            e.EventName = data.EventName;
+            e.EnableIPAddressWhiteList = data.EnableIPAddressWhiteList;
+            e.IPAddressWhiteList = data.IPAddressWhiteList;
+            e.EventProtocol = data.EventProtocol;
             await UpdateAsync(e);
 
             return e.Id;

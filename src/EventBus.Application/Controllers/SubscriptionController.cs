@@ -46,7 +46,8 @@ namespace EventBus.Application.Controllers
             var subscription = await _subscriptionProvider.GetSubscriptionAsync(subscriptionId);
             if (subscription == null) ResponseNotFound();
 
-            return new SubscriptionResult(subscription);
+            var e = await _eventProvider.GetEventAsync(subscription.EventId);
+            return new SubscriptionResult(subscription, e);
         }
 
         [HttpGet]

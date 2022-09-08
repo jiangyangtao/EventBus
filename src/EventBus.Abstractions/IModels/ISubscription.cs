@@ -33,6 +33,8 @@ namespace EventBus.Abstractions.IModels
         /// </summary>
         public IRetryPolicy[] FailedRetryPolicy { get; }
 
+        public Guid EventId { get; set; }
+
         /// <summary>
         /// 事件
         /// </summary>

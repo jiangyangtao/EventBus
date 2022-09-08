@@ -21,8 +21,7 @@ namespace EventBus.Application.Dto
 
     public class SubscriptionQueryDto : PagingParameter
     {
-        [Required]
-        public Guid EventId { set; get; }
+        public Guid? EventId { set; get; }
 
         public string EndpointName { set; get; }
     }
@@ -37,7 +36,32 @@ namespace EventBus.Application.Dto
             SubscriptionProtocol = subscription.SubscriptionProtocol;
             RequestTimeout = subscription.RequestTimeout;
             FailedRetryPolicy = subscription.FailedRetryPolicy;
+
+            if (subscription.Event != null)
+            {
+                EventId = subscription.Event.Id;
+                EventName = subscription.Event.EventName;
+            }
         }
+
+        public SubscriptionResult(ISubscription subscription, IEvent e) : this(subscription)
+        {
+            if (e != null)
+            {
+                EventId = e.Id;
+                EventName = e.EventName;
+            }
+        }
+
+        /// <summary>
+        /// 事件 Id
+        /// </summary>
+        public Guid EventId { set; get; }
+
+        /// <summary>
+        /// 事件名称
+        /// </summary>
+        public string EventName { set; get; }
 
         /// <summary>
         /// 接入点名称
