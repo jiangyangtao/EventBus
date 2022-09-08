@@ -19,16 +19,16 @@ namespace EventBus.Application.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] SubscriptionAddDto subscription)
+        public async Task<SubscriptionDtoBase> Add([FromBody] SubscriptionAddDto subscription)
         {
             var e = await _eventProvider.GetEventAsync(subscription.EventId, false);
-            if (e == null) return NotFound();
+            if (e == null) ResponseNotFound("未找到事件");
 
             var endpoint = await _applicationProvider.GetApplicationEndpointAsync(subscription.ApplicationEndpointId);
-            if (endpoint == null) return NotFound();
+            if (endpoint == null) ResponseNotFound("未找到接入点");
 
             var id = await _subscriptionProvider.AddAsync(subscription.EventId, subscription.ApplicationEndpointId);
-            return Ok();
+            return new SubscriptionDtoBase { SubscriptionId = id };
         }
 
         [HttpDelete("{subscriptionId}")]
@@ -44,7 +44,7 @@ namespace EventBus.Application.Controllers
         public async Task<SubscriptionResult> Get(Guid subscriptionId)
         {
             var subscription = await _subscriptionProvider.GetSubscriptionAsync(subscriptionId);
-            if (subscription == null) return null;
+            if (subscription == null) ResponseNotFound();
 
             return new SubscriptionResult(subscription);
         }

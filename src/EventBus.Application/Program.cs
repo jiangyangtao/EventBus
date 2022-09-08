@@ -1,3 +1,4 @@
+using EventBus.Application.Filters;
 using EventBus.Core;
 using EventBus.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,23 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
 
-services.AddControllers().AddNewtonsoftJson(options =>
+services.AddControllers(options =>
+{
+    options.Filters.Add<ExceptionFilter>();
+}).ConfigureApiBehaviorOptions(options =>
+{
+    // 模型校验失败处理
+    options.InvalidModelStateResponseFactory = (context) =>
+    {
+        var errorMessage = context.ModelState.GetValidationSummary();
+        var resultContent = new { Code = 400, Message = errorMessage, };
+        var result = new JsonResult(resultContent)
+        {
+            StatusCode = 400,
+        };
+        return result;
+    };
+}).AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.Formatting = Formatting.Indented;
     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -22,21 +39,20 @@ services.AddControllers().AddNewtonsoftJson(options =>
     //options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
     //options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 });
-services.Configure<ApiBehaviorOptions>(options =>
-{
-    // 模型校验失败处理
-    options.InvalidModelStateResponseFactory = (context) =>
-    {
-        var errorMessage = context.ModelState.GetValidationSummary();
-        return new JsonResult(new
-        {
-            Success = false,
-            Status = 400,
-            Msg = errorMessage,
-            Data = string.Empty,
-        });
-    };
-});
+//services.Configure<ApiBehaviorOptions>(options =>
+//{
+//    // 模型校验失败处理
+//    options.InvalidModelStateResponseFactory = (context) =>
+//    {
+//        var errorMessage = context.ModelState.GetValidationSummary();
+//        var resultContent = new { Code = 400, Message = errorMessage, };
+//        var result = new JsonResult(resultContent)
+//        {
+//            StatusCode = 400,
+//        };
+//        return result;
+//    };
+//});
 
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();

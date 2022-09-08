@@ -63,7 +63,7 @@ namespace EventBus.Application.Controllers
         public async Task<EventResult> Get(Guid eventId)
         {
             var e = await _eventProvider.GetEventAsync(eventId);
-            if (e == null) return null;
+            if (e == null) ResponseNotFound();
 
             return new EventResult(e);
         }

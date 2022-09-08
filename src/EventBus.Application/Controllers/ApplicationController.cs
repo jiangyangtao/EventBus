@@ -46,7 +46,7 @@ namespace EventBus.Application.Controllers
         public async Task<ApplicationResult> Get(Guid applicationId)
         {
             var application = await _applicationProvider.GetApplicationAsync(applicationId);
-            if (application == null) return null;
+            if (application == null) ResponseNotFound();
 
             return new ApplicationResult(application);
         }
