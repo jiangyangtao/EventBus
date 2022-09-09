@@ -17,6 +17,12 @@ namespace EventBus.Application.Controllers
             _eventRecordProvider = eventRecordProvider;
         }
 
+        [HttpGet("/[controller]")]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         [HttpPut("{eventId}")]
         [HttpPost("{eventId}")]
         public async Task<IActionResult> Publish(Guid eventId)

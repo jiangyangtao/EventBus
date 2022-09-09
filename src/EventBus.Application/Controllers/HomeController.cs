@@ -5,10 +5,11 @@ namespace EventBus.Application.Controllers
 {
     public class HomeController : BaseController
     {
-        [HttpGet]
+        [HttpGet("/[controller]")]
+        [HttpGet("/[controller]/[action]")]
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("index", "event");
         }
     }
 }

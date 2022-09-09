@@ -18,6 +18,12 @@ namespace EventBus.Application.Controllers
             _subscriptionProvider = subscriptionProvider;
         }
 
+        [HttpGet("/[controller]")]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<SubscriptionDtoBase> Add([FromBody] SubscriptionAddDto subscription)
         {

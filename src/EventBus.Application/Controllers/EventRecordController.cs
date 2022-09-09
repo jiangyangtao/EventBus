@@ -15,6 +15,12 @@ namespace EventBus.Application.Controllers
             _eventRecordProvider = eventRecordProvider;
         }
 
+        [HttpGet("/[controller]")]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         [HttpGet]
         public async Task<EventRecordPaginationResult> List([FromQuery] EventRecordQueryDto query)
         {

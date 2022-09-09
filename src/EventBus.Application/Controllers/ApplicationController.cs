@@ -14,6 +14,12 @@ namespace EventBus.Application.Controllers
             _applicationProvider = applicationProvider;
         }
 
+        [HttpGet("/[controller]")]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<ApplicationDtoBase> Add([FromBody] ApplicationDto application)
         {
