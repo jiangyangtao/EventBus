@@ -1,18 +1,40 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+}
+
+.navbar-nav .nav-item {
+    min-width: 80px;
+}
+
+.container .navbar-brand {
+    margin-right: 4rem;
+}
+
+.action-container {
+    margin: 30px 0px 20px;
+    text-align: right;
+}
+
+.row .form-control {
+    display: inline-flex;
+    width: 75%;
+}
+
+.placeholder-block{
+    height:80px;
 }
