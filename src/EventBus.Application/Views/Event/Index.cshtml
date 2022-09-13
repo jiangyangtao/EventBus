@@ -17,7 +17,7 @@
     </form>
 
     <div class="action-container">
-        <button type="button" class="btn btn-primary">添加</button>
+        <button type="button" class="btn btn-primary" v-on:click="add()">添加</button>
     </div>
 
     <table class="table table-hover">
@@ -34,18 +34,18 @@
         <tbody>
             <tr v-for="(item,index) in list">
                 <th scope="row">{{index+1}}</th>
-                <td>{{itme.eventName}}</td>
-                <td>{{itme.enableIPAddressWhiteList}}</td>
-                <td>{{itme.ipAddressWhiteList}}</td>
-                <td>{{itme.eventProtocol}}</td>
+                <td>{{item.EventName}}</td>
+                <td>{{item.EnableIPAddressWhiteList ? '启用' : '未启用'}}</td>
+                <td>{{item.IPAddressWhiteList.toString()}}</td>
+                <td>{{item.EventProtocol}}</td>
                 <td>
-                    <button type="button" class="btn btn-link">
+                    <button type="button" class="btn btn-link" v-on:click="edit(item)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                             <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
                         </svg>
                     </button>
-                    <button type="button" class="btn btn-link">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                    <button type="button" class="btn btn-link" v-on:click="remove(item)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16" color="#f56c6c">
                             <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
                         </svg>
                     </button>
@@ -71,6 +71,75 @@
         </ul>
     </nav>
 
+    <div class="modal" tabindex="-1" ref="eventForm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{modalTitle}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label">名称</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" v-model="formData.EventName">
+                            </div>
+                        </div>
+                        <fieldset class="row mb-3">
+                            <legend class="col-form-label col-sm-3 pt-0">白名单</legend>
+                            <div class="col-sm-9">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="enableIPAddressWhiteList" v-model="formData.EnableIPAddressWhiteList">
+                                    <label class="form-check-label" for="enableIPAddressWhiteList">
+                                        启用
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label">白名单地址</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" v-model="ipAddress">
+                                <button type="button" class="btn btn-link" v-on:click="addIPAddress()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div class="row" v-for="(item,index) in formData.IPAddressWhiteList">
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-9" style="padding-left:18px;">
+                                    {{item}}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x remove-ipaddress" viewBox="0 0 16 16" color="#f00" v-on:click="removeIPAddress(item)">
+                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label">事件协议</label>
+                            <div class="col-sm-9">
+                                <select class="form-select" aria-label="选择协议" v-model="formData.EventProtocol">
+                                    <option selected value="Http">Http</option>
+                                    <option value="gRPC">gRPC</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" v-on:click="save()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 
 <script type="text/javascript" charset="utf-8">
@@ -82,11 +151,24 @@
             currnetPageIndex: 1,
             pageCount: 20,
             pageNumbers: new Array(1),
+            eventForm: null,
+            modalTitle: "",
+            formData: {
+                EventName: "",
+                EnableIPAddressWhiteList: true,
+                IPAddressWhiteList: [],
+                EventProtocol: 0,
+                EventId: ""
+            },
+            ipAddress: "",
         },
         beforeCreate() {
             this.eventName = "";
         },
         mounted() {
+            this.eventForm = new bootstrap.Modal(this.$refs.eventForm, {
+                keyboard: false
+            });
             this.getList();
         },
         methods: {
@@ -98,6 +180,7 @@
                         this.pageNumber(r.TotalCount);
                     }).fail(e => {
                         console.log(e);
+                        message.error(e.message);
                     });
             },
             skipPage(index) {
@@ -123,6 +206,61 @@
                 }
 
                 this.pageNumbers = new Array(pageCount);
+            },
+            add() {
+                this.modalTitle = "添加";
+                this.eventForm.show();
+            },
+            edit(data) {
+                this.modalTitle = "编辑";
+                this.formData = data;
+                this.eventForm.show();
+            },
+            remove(data) {
+                console.log(data);
+            },
+            save() {
+                console.log(this.formData);
+                if (!this.formData.EventId) {
+                    api.event.add(this.formData)
+                        .success(r => {
+                            message.success("保存成功");
+                        }).fail(e => {
+                            console.log(e);
+                            message.error(e.message);
+                        });
+                }
+
+                if (this.formData.EventId) {
+                    api.event.modify(this.formData)
+                        .success(r => {
+                            message.success("保存成功");
+                        }).fail(e => {
+                            console.log(e);
+                            message.error(e.message);
+                        });
+                }
+
+                this.eventForm.hide();
+                this.initForm();
+            },
+            initForm() {
+                this.formData = {
+                    EventName: "",
+                    EnableIPAddressWhiteList: true,
+                    IPAddressWhiteList: [],
+                    EventProtocol: 0,
+                    EventId: ""
+                };
+            },
+            addIPAddress() {
+                if (!this.ipAddress) return;
+
+                this.formData.IPAddressWhiteList.unshift(this.ipAddress);
+                this.ipAddress = "";
+            },
+            removeIPAddress(ipAddress) {
+                this.formData.IPAddressWhiteList = this.formData.IPAddressWhiteList.filter(a => a != ipAddress);
             }
         },
     });

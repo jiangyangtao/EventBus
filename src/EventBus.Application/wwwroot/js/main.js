@@ -73,7 +73,7 @@ var api = {
             return axios.delete(`/api/event/delete/${eventId}`);
         },
         modify: function (data) {
-            return axios.put('/api/event/modify', data);
+            return axios.put(`/api/event/modify/${data.EventId}`, data);
         },
         get: function (eventId) {
             return axios.get(`/api/event/Get/${eventId}`);
