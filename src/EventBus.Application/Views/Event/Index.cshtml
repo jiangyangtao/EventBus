@@ -12,7 +12,7 @@
             <input type="text" class="form-control" v-model="eventName" placeholder="请输入事件名称">
         </div>
         <div class="col-auto">
-            <button type="submit" class="btn btn-primary">查询</button>
+            <button type="submit" class="btn btn-primary" v-on:click="getList()">查询</button>
         </div>
     </form>
 
@@ -27,7 +27,7 @@
                 <th scope="col">名称</th>
                 <th scope="col">白名单</th>
                 <th scope="col">IP地址白名单</th>
-                <th scope="col">事件协议</th >
+                <th scope="col">事件协议</th>
                 <th scope="col">操作</th>
             </tr>
         </thead>
@@ -56,15 +56,15 @@
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-end">
             <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
+                <a class="page-link" href="#" aria-label="Previous" v-on:click="nextPage()">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item" v-for="(item,index) in pageNumbers">
+                <a class="page-link" href="#" v-on:click="skipPage(index)">{{index+1}}</a>
+            </li>
             <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
+                <a class="page-link" href="#" aria-label="Next" v-on:click="previousPage()">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
@@ -79,23 +79,51 @@
         data: {
             eventName: "",
             list: [],
+            currnetPageIndex: 1,
+            pageCount: 20,
+            pageNumbers: new Array(1),
         },
         beforeCreate() {
             this.eventName = "";
-            console.log("beforeCreate");
         },
         mounted() {
             this.getList();
         },
         methods: {
             getList() {
-                api.application.list(0, 10, this.eventName)
+                var startIndex = (this.currnetPageIndex - 1) * this.pageCount;
+                api.event.list(startIndex, this.pageCount, this.eventName)
                     .success(r => {
                         this.list = r.List;
+                        this.pageNumber(r.TotalCount);
                     }).fail(e => {
                         console.log(e);
                     });
             },
+            skipPage(index) {
+                this.currnetPageIndex = index + 1;
+                this.getList();
+            },
+            nextPage() {
+                if (this.currnetPageIndex > 1) {
+                    this.currnetPageIndex -= 1;
+                    this.getList();
+                }
+            },
+            previousPage() {
+                if (this.currnetPageIndex < this.pageNumbers.length) {
+                    this.currnetPageIndex += 1;
+                    this.getList();
+                }
+            },
+            pageNumber(totalCount) {
+                var pageCount = 1;
+                if (totalCount > 0) {
+                    var pageCount = Math.ceil(totalCount / this.pageCount);
+                }
+
+                this.pageNumbers = new Array(pageCount);
+            }
         },
     });
 </script>
