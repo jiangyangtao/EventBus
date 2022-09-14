@@ -42,6 +42,7 @@ namespace EventBus.Core.Providers
             {
                 endpoint = new ApplicationEndpoint(applicationEndpoint);
                 await CreateAsync(endpoint);
+                return endpoint.Id;
             }
 
             endpoint.EndpointName = applicationEndpoint.EndpointName;
@@ -68,7 +69,7 @@ namespace EventBus.Core.Providers
             var applicationEndpoint = await GetApplicationEndpointAsync(applicationEndpointId);
             if (applicationEndpoint != null)
             {
-                await DeleteAsync(a => a.Id == applicationEndpointId);
+                await DeleteAsync<ApplicationEndpoint>(a => a.Id == applicationEndpointId);
             }
         }
 

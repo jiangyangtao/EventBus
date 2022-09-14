@@ -1,5 +1,6 @@
 ﻿using EventBus.Abstractions.Enums;
 using EventBus.Abstractions.IModels;
+using EventBus.Application.Attributes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
@@ -39,7 +40,8 @@ namespace EventBus.Application.Dto
         [Required, MaxLength(100)]
         public string EndpointName { set; get; }
 
-        public Uri EndpointUrl { set; get; }
+        [UriValidation]
+        public string EndpointUrl { set; get; }
 
         [JsonConverter(typeof(StringEnumConverter))]
         public ProtocolType? SubscriptionProtocol { set; get; }
@@ -55,7 +57,7 @@ namespace EventBus.Application.Dto
             return new ApplicationEndpointDto
             {
                 EndpointName = EndpointName,
-                EndpointUrl = EndpointUrl,
+                EndpointUrl = new Uri(EndpointUrl),
                 SubscriptionProtocol = SubscriptionProtocol.Value,
                 RequestTimeout = RequestTimeout,
                 ApplicationId = ApplicationId,
@@ -88,7 +90,7 @@ namespace EventBus.Application.Dto
             ApplicationEndpointId = applicationEndpoint.Id;
             ApplicationId = applicationEndpoint.ApplicationId;
             EndpointName = applicationEndpoint.EndpointName;
-            EndpointUrl = applicationEndpoint.EndpointUrl;
+            EndpointUrl = applicationEndpoint.EndpointUrl.ToString();
             SubscriptionProtocol = applicationEndpoint.SubscriptionProtocol;
             RequestTimeout = applicationEndpoint.RequestTimeout;
             FailedRetryPolicy = applicationEndpoint.FailedRetryPolicy.Select(a => new RetryPolicyDto(a)).ToArray();

@@ -426,7 +426,7 @@
                 modal.confirm(() => {
                     api.applicationEndpoint.delete(data.ApplicationEndpointId)
                         .success(r => {
-                            this.getApplicationList();
+                            this.getEndpointList();
                             message.success("删除成功");
                         }).fail(e => {
                             console.log(e);
@@ -436,11 +436,11 @@
             },
             saveEndpoint() {
                 var r = null;
-                if (!this.applicationFormData.ApplicationId) {
+                if (!this.endpointFormData.ApplicationEndpointId) {
                     r = api.applicationEndpoint.add(this.endpointFormData);
                 }
 
-                if (this.applicationFormData.ApplicationId) {
+                if (this.endpointFormData.ApplicationEndpointId) {
                     r = api.applicationEndpoint.modify(this.endpointFormData);
                 }
 

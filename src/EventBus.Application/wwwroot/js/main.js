@@ -54,7 +54,7 @@ var api = {
             return axios.delete(`/api/applicationendpoint/delete/${applicationEndpointId}`);
         },
         modify: function (data) {
-            return axios.put('/api/applicationendpoint/modify', data);
+            return axios.put(`/api/applicationendpoint/modify/${data.ApplicationEndpointId}`, data);
         },
         get: function (applicationEndpointId) {
             return axios.get(`/api/applicationendpoint/Get/${applicationEndpointId}`);
