@@ -72,7 +72,7 @@
     </nav>
 
     <div class="modal" tabindex="-1" ref="eventForm">
-        <div class="modal-dialog">
+        <div class="modal-dialog  modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{modalTitle}}</h5>
@@ -213,33 +213,45 @@
             },
             edit(data) {
                 this.modalTitle = "编辑";
-                this.formData = data;
+                this.formData.EventName = data.EventName;
+                this.formData.EnableIPAddressWhiteList = data.EnableIPAddressWhiteList;
+                this.formData.IPAddressWhiteList = data.IPAddressWhiteList;
+                this.formData.EventProtocol = data.EventProtocol;
+                this.formData.EventId = data.EventId;
                 this.eventForm.show();
             },
             remove(data) {
-                console.log(data);
+                modal.confirm(() => {
+                    api.event.delete(data.EventId)
+                        .success(r => {
+                            this.getList();
+                            message.success("删除成功");
+                        }).fail(e => {
+                            console.log(e);
+                            message.error(e.message);
+                        });
+                });
             },
             save() {
                 console.log(this.formData);
+
+                var r = null;
                 if (!this.formData.EventId) {
-                    api.event.add(this.formData)
-                        .success(r => {
-                            message.success("保存成功");
-                        }).fail(e => {
-                            console.log(e);
-                            message.error(e.message);
-                        });
+                    r = api.event.add(this.formData);
                 }
 
                 if (this.formData.EventId) {
-                    api.event.modify(this.formData)
-                        .success(r => {
-                            message.success("保存成功");
-                        }).fail(e => {
-                            console.log(e);
-                            message.error(e.message);
-                        });
+                    r = api.event.modify(this.formData);
                 }
+
+                r.success(r => {
+                    this.getList();
+                    this.initForm();
+                    message.success("保存成功");
+                }).fail(e => {
+                    console.log(e);
+                    message.error(e.message);
+                });
 
                 this.eventForm.hide();
                 this.initForm();
@@ -250,7 +262,7 @@
                     EnableIPAddressWhiteList: true,
                     IPAddressWhiteList: [],
                     EventProtocol: 0,
-                    EventId: ""
+                    EventId: null
                 };
             },
             addIPAddress() {

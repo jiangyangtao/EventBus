@@ -11,7 +11,7 @@ namespace EventBus.Extensions
         {
             if (modelState.IsValid) return null;
 
-            var state = modelState.FirstOrDefault().Value;
+            var state = modelState.Values.FirstOrDefault(a => a.Errors.Count > 0);
             var message = state.Errors.FirstOrDefault(p => !string.IsNullOrWhiteSpace(p.ErrorMessage))?.ErrorMessage;
             if (string.IsNullOrWhiteSpace(message))
             {

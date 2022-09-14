@@ -11,9 +11,13 @@ Promise.prototype.fail = Promise.prototype.catch;
 axios.interceptors.response.use(function (response) {
     if (response.status >= 200 && response.status <= 300) return response.data;
 
-    return Promise.reject(response.data);
+    return Promise.reject({
+        message: response.data.Message
+    });
 }, function (error) {
-    return Promise.reject(error);
+    return Promise.reject({
+        message: error.response.data.Message
+    });
 });
 
 

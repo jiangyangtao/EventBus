@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,5 +26,19 @@ namespace EventBus.Extensions
         /// <returns>如果字符串不为 null 和空字符串 ("")，则为 true；否则为 false。</returns>
         public static bool NotNullAndEmpty(this string value) => !string.IsNullOrEmpty(value);
         #endregion
+
+        public static bool IsIPAddress(this string value)
+        {
+            if (value.IsNullOrEmpty()) return false;
+            if (value.Contains('.') == false) return false;
+
+            var ipLength = value.Split(".").Length;
+            if (ipLength != 4) return false;
+
+            var isSuccess = IPAddress.TryParse(value, out _);
+            if (isSuccess == false) return false;
+
+            return true;
+        }
     }
 }

@@ -54,6 +54,27 @@
         </div>
     </div>
 
+    <div class="modal " tabindex="-1" id="deleteModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">提示</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16" color="#e6a23c">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                    </svg>
+                    确定要删除吗？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-danger" onclick="modal.confirmDelete()">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -86,11 +107,29 @@
                 toastTitle.innerText = "提示";
                 this.show(message);
             },
-            show(message) {
+            show: function(message) {
                 totas.show();
                 toastBody.innerText = message;
             }
         };
+
+
+        var modal = {
+            deleteModal: new bootstrap.Modal(document.getElementById("deleteModal"), {
+                keyboard: false
+            }),
+            confirmEvent: null,
+            confirm: function(onConfirm) {
+                confirmEvent = onConfirm;
+                this.deleteModal.show();
+            },
+            confirmDelete: function() {
+                confirmEvent();
+                this.deleteModal.hide();
+            }
+        };
+
+
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

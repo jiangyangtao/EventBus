@@ -1,5 +1,6 @@
 ﻿using EventBus.Abstractions.Enums;
 using EventBus.Abstractions.IModels;
+using EventBus.Application.Attributes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
@@ -45,6 +46,7 @@ namespace EventBus.Application.Dto
 
         public bool EnableIPAddressWhiteList { get; set; }
 
+        [IPAddressCollectionValidation]
         public string[] IPAddressWhiteList { get; set; }
 
         [Required]
