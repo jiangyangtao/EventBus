@@ -43,8 +43,8 @@ namespace EventBus.Core.Providers
         private IQueryable<Subscription> BuildQueryable(Guid? eventId, string endpointName)
         {
             var query = Get();
-            if (eventId.HasValue) query.Where(a => a.EventId == eventId);
-            if (endpointName.NotNullAndEmpty()) query.Where(a => a.EndpointName.Contains(endpointName));
+            if (eventId.HasValue) query = query.Where(a => a.EventId == eventId);
+            if (endpointName.NotNullAndEmpty()) query = query.Where(a => a.EndpointName.Contains(endpointName));
 
             return query;
         }

@@ -113,7 +113,7 @@ namespace EventBus.Core.Providers
         public async Task<IApplicationEndpoint[]> GetApplicationEndpointsAsync(int start, int count, string endpointName)
         {
             var query = Get<ApplicationEndpoint>();
-            if (endpointName.NotNullAndEmpty()) query.Where(a => a.EndpointName.Contains(endpointName));
+            if (endpointName.NotNullAndEmpty()) query = query.Where(a => a.EndpointName.Contains(endpointName));
 
             var applicationEndpoints = await query.Skip(start).Take(count).ToArrayAsync();
             if (applicationEndpoints.IsNullOrEmpty()) return ApplicationEndpoint.EmptyArray;
@@ -132,7 +132,7 @@ namespace EventBus.Core.Providers
         public async Task<IApplication[]> GetApplicationsAsync(int start, int count, string applicationName)
         {
             var query = Get();
-            if (applicationName.NotNullAndEmpty()) query.Where(a => a.ApplicationName.Contains(applicationName));
+            if (applicationName.NotNullAndEmpty()) query = query.Where(a => a.ApplicationName.Contains(applicationName));
 
             var applications = await query.Skip(start).Take(count).ToArrayAsync();
             if (applications.IsNullOrEmpty()) return Application.EmptyArray;
@@ -143,7 +143,7 @@ namespace EventBus.Core.Providers
         public async Task<long> GetApplicationCountAsync(string applicationName)
         {
             var query = Get();
-            if (applicationName.NotNullAndEmpty()) query.Where(a => a.ApplicationName.Contains(applicationName));
+            if (applicationName.NotNullAndEmpty()) query = query.Where(a => a.ApplicationName.Contains(applicationName));
 
             return await query.CountAsync();
         }
@@ -151,7 +151,7 @@ namespace EventBus.Core.Providers
         public async Task<long> GetApplicationEndpointCountAsync(string endpointName)
         {
             var query = Get<ApplicationEndpoint>();
-            if (endpointName.NotNullAndEmpty()) query.Where(a => a.EndpointName.Contains(endpointName));
+            if (endpointName.NotNullAndEmpty()) query = query.Where(a => a.EndpointName.Contains(endpointName));
 
             return await query.CountAsync();
         }

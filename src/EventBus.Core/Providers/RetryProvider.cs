@@ -89,8 +89,8 @@ namespace EventBus.Core.Providers
             }
 
             var query = Get();
-            if (eventIds.NotNullAndEmpty()) query.Where(a => eventIds.Contains(a.EventId));
-            if (subscriptionRecordIds.NotNullAndEmpty()) query.Where(a => subscriptionRecordIds.Contains(a.SubscriptionRecordId));
+            if (eventIds.NotNullAndEmpty()) query = query.Where(a => eventIds.Contains(a.EventId));
+            if (subscriptionRecordIds.NotNullAndEmpty()) query = query.Where(a => subscriptionRecordIds.Contains(a.SubscriptionRecordId));
 
             return query;
         }

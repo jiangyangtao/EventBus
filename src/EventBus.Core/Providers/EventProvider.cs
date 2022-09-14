@@ -75,7 +75,7 @@ namespace EventBus.Core.Providers
         public async Task<IEvent[]> GetEventsAsync(int start, int count, string eventName)
         {
             var query = Get();
-            if (eventName.NotNullAndEmpty()) query.Where(a => a.EventName.Contains(eventName));
+            if (eventName.NotNullAndEmpty()) query = query.Where(a => a.EventName.Contains(eventName));
 
             var events = await query.Skip(start).Take(count).ToArrayAsync();
             if (events.IsNullOrEmpty()) return Event.EmptyArray;
@@ -86,7 +86,7 @@ namespace EventBus.Core.Providers
         public async Task<long> GetEventCountAsync(string eventName)
         {
             var query = Get();
-            if (eventName.NotNullAndEmpty()) query.Where(a => a.EventName.Contains(eventName));
+            if (eventName.NotNullAndEmpty()) query = query.Where(a => a.EventName.Contains(eventName));
 
             return await query.CountAsync();
         }

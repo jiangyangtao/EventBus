@@ -66,7 +66,7 @@ namespace EventBus.Core.Providers
         public async Task<IEventRecord[]> GetEventRecordsAsync(int start, int count, DateTime? begin, DateTime? end)
         {
             var query = Get();
-            if (begin.HasValue && end.HasValue) query.Where(a => a.CreateTime > begin.Value && a.CreateTime < end.Value);
+            if (begin.HasValue && end.HasValue) query = query.Where(a => a.CreateTime > begin.Value && a.CreateTime < end.Value);
 
             var evnetRecords = await query.Skip(start).Take(count).ToArrayAsync();
             if (evnetRecords.IsNullOrEmpty()) return EventRecord.EmptyArray;
@@ -77,7 +77,7 @@ namespace EventBus.Core.Providers
         public async Task<long> GetEventRecordCountAsync(DateTime? begin, DateTime? end)
         {
             var query = Get();
-            if (begin.HasValue && end.HasValue) query.Where(a => a.CreateTime > begin.Value && a.CreateTime < end.Value);
+            if (begin.HasValue && end.HasValue) query = query.Where(a => a.CreateTime > begin.Value && a.CreateTime < end.Value);
 
             return await query.CountAsync();
         }
