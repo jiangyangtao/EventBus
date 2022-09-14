@@ -110,15 +110,23 @@ namespace EventBus.Core.Providers
             return applicationEndpoints;
         }
 
-        public async Task<IApplicationEndpoint[]> GetApplicationEndpointsAsync(int start, int count, string endpointName)
+        public async Task<IApplicationEndpoint[]> GetApplicationEndpointsAsync(int start, int count, Guid? applicationId, string endpointName)
         {
-            var query = Get<ApplicationEndpoint>();
-            if (endpointName.NotNullAndEmpty()) query = query.Where(a => a.EndpointName.Contains(endpointName));
+            var query = BuildQueryable(applicationId, endpointName);
 
             var applicationEndpoints = await query.Skip(start).Take(count).ToArrayAsync();
             if (applicationEndpoints.IsNullOrEmpty()) return ApplicationEndpoint.EmptyArray;
 
             return applicationEndpoints;
+        }
+
+        private IQueryable<ApplicationEndpoint> BuildQueryable(Guid? applicationId, string endpointName)
+        {
+            var query = Get<ApplicationEndpoint>();
+            if (applicationId.HasValue) query = query.Where(a => a.ApplicationId == applicationId.Value);
+            if (endpointName.NotNullAndEmpty()) query = query.Where(a => a.EndpointName.Contains(endpointName));
+
+            return query;
         }
 
         public async Task<IApplication[]> GetApplicationsAsync()
@@ -148,10 +156,9 @@ namespace EventBus.Core.Providers
             return await query.CountAsync();
         }
 
-        public async Task<long> GetApplicationEndpointCountAsync(string endpointName)
+        public async Task<long> GetApplicationEndpointCountAsync(Guid? applicationId, string endpointName)
         {
-            var query = Get<ApplicationEndpoint>();
-            if (endpointName.NotNullAndEmpty()) query = query.Where(a => a.EndpointName.Contains(endpointName));
+            var query = BuildQueryable(applicationId, endpointName);
 
             return await query.CountAsync();
         }

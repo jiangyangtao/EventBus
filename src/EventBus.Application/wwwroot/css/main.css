@@ -30,6 +30,11 @@ body {
     text-align: right;
 }
 
+.left-container {
+    margin: 30px 0px 20px;
+    text-align: left;
+}
+
 .row .form-control {
     display: inline-flex;
     width: 75%;
@@ -50,4 +55,22 @@ body {
 
 .row .remove-ipaddress {
     cursor: pointer;
+}
+
+.main-container {
+    max-width: 1540px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.table-application tr{
+    cursor:pointer;
+}
+
+.table .th-active {
+    background-color: #c6fffc;
+}
+
+.modal .endpoint-modal {
+    max-width:640px;
 }

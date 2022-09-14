@@ -7,66 +7,139 @@
 
     <div class="placeholder-block"></div>
 
-    <form class="row gx-3 gy-2 align-items-center">
-        <div class="col-sm-4">
-            <label for="eventName">应用名：</label>
-            <input type="text" class="form-control" v-model="applicationName" placeholder="请输入应用名">
-        </div>
-        <div class="col-auto">
-            <button type="button" class="btn btn-primary" v-on:click="getList()">查询</button>
-        </div>
-    </form>
 
-    <div class="action-container">
-        <button type="button" class="btn btn-primary" v-on:click="add()">添加</button>
+
+    <div class="row">
+
+        <div class="col-3">
+
+            <form class="row gx-3 gy-2 align-items-center">
+                <div class="col-sm-9">
+                    <label for="applicationName">应用：</label>
+                    <input type="text" class="form-control" v-model="applicationName" placeholder="请输入应用名">
+                </div>
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-primary" v-on:click="getApplicationList()">查询</button>
+                </div>
+            </form>
+
+            <div class="action-container">
+                <button type="button" class="btn btn-primary" v-on:click="addApplication()">添加应用</button>
+            </div>
+
+            <table class="table table-hover table-application">
+                <thead>
+                    <tr>
+                        <th scope="col">序号</th>
+                        <th scope="col">应用</th>
+                        <th scope="col">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item,index) in applicationList" v-on:click="selectApplication(item)" :class="{'th-active':currentApplication?.ApplicationId == item.ApplicationId}" valign="middle">
+                        <td scope="row">{{index+1}}</td>
+                        <td>{{item.ApplicationName}}</td>
+                        <td>
+                            <button type="button" class="btn btn-link" v-on:click="editApplication(item)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                                </svg>
+                            </button>
+                            <button type="button" class="btn btn-link" v-on:click="removeApplication(item)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16" color="#f56c6c">
+                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous" v-on:click="nextPage()">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" v-for="(item,index) in pageNumbers">
+                        <a class="page-link" href="#" v-on:click="skipPage(index)">{{index+1}}</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next" v-on:click="previousPage()">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+
+        <div class="col-9">
+
+            <div class="row">
+                <div class="col-1"></div>
+                <form class="col-11">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <label for="endpointName">接入点：</label>
+                            <input type="text" class="form-control" v-model="endpointName" placeholder="请输入接入点">
+                        </div>
+                        <div class="col-sm-auto">
+                            <button type="button" class="btn btn-primary" v-on:click="getEndpointList()">查询</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="action-container">
+                <button type="button" class="btn btn-primary" v-on:click="addEndpoint()">添加接入点</button>
+            </div>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">接入点</th>
+                        <th scope="col">Url</th>
+                        <th scope="col">订阅协议</th>
+                        <th scope="col">请求超时时间(单位：秒)</th>
+                        <th scope="col">重试策略</th>
+                        <th scope="col">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item,index) in endpointList" valign="middle">
+                        <td>{{item.EndpointName}}</td>
+                        <td>{{item.EndpointUrl}}</td>
+                        <td>{{item.SubscriptionProtocol}}</td>
+                        <td>{{item.RequestTimeout}}</td>
+                        <td>
+                            <div v-for="(policyItem,policyIndex) in item.FailedRetryPolicy">
+                                第<span>{{policyIndex+1}}</span>次：<span>{{getBehavior(policyItem.Behavior)}}</span>，<span>{{policyItem.RetryDelayCount}}</span><span>{{getDelayUnit(policyItem.RetryDelayUnit)}}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-link" v-on:click="editEndpoint(item)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                                </svg>
+                            </button>
+                            <button type="button" class="btn btn-link" v-on:click="removeEndpoint(item)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16" color="#f56c6c">
+                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
     </div>
 
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">序号</th>
-                <th scope="col">应用名</th>
-                <th scope="col">操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(item,index) in list">
-                <th scope="row">{{index+1}}</th>
-                <td>{{item.ApplicationName}}</td>
-                <td>
-                    <button type="button" class="btn btn-link" v-on:click="edit(item)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                            <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
-                        </svg>
-                    </button>
-                    <button type="button" class="btn btn-link" v-on:click="remove(item)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16" color="#f56c6c">
-                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                        </svg>
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-end">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous" v-on:click="nextPage()">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li class="page-item" v-for="(item,index) in pageNumbers">
-                <a class="page-link" href="#" v-on:click="skipPage(index)">{{index+1}}</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next" v-on:click="previousPage()">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
 
-    <div class="modal" tabindex="-1" ref="applicationForm">
+    <div class="modal" tabindex="-1" ref="applicationModal">
         <div class="modal-dialog  modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -78,14 +151,93 @@
                         <div class="row mb-3">
                             <label class="col-sm-3 col-form-label">应用名</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" v-model="formData.ApplicationName">
+                                <input type="text" class="form-control" v-model="applicationFormData.ApplicationName">
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" v-on:click="save()">保存</button>
+                    <button type="button" class="btn btn-primary" v-on:click="saveApplication()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" ref="endpointModal">
+        <div class="modal-dialog endpoint-modal modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{modalTitle}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">接入点</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" v-model="endpointFormData.EndpointName">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">Url</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" style="width:100%" v-model="endpointFormData.EndpointUrl">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">订阅协议</label>
+                        <div class="col-sm-10">
+                            <select class="form-select" style="width:75%" aria-label="选择协议" v-model="endpointFormData.SubscriptionProtocol">
+                                <option selected value="Http">Http</option>
+                                <option value="gRPC">gRPC</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">请求超时时间</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" max="60" v-model="endpointFormData.RequestTimeout">&nbsp;秒
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label">重试策略</label>
+                        <div class="col-sm-10">
+                            <div v-for="(item,index) in endpointFormData.FailedRetryPolicy">
+                                第<span>{{index+1}}</span>次：<span>{{getBehavior(item.Behavior)}}</span>，<span>{{item.RetryDelayCount}}</span><span>{{getDelayUnit(item.RetryDelayUnit)}}</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x remove-ipaddress" viewBox="0 0 16 16" color="#f00" v-on:click="removeRetryPolicy(index)">
+                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                                </svg>
+                            </div>
+                            <div v-show="endpointFormData.FailedRetryPolicy.length == 0 || endpointFormData.FailedRetryPolicy[endpointFormData.FailedRetryPolicy.length-1].Behavior != 'Discard'">
+                                第<span>{{endpointFormData.FailedRetryPolicy.length+1}}</span>次：
+                                <span>
+                                    <select class="form-select" style="width:22%;display:inline;" aria-label="选择行为" v-model="retryPolicy.Behavior">
+                                        <option selected value="Retry">重试</option>
+                                        <option value="Discard">丢弃</option>
+                                    </select>
+                                </span>
+                                <span><input type="number" class="form-control" style="width:15%;display:inline;" min="1" max="60" v-model="retryPolicy.RetryDelayCount"></span>
+                                <span>
+                                    <select class="form-select" style="width:25%;display:inline;" aria-label="选择单位" v-model="retryPolicy.RetryDelayUnit">
+                                        <option selected value="Second">秒</option>
+                                        <option value="Minute">分</option>
+                                        <option value="Hour">小时</option>
+                                        <option value="Day">天</option>
+                                    </select>
+                                </span>
+                                <button type="button" class="btn btn-link" v-on:click="addRetryPolicy()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" v-on:click="saveEndpoint()">保存</button>
                 </div>
             </div>
         </div>
@@ -99,52 +251,84 @@
         el: '#app',
         data: {
             applicationName: "",
-            list: [],
+            endpointName: "",
+            applicationList: [],
+            endpointList: [],
             currnetPageIndex: 1,
             pageCount: 20,
             pageNumbers: new Array(1),
             applicationForm: null,
+            endpointForm: null,
             modalTitle: "",
-            formData: {
+            applicationFormData: {
                 ApplicationName: "",
                 ApplicationId: ""
             },
+            endpointFormData: {
+                EndpointName: "",
+                EndpointUrl: "",
+                SubscriptionProtocol: "",
+                RequestTimeout: 5,
+                ApplicationId: "",
+                FailedRetryPolicy: [],
+                ApplicationEndpointId: ""
+            },
+            retryPolicy: {
+                RetryDelayUnit: "",
+                RetryDelayCount: 1,
+                Behavior: ""
+            },
+            currentApplication: null,
         },
         beforeCreate() {
             this.applicationName = "";
         },
         mounted() {
-            this.applicationForm = new bootstrap.Modal(this.$refs.applicationForm, {
+            this.applicationModal = new bootstrap.Modal(this.$refs.applicationModal, {
                 keyboard: false
             });
-            this.getList();
+            this.endpointModal = new bootstrap.Modal(this.$refs.endpointModal, {
+                keyboard: false
+            });
+            this.getApplicationList();
         },
         methods: {
-            getList() {
+            getApplicationList() {
                 var startIndex = (this.currnetPageIndex - 1) * this.pageCount;
                 api.application.list(startIndex, this.pageCount, this.applicationName)
                     .success(r => {
-                        this.list = r.List;
+                        this.applicationList = r.List;
                         this.pageNumber(r.TotalCount);
                     }).fail(e => {
                         console.log(e);
                         message.error(e.message);
                     });
             },
+            getEndpointList() {
+                if (this.currentApplication) {
+                    api.applicationEndpoint.list(0, 20, null, this.currentApplication.ApplicationId)
+                        .success(r => {
+                            this.endpointList = r.List;
+                        }).fail(e => {
+                            console.log(e);
+                            message.error(e.message);
+                        });
+                }
+            },
             skipPage(index) {
                 this.currnetPageIndex = index + 1;
-                this.getList();
+                this.getApplicationList();
             },
             nextPage() {
                 if (this.currnetPageIndex > 1) {
                     this.currnetPageIndex -= 1;
-                    this.getList();
+                    this.getApplicationList();
                 }
             },
             previousPage() {
                 if (this.currnetPageIndex < this.pageNumbers.length) {
                     this.currnetPageIndex += 1;
-                    this.getList();
+                    this.getApplicationList();
                 }
             },
             pageNumber(totalCount) {
@@ -155,21 +339,21 @@
 
                 this.pageNumbers = new Array(pageCount);
             },
-            add() {
+            addApplication() {
                 this.modalTitle = "添加";
-                this.applicationForm.show();
+                this.applicationModal.show();
             },
-            edit(data) {
+            editApplication(data) {
                 this.modalTitle = "编辑";
-                this.formData.ApplicationName = data.ApplicationName;
-                this.formData.ApplicationId = data.ApplicationId;
-                this.applicationForm.show();
+                this.applicationFormData.ApplicationName = data.ApplicationName;
+                this.applicationFormData.ApplicationId = data.ApplicationId;
+                this.applicationModal.show();
             },
-            remove(data) {
+            removeApplication(data) {
                 modal.confirm(() => {
                     api.application.delete(data.ApplicationId)
                         .success(r => {
-                            this.getList();
+                            this.getApplicationList();
                             message.success("删除成功");
                         }).fail(e => {
                             console.log(e);
@@ -177,36 +361,136 @@
                         });
                 });
             },
-            save() {
-                console.log(this.formData);
-
+            saveApplication() {
                 var r = null;
-                if (!this.formData.EventId) {
-                    r = api.application.add(this.formData);
+                if (!this.applicationFormData.ApplicationId) {
+                    r = api.application.add(this.applicationFormData);
                 }
 
-                if (this.formData.EventId) {
-                    r = api.application.modify(this.formData);
+                if (this.applicationFormData.ApplicationId) {
+                    r = api.application.modify(this.applicationFormData);
                 }
 
                 r.success(r => {
-                    this.getList();
-                    this.initForm();
+                    this.getApplicationList();
                     message.success("保存成功");
                 }).fail(e => {
                     console.log(e);
                     message.error(e.message);
+                }).finally(() => {
+                    this.applicationModal.hide();
+                    this.initApplicationForm();
                 });
-
-                this.applicationForm.hide();
-                this.initForm();
             },
-            initForm() {
-                this.formData = {
+            initApplicationForm() {
+                this.applicationFormData = {
                     ApplicationName: "",
                     ApplicationId: null
                 };
+            },
+            selectApplication(item) {
+                this.currentApplication = item;
+                this.getEndpointList();
+            },
+            addEndpoint() {
+                if (!this.currentApplication) {
+                    message.error("请先选择应用");
+                    return;
+                }
+
+                this.endpointFormData.ApplicationId = this.currentApplication.ApplicationId;
+                this.modalTitle = "添加";
+                this.endpointModal.show();
+            },
+            editEndpoint(data) {
+                this.modalTitle = "编辑";
+                this.endpointFormData.EndpointName = data.EndpointName;
+                this.endpointFormData.EndpointUrl = data.EndpointUrl;
+                this.endpointFormData.SubscriptionProtocol = data.SubscriptionProtocol;
+                this.endpointFormData.RequestTimeout = data.RequestTimeout;
+                this.endpointFormData.ApplicationId = data.ApplicationId;
+                this.endpointFormData.ApplicationEndpointId = data.ApplicationEndpointId;
+                this.endpointFormData.FailedRetryPolicy = [];
+                for (var item of data.FailedRetryPolicy) {
+                    console.log(item);
+                    this.endpointFormData.FailedRetryPolicy.push({
+                        RetryDelayUnit: item.RetryDelayUnit,
+                        RetryDelayCount: item.RetryDelayCount,
+                        Behavior: item.Behavior
+                    });
+                }
+
+                this.endpointModal.show();
+            },
+            removeEndpoint(data) {
+                modal.confirm(() => {
+                    api.applicationEndpoint.delete(data.ApplicationEndpointId)
+                        .success(r => {
+                            this.getApplicationList();
+                            message.success("删除成功");
+                        }).fail(e => {
+                            console.log(e);
+                            message.error(e.message);
+                        });
+                });
+            },
+            saveEndpoint() {
+                var r = null;
+                if (!this.applicationFormData.ApplicationId) {
+                    r = api.applicationEndpoint.add(this.endpointFormData);
+                }
+
+                if (this.applicationFormData.ApplicationId) {
+                    r = api.applicationEndpoint.modify(this.endpointFormData);
+                }
+
+                r.success(r => {
+                    this.getEndpointList();
+                    this.initApplicationForm();
+                    message.success("保存成功");
+                }).fail(e => {
+                    console.log(e);
+                    message.error(e.message);
+                }).finally(() => {
+                    this.endpointModal.hide();
+                    this.initEndpointForm();
+                });
+            },
+            initEndpointForm() {
+                this.endpointFormData.EndpointName = "";
+                this.endpointFormData.EndpointUrl = "";
+                this.endpointFormData.SubscriptionProtocol = "";
+                this.endpointFormData.RequestTimeout = 5;
+                this.endpointFormData.ApplicationId = "";
+                this.endpointFormData.FailedRetryPolicy = [];
+                this.endpointFormData.ApplicationEndpointId = "";
+            },
+            removeRetryPolicy(index) {
+                this.endpointFormData.FailedRetryPolicy.splice(index, 1);
+            },
+            addRetryPolicy() {
+                if (this.retryPolicy.Behavior && this.retryPolicy.RetryDelayUnit) {
+                    this.endpointFormData.FailedRetryPolicy.push({
+                        RetryDelayUnit: this.retryPolicy.RetryDelayUnit,
+                        RetryDelayCount: this.retryPolicy.RetryDelayCount,
+                        Behavior: this.retryPolicy.Behavior
+                    });
+                }
+            },
+            getBehavior(behavior) {
+                if (behavior == "Retry") return "重试";
+                if (behavior == "Discard") return "丢弃";
+
+                return behavior;
+            },
+            getDelayUnit(delayUnit) {
+                if (delayUnit == "Second") return "秒";
+                if (delayUnit == "Minute") return "分";
+                if (delayUnit == "Hour") return "小时";
+                if (delayUnit == "Day") return "天";
+
+                return delayUnit;
             }
-        },
+        }
     });
 </script>

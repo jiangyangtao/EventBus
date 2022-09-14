@@ -31,7 +31,7 @@ var api = {
             return axios.delete(`/api/application/delete/${applicationId}`);
         },
         modify: function (data) {
-            return axios.put('/api/application/modify', data);
+            return axios.put(`/api/application/modify/${data.ApplicationId}`, data);
         },
         get: function (applicationId) {
             return axios.get(`/api/application/Get/${applicationId}`);
@@ -59,12 +59,13 @@ var api = {
         get: function (applicationEndpointId) {
             return axios.get(`/api/applicationendpoint/Get/${applicationEndpointId}`);
         },
-        list: function (start, count, endpointName) {
+        list: function (start, count, endpointName, applicationId) {
             return axios.get('/api/applicationendpoint/list', {
                 params: {
                     startIndex: start,
                     count: count,
-                    EndpointName: endpointName
+                    EndpointName: endpointName,
+                    ApplicationId: applicationId
                 }
             });
         }

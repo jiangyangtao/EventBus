@@ -56,7 +56,7 @@ namespace EventBus.Application.Controllers
         [HttpGet]
         public async Task<ApplicationEndpointPaginationResult> List([FromQuery] ApplicationEndpointQueryDto query)
         {
-            var applicationEndpoints = await _applicationProvider.GetApplicationEndpointsAsync(query.startIndex, query.count, query.EndpointName);
+            var applicationEndpoints = await _applicationProvider.GetApplicationEndpointsAsync(query.startIndex, query.count, query.ApplicationId, query.EndpointName);
             var count = await _applicationProvider.GetApplicationCountAsync(query.EndpointName);
 
             return new ApplicationEndpointPaginationResult(count, applicationEndpoints);

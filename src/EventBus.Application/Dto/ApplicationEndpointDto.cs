@@ -76,6 +76,8 @@ namespace EventBus.Application.Dto
 
     public class ApplicationEndpointQueryDto : PagingParameter
     {
+        public Guid? ApplicationId { set; get; }
+
         public string EndpointName { set; get; }
     }
 
