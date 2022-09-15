@@ -31,6 +31,7 @@ namespace EventBus.Core
             services.AddScoped<IRetryProvider, RetryProvider>();
             services.AddScoped<ISubscriptionProvider, SubscriptionProvider>();
 
+            services.AddHostedService<RetrySchedulesService>();
             return services;
         }
 
