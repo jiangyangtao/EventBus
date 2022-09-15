@@ -1,4 +1,5 @@
-﻿using EventBus.Abstractions.IModels;
+﻿using EventBus.Abstractions.Enums;
+using EventBus.Abstractions.IModels;
 using EventBus.Abstractions.IProviders;
 using EventBus.Core.Base;
 using EventBus.Core.Entitys;
@@ -44,6 +45,17 @@ namespace EventBus.Core.Providers
                     await _subscriptionQueueProvider.PutAsync(records);
                 }
             }
+        }
+
+        public async Task SubscriptionAsync(Guid subscriptionId)
+        {
+            var subscriptionRecord = await GetByIdAsync<SubscriptionRecord>(subscriptionId);
+            if (subscriptionRecord == null) return;
+            if (subscriptionRecord.SubscriptionResult) return;
+
+            subscriptionRecord.FailToRetry = false;
+            subscriptionRecord.SubscriptionType = SubscriptionType.Manual;
+            await _subscriptionQueueProvider.PutAsync(subscriptionRecord);
         }
 
         private async Task<EventRecord> BuildEventRecordAsync(Guid eventId)
@@ -127,6 +139,9 @@ namespace EventBus.Core.Providers
             return records;
         }
 
-
+        public async Task<ISubscriptionRecord> GetSubscriptionRecordAsync(Guid subscriptionRecordId)
+        {
+            return await GetByIdAsync<SubscriptionRecord>(subscriptionRecordId);
+        }
     }
 }

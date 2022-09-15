@@ -21,6 +21,16 @@ namespace EventBus.Application.Controllers
             return View();
         }
 
+        [HttpPost("{subscriptionRecordId}")]
+        public async Task<IActionResult> Subscription(Guid subscriptionRecordId)
+        {
+            var record = await _eventRecordProvider.GetSubscriptionRecordAsync(subscriptionRecordId);
+            if (record == null) return NotFound();
+
+            await _eventRecordProvider.SubscriptionAsync(subscriptionRecordId);
+            return Ok();
+        }
+
         [HttpGet]
         public async Task<EventRecordPaginationResult> List([FromQuery] EventRecordQueryDto query)
         {

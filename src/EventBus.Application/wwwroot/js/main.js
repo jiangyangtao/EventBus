@@ -102,6 +102,9 @@ var api = {
         }
     },
     eventRecord: {
+        subscription: function (subscriptionRecordId) {
+            return axios.post(`${apiVersion}/api/eventrecord/subscription/${subscriptionRecordId}`, {});
+        },
         list: function (start, count, eventName) {
             return axios.get(`${apiVersion}/api/eventrecord/list`, {
                 params: {

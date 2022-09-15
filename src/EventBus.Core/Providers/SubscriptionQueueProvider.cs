@@ -40,7 +40,7 @@ namespace EventBus.Core.Providers
                 await UpdateAsync(record, false);
                 await CreateAsync(endpointSubscription);
 
-                if (endpointSubscription.IsSuccessStatusCode == false)
+                if (endpointSubscription.IsSuccessStatusCode == false && record.FailToRetry)
                 {
                     var retryCount = await GetRetryCountAsync(record.EventRecordId);
                     var policy = record.GetRetryPolicy(retryCount);

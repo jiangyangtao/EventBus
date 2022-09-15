@@ -96,6 +96,9 @@ namespace EventBus.Core.Entitys
             return FailedRetryPolicy[retryCount - 1];
         }
 
+        [NotMapped]
+        public bool FailToRetry { set; get; } = true;
+
         /// <summary>
         /// 订阅
         /// </summary>

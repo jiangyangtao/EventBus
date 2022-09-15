@@ -103,5 +103,6 @@ namespace EventBus.Core.Providers
         {
             await DeleteAsync(a => a.Id == subscriptionId);
         }
+
     }
 }

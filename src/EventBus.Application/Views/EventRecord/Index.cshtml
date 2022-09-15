@@ -215,7 +215,7 @@
             selectEventRecord(data) {
                 this.currentEventRecord = data;
                 this.getSubscriptionRecordList();
-                this.currnetEndpointCollapse.hide();
+                if (this.currnetEndpointCollapse) this.currnetEndpointCollapse.hide();
             },
             getBehavior(behavior) {
                 if (behavior == "Retry") return "重试";
@@ -252,10 +252,15 @@
                     data.IsCollapse = false;
                     this.currnetEndpointCollapse.hide();
                 }
-            }, 
+            },
             subscription(data) {
                 if (!data.SubscriptionResult) {
-                    //api.subscription
+                    api.eventRecord.subscription(data.SubscriptionRecordId).success(r => {
+                        message.success("订阅成功");
+                    }).fail(e => {
+                        console.log(e);
+                        message.error(e.message);
+                    });
                 }
             }
         }

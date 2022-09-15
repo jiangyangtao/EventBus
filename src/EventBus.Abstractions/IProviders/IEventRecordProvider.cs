@@ -11,6 +11,8 @@ namespace EventBus.Abstractions.IProviders
         /// <returns></returns>
         Task PublishAsync(Guid eventId);
 
+        Task SubscriptionAsync(Guid subscriptionId);
+
         Task<IEventRecord> GetEventRecordAsync(Guid eventRecordId);
 
         Task<IEventRecord[]> GetEventRecordsAsync(Guid eventId);
@@ -18,6 +20,8 @@ namespace EventBus.Abstractions.IProviders
         Task<IEventRecord[]> GetEventRecordsAsync(int start, int count, DateTime? begin, DateTime? end);
 
         Task<long> GetEventRecordCountAsync(DateTime? begin, DateTime? end);
+
+        Task<ISubscriptionRecord> GetSubscriptionRecordAsync(Guid subscriptionRecordId);
 
         Task<ISubscriptionRecord[]> GetSubscriptionRecordsAsync(Guid eventRecordId);
 
