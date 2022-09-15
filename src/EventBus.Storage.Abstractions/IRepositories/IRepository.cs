@@ -73,7 +73,7 @@ namespace EventBus.Storage.Abstractions.IRepositories
         /// <param name="entities"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        Task<long> DeleteRangeAsync<TEntity>(ICollection<TEntity> entities, bool isCommit = true) where TEntity : IEntity;
+        Task<long> DeleteRangeAsync<TEntity>(ICollection<TEntity> entities, bool isCommit = true) where TEntity : class, IEntity;
 
         /// <summary>
         /// 提交

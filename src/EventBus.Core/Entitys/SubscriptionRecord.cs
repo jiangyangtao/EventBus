@@ -22,6 +22,7 @@ namespace EventBus.Core.Entitys
             FailedRetryPolicy = subscript.FailedRetryPolicy;
             RequestTimeout = subscript.RequestTimeout;
 
+            SubscriptionResult = false;
             SubscriptionHeader = eventRecord.Header;
             SubscriptionContent = eventRecord.BuilderHttpContent();
         }

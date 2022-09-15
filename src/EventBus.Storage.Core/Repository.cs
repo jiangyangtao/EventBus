@@ -85,11 +85,11 @@ namespace EventBus.Storage.Core
             return entities.Length;
         }
 
-        public async Task<long> DeleteRangeAsync<TEntity>(ICollection<TEntity> entities, bool isCommit = true) where TEntity : IEntity
+        public async Task<long> DeleteRangeAsync<TEntity>(ICollection<TEntity> entities, bool isCommit = true) where TEntity : class, IEntity
         {
             if (entities.IsNullOrEmpty()) return 0;
 
-            _dbContext.RemoveRange(entities);
+            _dbContext.Set<TEntity>().RemoveRange(entities);
             if (isCommit) await CommitAsync();
 
             return entities.Count;

@@ -7,7 +7,7 @@ namespace EventBus.Core.Base
     internal abstract class BaseRepository
     {
         protected readonly IRepository _repository;
-        
+
         protected BaseRepository(IServiceScopeFactory serviceScopeFactory)
         {
             _repository = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IRepository>();
@@ -121,7 +121,7 @@ namespace EventBus.Core.Base
         /// <param name="isCommit"></param>
         /// <returns></returns>
         protected Task<long> DeleteRangeAsync<TEntity>(ICollection<TEntity> entities, bool isCommit = true)
-            where TEntity : IEntity
+            where TEntity : class, IEntity
         {
             return _repository.DeleteRangeAsync(entities, isCommit);
         }
@@ -189,7 +189,7 @@ namespace EventBus.Core.Base
         }
 
         protected BaseRepository(IServiceScopeFactory serviceScopeFactory) : base(serviceScopeFactory)
-        {            
+        {
         }
 
         protected BaseRepository(IServiceProvider serviceProvider) : base(serviceProvider)

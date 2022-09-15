@@ -38,7 +38,7 @@ namespace EventBus.Core.Providers
         {
             var data = await GetByIdAsync(retryDataId);
             var subscriptionRecord = await GetByIdAsync<SubscriptionRecord>(data.SubscriptionRecordId);
-            if (subscriptionRecord != null)
+            if (subscriptionRecord != null && subscriptionRecord.SubscriptionResult == false)
             {
                 subscriptionRecord.SubscriptionType = SubscriptionType.Manual;
                 await _subscriptionQueueProvider.PutAsync(subscriptionRecord);

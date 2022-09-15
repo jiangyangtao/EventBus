@@ -42,8 +42,8 @@ namespace EventBus.Core.Providers
 
                 if (endpointSubscription.IsSuccessStatusCode == false && record.FailToRetry)
                 {
-                    var retryCount = await GetRetryCountAsync(record.EventRecordId);
-                    var policy = record.GetRetryPolicy(retryCount);
+                    var retryCount = await GetRetryCountAsync(record.Id);
+                    var policy = record.GetRetryPolicy(retryCount + 1);
                     if (policy.Behavior == RetryBehavior.Retry)
                     {
                         var retryData = record.GetRetryData(policy);
@@ -93,7 +93,7 @@ namespace EventBus.Core.Providers
 
             foreach (var record in records)
             {
-                await PutAsync(record);
+                if (record.SubscriptionResult == false) await PutAsync(record);
             }
         }
     }
