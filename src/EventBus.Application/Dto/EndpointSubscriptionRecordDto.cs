@@ -21,7 +21,9 @@ namespace EventBus.Application.Dto
             SubscriptionTime = endpointRecord.SubscriptionTime;
             ResponseTime = endpointRecord.ResponseTime;
             IsSuccessStatusCode = endpointRecord.IsSuccessStatusCode;
-            ResponseStatucCode = endpointRecord.ResponseStatucCode;
+            ResponseStatus = endpointRecord.ResponseStatus;
+            ResponseHeaders = endpointRecord.ResponseHeaders;
+            ResponseStatusCode = endpointRecord.ResponseStatusCode;
             ResponseContent = endpointRecord.ResponseContent;
             UsageTime = endpointRecord.UsageTime;
         }
@@ -49,10 +51,14 @@ namespace EventBus.Application.Dto
         /// </summary>
         public bool IsSuccessStatusCode { get; }
 
+        public string ResponseStatus { get; }
+
         /// <summary>
         /// 响应的状态码
         /// </summary>
-        public string ResponseStatucCode { get; }
+        public string ResponseStatusCode { get; }
+
+        public IDictionary<string, string> ResponseHeaders { get; }
 
         /// <summary>
         /// 响应内容

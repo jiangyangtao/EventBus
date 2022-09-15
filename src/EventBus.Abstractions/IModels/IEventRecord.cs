@@ -23,6 +23,11 @@ namespace EventBus.Abstractions.IModels
         public string Data { get; }
 
         /// <summary>
+        /// 客户端 IP 地址
+        /// </summary>
+        public string ClientIPAddress { get; }
+
+        /// <summary>
         /// 记录时间
         /// </summary>
         public DateTime RecordTime { get; }

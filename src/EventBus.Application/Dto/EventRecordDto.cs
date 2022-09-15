@@ -18,6 +18,7 @@ namespace EventBus.Application.Dto
             Header = record.Header;
             Data = record.Data;
             RecordTime = record.RecordTime;
+            ClientIPAddress = record.ClientIPAddress;
             SubscriptionCompletionRate = record.SubscriptionCompletionRate;
         }
 
@@ -35,6 +36,11 @@ namespace EventBus.Application.Dto
         /// 数据
         /// </summary>
         public string Data { set; get; }
+
+        /// <summary>
+        /// 客户端 IP 地址
+        /// </summary>
+        public string ClientIPAddress { set; get; }
 
         /// <summary>
         /// 记录时间
@@ -55,6 +61,7 @@ namespace EventBus.Application.Dto
         }
 
         public string EventName { set; get; }
+
     }
 
     public class EventRecordQueryDto : PagingParameter

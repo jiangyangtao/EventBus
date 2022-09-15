@@ -78,3 +78,65 @@ body {
 .modal .endpoint-table-modal {
     max-width: 1200px;
 }
+
+.event-record-container {
+    max-height: calc(75vh);
+    overflow: auto;
+}
+
+.event-record-navigation {
+    margin-top: 15px;
+    margin-right: 8px;
+}
+
+.list-group {
+    margin: 10px 8px 10px 0px;
+    cursor: pointer;
+}
+
+    .list-group .list-group-item:hover {
+        z-index: 1;
+        color: #495057;
+        text-decoration: none;
+        background-color: #eff7ff;
+    }
+
+    .list-group .item-active {
+        z-index: 1;
+        color: #495057;
+        text-decoration: none;
+        background-color: #eff7ff;
+    }
+
+    .list-group .item-header {
+        margin-bottom: 10px;
+    }
+
+    .list-group .record-item {
+        margin: 5px 0px;
+    }
+
+        .list-group .record-item .header-item {
+            margin-left: 20px;
+        }
+
+
+.scription-record-container {
+    margin-top: 63px;
+}
+
+    .scription-record-container .scription-record-item {
+        cursor: pointer;
+    }
+
+.endpoint-record-container {
+    margin: 16px 0px 30px 70px;
+}
+
+    .endpoint-record-container .record-item {
+        margin: 4px 0;
+    }
+
+        .endpoint-record-container .record-item .header-item {
+            margin-left: 20px;
+        }

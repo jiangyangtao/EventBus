@@ -19,7 +19,7 @@ namespace EventBus.Application.Dto
             EndpointUrl = record.EndpointUrl;
             SubscriptionProtocol = record.SubscriptionProtocol;
             RequestTimeout = record.RequestTimeout;
-            FailedRetryPolicy = record.FailedRetryPolicy;
+            FailedRetryPolicy = record.FailedRetryPolicy.Select(a=> new RetryPolicyDto(a)).ToArray();
             SubscriptionResult = record.SubscriptionResult;
         }
 
@@ -47,7 +47,7 @@ namespace EventBus.Application.Dto
         /// <summary>
         /// 失败的重试策略
         /// </summary>
-        public IRetryPolicy[] FailedRetryPolicy { get; }
+        public RetryPolicyDto[] FailedRetryPolicy { get; }
 
         /// <summary>
         /// 订阅结果，true 成功，false 失败

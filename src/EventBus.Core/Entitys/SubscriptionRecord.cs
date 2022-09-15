@@ -124,13 +124,17 @@ namespace EventBus.Core.Entitys
             watch.Stop();
 
             var content = await response.Content.ReadAsStringAsync();
+            var responseStatus = (int)response.StatusCode;
 
             return new EndpointSubscriptionRecord
             {
+                SubscriptionRecordId = Id,
                 SubscriptionType = SubscriptionType,
                 SubscriptionTime = subscriptionTime,
                 IsSuccessStatusCode = response.IsSuccessStatusCode,
-                ResponseStatucCode = response.StatusCode.ToString(),
+                ResponseStatus = responseStatus.ToString(),
+                ResponseStatusCode = response.StatusCode.ToString(),
+                ResponseHeaders = response.Headers.ToDictionary(a => a.Key, a => a.Value.ToString()),
                 ResponseContent = content,
                 ResponseTime = DateTime.Now,
                 UsageTime = watch.ElapsedMilliseconds,

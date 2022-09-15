@@ -1,6 +1,8 @@
 ﻿using EventBus.Abstractions.Enums;
 using EventBus.Abstractions.IModels;
 using EventBus.Core.Base;
+using EventBus.Extensions;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventBus.Core.Entitys
@@ -20,7 +22,27 @@ namespace EventBus.Core.Entitys
 
         public bool IsSuccessStatusCode { set; get; }
 
-        public string ResponseStatucCode { set; get; }
+        public string ResponseStatus { set; get; }
+
+        [NotMapped]
+        public IDictionary<string, string> ResponseHeaders
+        {
+            set
+            {
+                if (value.NotNullAndEmpty()) ResponseHeadersContent = JsonConvert.SerializeObject(value, Formatting.Indented);
+                else ResponseHeadersContent = string.Empty;
+            }
+            get
+            {
+                if (ResponseHeadersContent.IsNullOrEmpty()) return null;
+
+                return JsonConvert.DeserializeObject<IDictionary<string, string>>(ResponseHeadersContent);
+            }
+        }
+
+        public string ResponseHeadersContent { set; get; }
+
+        public string ResponseStatusCode { set; get; }
 
         public string ResponseContent { set; get; }
 

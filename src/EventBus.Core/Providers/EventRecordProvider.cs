@@ -40,7 +40,7 @@ namespace EventBus.Core.Providers
 
                 if (records.NotNullAndEmpty())
                 {
-                    //await AddRangeAsync(records);
+                    await AddRangeAsync(records);
                     await _subscriptionQueueProvider.PutAsync(records);
                 }
             }
@@ -53,6 +53,7 @@ namespace EventBus.Core.Providers
             var streamReader = new StreamReader(request.Body);
             var data = await streamReader.ReadToEndAsync();
             var header = request.Headers.ToDictionary(a => a.Key, a => a.Value.ToString());
+            var ipaddress = _httpContextAccessor.HttpContext.GetClientIPAddress();
 
             return new EventRecord
             {
@@ -61,6 +62,7 @@ namespace EventBus.Core.Providers
                 Data = streamReader.ReadToEndAsync().Result,
                 Header = request.Headers.ToDictionary(a => a.Key, a => a.Value.ToString()),
                 RecordTime = DateTime.Now,
+                ClientIPAddress = ipaddress.ToString(),
             };
         }
 

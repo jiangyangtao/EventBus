@@ -34,6 +34,8 @@ namespace EventBus.Core.Entitys
 
         public string Data { set; get; }
 
+        public string ClientIPAddress { set; get; }
+
         public DateTime RecordTime { set; get; }
 
         public decimal SubscriptionCompletionRate { set; get; }
