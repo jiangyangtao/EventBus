@@ -1,4 +1,5 @@
 ﻿using EventBus.Abstractions.IProviders;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace EventBus.Core.Services
@@ -13,7 +14,7 @@ namespace EventBus.Core.Services
         private readonly IRetryProvider _retryProvider;
 
 
-        protected RetrySchedulesService(IRetryProvider retryProvider)
+        public RetrySchedulesService(IServiceProvider serviceProvider)
         {
             Timer = new System.Timers.Timer(Interval.TotalMilliseconds);
             Timer.Elapsed += async (sender, e) =>
@@ -21,7 +22,7 @@ namespace EventBus.Core.Services
                 await ExecuteingAsync();
             };
 
-            _retryProvider = retryProvider;
+            _retryProvider = serviceProvider.CreateScope().ServiceProvider.GetRequiredService<IRetryProvider>();
         }
 
         public void Dispose() => Timer.Dispose();

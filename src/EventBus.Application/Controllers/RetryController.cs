@@ -14,6 +14,13 @@ namespace EventBus.Application.Controllers
             _retryProvider = retryProvider;
         }
 
+
+        [HttpGet("/[controller]")]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         [HttpPut("{retryDataId}")]
         public async Task<IActionResult> Retry(Guid retryDataId)
         {

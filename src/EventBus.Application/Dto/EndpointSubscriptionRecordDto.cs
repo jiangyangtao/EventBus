@@ -26,6 +26,8 @@ namespace EventBus.Application.Dto
             UsageTime = endpointRecord.UsageTime;
         }
 
+
+
         /// <summary>
         /// 通知类型
         /// </summary>

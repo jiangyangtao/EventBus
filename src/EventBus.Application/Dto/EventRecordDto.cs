@@ -51,7 +51,10 @@ namespace EventBus.Application.Dto
     {
         public EventRecordResult(IEventRecord record) : base(record)
         {
+            if (record.Event != null) EventName = record.Event.EventName;
         }
+
+        public string EventName { set; get; }
     }
 
     public class EventRecordQueryDto : PagingParameter

@@ -88,6 +88,16 @@ namespace EventBus.Core.Providers
             var evnetRecords = await query.Skip(start).Take(count).ToArrayAsync();
             if (evnetRecords.IsNullOrEmpty()) return EventRecord.EmptyArray;
 
+            var eventIds = evnetRecords.Select(a => a.EventId).Distinct().ToArray();
+            var events = await Get<Event>(a => eventIds.Contains(a.Id)).ToArrayAsync();
+            if (events.NotNullAndEmpty())
+            {
+                foreach (var eventRecord in evnetRecords)
+                {
+                    eventRecord.Event = events.FirstOrDefault(a => a.Id == eventRecord.EventId);
+                }
+            }
+
             return evnetRecords;
         }
 
