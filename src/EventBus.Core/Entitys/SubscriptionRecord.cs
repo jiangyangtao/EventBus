@@ -20,6 +20,7 @@ namespace EventBus.Core.Entitys
             EndpointUrl = subscript.EndpointUrl;
             SubscriptionProtocol = subscript.SubscriptionProtocol;
             FailedRetryPolicy = subscript.FailedRetryPolicy;
+            RequestTimeout = subscript.RequestTimeout;
 
             SubscriptionHeader = eventRecord.Header;
             SubscriptionContent = eventRecord.BuilderHttpContent();
@@ -108,6 +109,8 @@ namespace EventBus.Core.Entitys
             {
                 foreach (var item in header)
                 {
+                    if (item.Key == "Content-Length") continue;
+
                     if (client.DefaultRequestHeaders.Contains(item.Key) == false)
                         client.DefaultRequestHeaders.Add(item.Key, item.Value);
                 }

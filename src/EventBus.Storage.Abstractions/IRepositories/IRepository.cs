@@ -20,7 +20,7 @@ namespace EventBus.Storage.Abstractions.IRepositories
         /// <param name="entities"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        Task<long> AddRangeAsync<TEntity>(List<TEntity> entities, bool isCommit = true) where TEntity : IEntity;
+        Task<long> AddRangeAsync<TEntity>(List<TEntity> entities, bool isCommit = true) where TEntity : class, IEntity;
 
         /// <summary>
         /// 批量添加
@@ -29,7 +29,7 @@ namespace EventBus.Storage.Abstractions.IRepositories
         /// <param name="entities"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        Task<long> AddRangeAsync<TEntity>(TEntity[] entities, bool isCommit = true) where TEntity : IEntity;
+        Task<long> AddRangeAsync<TEntity>(TEntity[] entities, bool isCommit = true) where TEntity : class, IEntity;
 
         /// <summary>
         /// 修改

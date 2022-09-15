@@ -11,19 +11,6 @@ namespace EventBus.Core.Entitys
 {
     public class EventRecord : BaseEntity<EventRecord>, IEventRecord
     {
-        public EventRecord() { }
-
-        public EventRecord(Guid eventId, HttpRequest request)
-        {
-            EventId = eventId;
-            QueryString = request.QueryString.ToString();
-
-            var streamReader = new StreamReader(request.Body);
-            Data = streamReader.ReadToEnd();
-
-            Header = request.Headers.ToDictionary(a => a.Key, a => a.Value.ToString());
-            RecordTime = DateTime.Now;
-        }
 
         public string QueryString { set; get; }
 

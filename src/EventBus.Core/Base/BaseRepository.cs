@@ -45,7 +45,7 @@ namespace EventBus.Core.Base
         /// <param name="isCommit"></param>
         /// <returns></returns>
         protected async Task<long> AddRangeAsync<TEntity>(List<TEntity> entities, bool isCommit = true)
-            where TEntity : IEntity
+            where TEntity : class, IEntity
         {
             return await _repository.AddRangeAsync(entities, isCommit);
         }
@@ -58,7 +58,7 @@ namespace EventBus.Core.Base
         /// <param name="isCommit"></param>
         /// <returns></returns>
         protected async Task<long> AddRangeAsync<TEntity>(TEntity[] entities, bool isCommit = true)
-            where TEntity : IEntity
+            where TEntity : class, IEntity
         {
             return await _repository.AddRangeAsync(entities, isCommit);
         }

@@ -31,8 +31,7 @@ namespace EventBus.Core.Providers
             if (e == null) return;
             if (e.Subscriptions.IsNullOrEmpty()) return;
 
-            var request = _httpContextAccessor.HttpContext.Request;
-            var eventRecord = new EventRecord(e.Id, request);
+            var eventRecord = await BuildEventRecordAsync(e.Id);
             await CreateAsync(eventRecord);
 
             if (e.Subscriptions.NotNullAndEmpty())
@@ -41,10 +40,28 @@ namespace EventBus.Core.Providers
 
                 if (records.NotNullAndEmpty())
                 {
-                    await AddRangeAsync(records);
+                    //await AddRangeAsync(records);
                     await _subscriptionQueueProvider.PutAsync(records);
                 }
             }
+        }
+
+        private async Task<EventRecord> BuildEventRecordAsync(Guid eventId)
+        {
+            var request = _httpContextAccessor.HttpContext.Request;
+            var QueryString = request.QueryString.ToString();
+            var streamReader = new StreamReader(request.Body);
+            var data = await streamReader.ReadToEndAsync();
+            var header = request.Headers.ToDictionary(a => a.Key, a => a.Value.ToString());
+
+            return new EventRecord
+            {
+                EventId = eventId,
+                QueryString = request.QueryString.ToString(),
+                Data = streamReader.ReadToEndAsync().Result,
+                Header = request.Headers.ToDictionary(a => a.Key, a => a.Value.ToString()),
+                RecordTime = DateTime.Now,
+            };
         }
 
         public async Task<IEventRecord> GetEventRecordAsync(Guid eventRecordId)
@@ -98,6 +115,6 @@ namespace EventBus.Core.Providers
             return records;
         }
 
-     
+
     }
 }

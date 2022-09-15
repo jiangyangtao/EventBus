@@ -14,12 +14,12 @@ namespace EventBus.Storage.Core
             _dbContext = dbContext;
         }
 
-        public async Task<long> AddRangeAsync<TEntity>(List<TEntity> entities, bool isCommit = true) where TEntity : IEntity
+        public async Task<long> AddRangeAsync<TEntity>(List<TEntity> entities, bool isCommit = true) where TEntity : class, IEntity
         {
             return await AddRangeAsync(entities.ToArray(), isCommit);
         }
 
-        public async Task<long> AddRangeAsync<TEntity>(TEntity[] entities, bool isCommit = true) where TEntity : IEntity
+        public async Task<long> AddRangeAsync<TEntity>(TEntity[] entities, bool isCommit = true) where TEntity : class, IEntity
         {
             if (entities.IsNullOrEmpty()) return 0;
 
@@ -29,7 +29,7 @@ namespace EventBus.Storage.Core
                 item.UpdateTime = DateTime.Now;
             }
 
-            await _dbContext.AddRangeAsync(entities);
+            await _dbContext.Set<TEntity>().AddRangeAsync(entities);
             if (isCommit) await CommitAsync();
 
             return entities.Length;
