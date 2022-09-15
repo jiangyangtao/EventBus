@@ -82,12 +82,15 @@ namespace EventBus.Core.Providers
             return application;
         }
 
-        public async Task<IApplication> GetApplicationAsync(string applicationName)
+        public async Task<IApplication[]> GetApplicationsAsync(string applicationName)
         {
-            var application = await Get(a => a.ApplicationName == applicationName).FirstOrDefaultAsync();
-            if (application == null) return null;
+            var query = Get();
+            if (applicationName.NotNullAndEmpty()) query = query.Where(a => a.ApplicationName.Contains(applicationName));
 
-            return application;
+            var applications = await query.ToArrayAsync();
+            if (applications.IsNullOrEmpty()) return Application.EmptyArray;
+
+            return applications;
         }
 
         public async Task<IApplicationEndpoint> GetApplicationEndpointAsync(Guid applicationEndpointId)

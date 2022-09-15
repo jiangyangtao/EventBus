@@ -15,6 +15,11 @@ namespace EventBus.Application.Dto
         public string ApplicationName { get; set; }
     }
 
+    public class ApplicationSuggestionDto
+    {
+        public string ApplicationName { get; set; }
+    }
+
     public class ApplicationQueryDto : PagingParameter
     {
         public string ApplicationName { get; set; }

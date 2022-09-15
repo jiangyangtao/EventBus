@@ -3,11 +3,10 @@
     ViewData["Title"] = "Application";
 }
 
-<div id="app">
+<div class="main-container" id="app" style="max-width:75%;">
+    <main role="main" class="pb-3">
 
     <div class="placeholder-block"></div>
-
-
 
     <div class="row">
 
@@ -91,7 +90,6 @@
                     </div>
                 </form>
             </div>
-
 
             <div class="action-container">
                 <button type="button" class="btn btn-primary" v-on:click="addEndpoint()">添加接入点</button>
@@ -243,7 +241,7 @@
         </div>
     </div>
 
-
+    </main>
 </div>
 
 <script type="text/javascript" charset="utf-8">
@@ -257,8 +255,6 @@
             currnetPageIndex: 1,
             pageCount: 20,
             pageNumbers: new Array(1),
-            applicationForm: null,
-            endpointForm: null,
             modalTitle: "",
             applicationFormData: {
                 ApplicationName: "",
@@ -354,6 +350,8 @@
                     api.application.delete(data.ApplicationId)
                         .success(r => {
                             this.getApplicationList();
+                            this.currentApplication = null;
+                            this.endpointList = [];
                             message.success("删除成功");
                         }).fail(e => {
                             console.log(e);
@@ -412,7 +410,6 @@
                 this.endpointFormData.ApplicationEndpointId = data.ApplicationEndpointId;
                 this.endpointFormData.FailedRetryPolicy = [];
                 for (var item of data.FailedRetryPolicy) {
-                    console.log(item);
                     this.endpointFormData.FailedRetryPolicy.push({
                         RetryDelayUnit: item.RetryDelayUnit,
                         RetryDelayCount: item.RetryDelayCount,

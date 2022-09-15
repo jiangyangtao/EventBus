@@ -1,6 +1,7 @@
 ﻿using EventBus.Abstractions.IProviders;
 using EventBus.Application.Controllers.Base;
 using EventBus.Application.Dto;
+using EventBus.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventBus.Application.Controllers
@@ -64,6 +65,15 @@ namespace EventBus.Application.Controllers
             var count = await _applicationProvider.GetApplicationCountAsync(query.ApplicationName);
 
             return new ApplicationPaginationResult(count, applications);
+        }
+
+        [HttpGet]
+        public async Task<SuggestionResult[]> Suggestion([FromQuery] ApplicationSuggestionDto query)
+        {
+            var applications = await _applicationProvider.GetApplicationsAsync(query.ApplicationName);
+            if (applications.IsNullOrEmpty()) return Array.Empty<SuggestionResult>();
+
+            return applications.Select(a => new SuggestionResult(a.ApplicationName, a.Id.ToString())).ToArray();
         }
     }
 }

@@ -17,7 +17,7 @@ namespace EventBus.Abstractions.IProviders
 
         Task<IApplication> GetApplicationAsync(Guid applicationId);
 
-        Task<IApplication> GetApplicationAsync(string applicationName);
+        Task<IApplication[]> GetApplicationsAsync(string applicationName);
 
         Task<IApplication[]> GetApplicationsAsync();
 

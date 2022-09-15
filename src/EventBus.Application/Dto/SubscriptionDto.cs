@@ -1,5 +1,6 @@
 ﻿using EventBus.Abstractions.Enums;
 using EventBus.Abstractions.IModels;
+using EventBus.Application.Attributes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.ComponentModel.DataAnnotations;
@@ -12,11 +13,75 @@ namespace EventBus.Application.Dto
         public Guid SubscriptionId { get; set; }
     }
 
+    public class SubscriptionDto : ISubscription
+    {
+        public string EndpointName { get; set; }
+
+        public Uri EndpointUrl { get; set; }
+
+        public ProtocolType SubscriptionProtocol { get; set; }
+
+        public int RequestTimeout { get; set; }
+
+        public IRetryPolicy[] FailedRetryPolicy { get; set; }
+
+        public Guid EventId { get; set; }
+
+        public IEvent Event { get; set; }
+
+        public Guid Id { get; set; }
+
+        public DateTime CreateTime { get; set; }
+
+        public DateTime UpdateTime { get; set; }
+    }
+
     public class SubscriptionAddDto
     {
         public Guid EventId { set; get; }
 
         public Guid ApplicationEndpointId { set; get; }
+    }
+
+    public class SubscriptionModifyDto
+    {
+        public Guid EventId { set; get; }
+
+        [Required, MaxLength(100)]
+        public string EndpointName { set; get; }
+
+        [UriValidation]
+        public string EndpointUrl { set; get; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ProtocolType? SubscriptionProtocol { set; get; }
+
+        public int RequestTimeout { set; get; }
+
+        public RetryPolicyDto[] FailedRetryPolicy { set; get; }
+
+        private SubscriptionDto GetSubscription()
+        {
+            return new SubscriptionDto
+            {
+                EndpointName = EndpointName,
+                EndpointUrl = new Uri(EndpointUrl),
+                SubscriptionProtocol = SubscriptionProtocol.Value,
+                RequestTimeout = RequestTimeout,
+                EventId = EventId,
+                FailedRetryPolicy = FailedRetryPolicy,
+            };
+        }
+
+        internal ISubscription BuildSubscription() => GetSubscription();
+
+        internal ISubscription BuildSubscription(Guid subscriptionId)
+        {
+            var subscription = GetSubscription();
+            subscription.Id = subscriptionId;
+
+            return subscription;
+        }
     }
 
     public class SubscriptionQueryDto : PagingParameter
@@ -26,16 +91,16 @@ namespace EventBus.Application.Dto
         public string EndpointName { set; get; }
     }
 
-    public class SubscriptionResult : SubscriptionDtoBase
+    public class SubscriptionResult : SubscriptionModifyDto
     {
         public SubscriptionResult(ISubscription subscription)
         {
             SubscriptionId = subscription.Id;
             EndpointName = subscription.EndpointName;
-            EndpointUrl = subscription.EndpointUrl;
+            EndpointUrl = subscription.EndpointUrl.ToString();
             SubscriptionProtocol = subscription.SubscriptionProtocol;
             RequestTimeout = subscription.RequestTimeout;
-            FailedRetryPolicy = subscription.FailedRetryPolicy;
+            FailedRetryPolicy = subscription.FailedRetryPolicy.Select(a => new RetryPolicyDto(a)).ToArray();
 
             if (subscription.Event != null)
             {
@@ -56,38 +121,12 @@ namespace EventBus.Application.Dto
         /// <summary>
         /// 事件 Id
         /// </summary>
-        public Guid EventId { set; get; }
+        public Guid SubscriptionId { set; get; }
 
         /// <summary>
         /// 事件名称
         /// </summary>
         public string EventName { set; get; }
-
-        /// <summary>
-        /// 接入点名称
-        /// </summary>
-        public string EndpointName { set; get; }
-
-        /// <summary>
-        /// 接入点地址
-        /// </summary>
-        public Uri EndpointUrl { set; get; }
-
-        /// <summary>
-        /// 订阅协议
-        /// </summary>
-        [JsonConverter(typeof(StringEnumConverter))]
-        public ProtocolType SubscriptionProtocol { set; get; }
-
-        /// <summary>
-        /// 请求超时时间
-        /// </summary>
-        public int RequestTimeout { set; get; }
-
-        /// <summary>
-        /// 失败的重试策略
-        /// </summary>
-        public IRetryPolicy[] FailedRetryPolicy { set; get; }
     }
 
     public class SubscriptionPaginationResult : PaginationResult<SubscriptionResult>

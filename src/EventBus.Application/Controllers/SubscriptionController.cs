@@ -18,12 +18,6 @@ namespace EventBus.Application.Controllers
             _subscriptionProvider = subscriptionProvider;
         }
 
-        [HttpGet("/[controller]")]
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         [HttpPost]
         public async Task<SubscriptionDtoBase> Add([FromBody] SubscriptionAddDto subscription)
         {
@@ -37,12 +31,33 @@ namespace EventBus.Application.Controllers
             return new SubscriptionDtoBase { SubscriptionId = id };
         }
 
+        [HttpPost]
+        public async Task<SubscriptionDtoBase> AddSubscription([FromBody] SubscriptionModifyDto subscription)
+        {
+            var data = subscription.BuildSubscription();
+            var id = await _subscriptionProvider.AddOrUpdateAsync(data);
+
+            return new SubscriptionDtoBase { SubscriptionId = id };
+        }
+
         [HttpDelete("{subscriptionId}")]
         public async Task<IActionResult> Delete(Guid subscriptionId)
         {
             if (subscriptionId == Guid.Empty) return NotFound();
 
             await _subscriptionProvider.RemoveAsync(subscriptionId);
+            return Ok();
+        }
+
+        [HttpPut("{subscriptionId}")]
+        public async Task<IActionResult> Modify(Guid subscriptionId, [FromBody] SubscriptionModifyDto subscription)
+        {
+            if (subscriptionId == Guid.Empty) return NotFound();
+
+            var applicationEndpoint = await _subscriptionProvider.GetSubscriptionAsync(subscriptionId);
+            if (applicationEndpoint == null) return NotFound();
+
+            await _subscriptionProvider.AddOrUpdateAsync(subscription.BuildSubscription(subscriptionId));
             return Ok();
         }
 

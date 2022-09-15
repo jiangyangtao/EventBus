@@ -4,6 +4,8 @@ namespace EventBus.Abstractions.IProviders
 {
     public interface ISubscriptionProvider
     {
+        Task<Guid> AddOrUpdateAsync(ISubscription subscription);
+
         Task<Guid> AddAsync(Guid eventId, Guid endpointId);
 
         Task RemoveAsync(Guid subscriptionId);

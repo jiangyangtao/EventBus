@@ -18,6 +18,28 @@ namespace EventBus.Core.Providers
             _applicationProvider = applicationProvider;
         }
 
+        public async Task<Guid> AddOrUpdateAsync(ISubscription subscription)
+        {
+            Subscription data = null;
+            if (subscription.Id != Guid.Empty) data = await GetByIdAsync(subscription.Id);
+
+            if (data == null)
+            {
+                data = new Subscription(subscription);
+                await CreateAsync(data);
+                return data.Id;
+            }
+
+            data.EndpointName = subscription.EndpointName;
+            data.EndpointUrl = subscription.EndpointUrl;
+            data.SubscriptionProtocol = subscription.SubscriptionProtocol;
+            data.RequestTimeout = subscription.RequestTimeout;
+            data.FailedRetryPolicy = subscription.FailedRetryPolicy;
+            await UpdateAsync(data);
+
+            return data.Id;
+        }
+
         public async Task<Guid> AddAsync(Guid eventId, Guid endpointId)
         {
             var endpoint = await _applicationProvider.GetApplicationEndpointAsync(endpointId);

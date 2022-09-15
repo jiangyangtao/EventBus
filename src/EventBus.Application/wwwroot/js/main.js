@@ -25,42 +25,49 @@ axios.interceptors.response.use(function (response) {
 var api = {
     application: {
         add: function (data) {
-            return axios.post('/api/application/add', data);
+            return axios.post('v1/api/application/add', data);
         },
         delete: function (applicationId) {
-            return axios.delete(`/api/application/delete/${applicationId}`);
+            return axios.delete(`v1/api/application/delete/${applicationId}`);
         },
         modify: function (data) {
-            return axios.put(`/api/application/modify/${data.ApplicationId}`, data);
+            return axios.put(`v1/api/application/modify/${data.ApplicationId}`, data);
         },
         get: function (applicationId) {
-            return axios.get(`/api/application/Get/${applicationId}`);
+            return axios.get(`v1/api/application/Get/${applicationId}`);
         },
         list: function (start, count, applicationName) {
-            return axios.get('/api/application/list', {
+            return axios.get('v1/api/application/list', {
                 params: {
                     startIndex: start,
                     count: count,
                     ApplicationName: applicationName
                 }
             });
-        }
+        },
+        suggestion: function ( applicationName) {
+            return axios.get('v1/api/application/suggestion', {
+                params: {
+                    ApplicationName: applicationName
+                }
+            });
+        },
     },
     applicationEndpoint: {
         add: function (data) {
-            return axios.post('/api/applicationendpoint/add', data);
+            return axios.post('v1/api/applicationendpoint/add', data);
         },
         delete: function (applicationEndpointId) {
-            return axios.delete(`/api/applicationendpoint/delete/${applicationEndpointId}`);
+            return axios.delete(`v1/api/applicationendpoint/delete/${applicationEndpointId}`);
         },
         modify: function (data) {
-            return axios.put(`/api/applicationendpoint/modify/${data.ApplicationEndpointId}`, data);
+            return axios.put(`v1/api/applicationendpoint/modify/${data.ApplicationEndpointId}`, data);
         },
         get: function (applicationEndpointId) {
-            return axios.get(`/api/applicationendpoint/Get/${applicationEndpointId}`);
+            return axios.get(`v1/api/applicationendpoint/Get/${applicationEndpointId}`);
         },
         list: function (start, count, endpointName, applicationId) {
-            return axios.get('/api/applicationendpoint/list', {
+            return axios.get('v1/api/applicationendpoint/list', {
                 params: {
                     startIndex: start,
                     count: count,
@@ -72,19 +79,19 @@ var api = {
     },
     event: {
         add: function (data) {
-            return axios.post('/api/event/add', data);
+            return axios.post('v1/api/event/add', data);
         },
         delete: function (eventId) {
-            return axios.delete(`/api/event/delete/${eventId}`);
+            return axios.delete(`v1/api/event/delete/${eventId}`);
         },
         modify: function (data) {
-            return axios.put(`/api/event/modify/${data.EventId}`, data);
+            return axios.put(`v1/api/event/modify/${data.EventId}`, data);
         },
         get: function (eventId) {
-            return axios.get(`/api/event/Get/${eventId}`);
+            return axios.get(`v1/api/event/Get/${eventId}`);
         },
         list: function (start, count, eventName) {
-            return axios.get('/api/event/list', {
+            return axios.get('v1/api/event/list', {
                 params: {
                     startIndex: start,
                     count: count,
@@ -95,7 +102,7 @@ var api = {
     },
     eventRecord: {
         list: function (start, count, eventName) {
-            return axios.get('/api/eventrecord/list', {
+            return axios.get('v1/api/eventrecord/list', {
                 params: {
                     startIndex: start,
                     count: count,
@@ -104,18 +111,18 @@ var api = {
             });
         },
         getSubscriptionRecord: function (eventRecordId) {
-            return axios.get(`/api/eventrecord/getSubscriptionRecord/${eventRecordId}`);
+            return axios.get(`v1/api/eventrecord/getSubscriptionRecord/${eventRecordId}`);
         },
         getEndpointSubscriptionRecord: function (subscriptionRecordId) {
-            return axios.get(`/api/eventrecord/getEndpointSubscriptionRecord/${subscriptionRecordId}`);
+            return axios.get(`v1/api/eventrecord/getEndpointSubscriptionRecord/${subscriptionRecordId}`);
         }
     },
     retry: {
         modify: function (retryDataId) {
-            return axios.put(`/api/retry/retry/${retryDataId}`);
+            return axios.put(`v1/api/retry/retry/${retryDataId}`);
         },
         list: function (start, count, eventName, endpointName) {
-            return axios.get('/api/event/list', {
+            return axios.get('v1/api/event/list', {
                 params: {
                     startIndex: start,
                     count: count,
@@ -127,16 +134,22 @@ var api = {
     },
     subscription: {
         add: function (data) {
-            return axios.post('/api/subscription/add', data);
+            return axios.post('v1/api/subscription/add', data);
+        },
+        addSubscription: function (data) {
+            return axios.post('v1/api/subscription/addsubscription', data);
+        },
+        modify: function (data) {
+            return axios.put(`v1/api/subscription/modify/${data.SubscriptionId}`, data);
         },
         delete: function (subscriptionId) {
-            return axios.delete(`/api/subscription/delete/${subscriptionId}`);
+            return axios.delete(`v1/api/subscription/delete/${subscriptionId}`);
         },
         get: function (subscriptionId) {
-            return axios.get(`/api/subscription/Get/${subscriptionId}`);
+            return axios.get(`v1/api/subscription/Get/${subscriptionId}`);
         },
         list: function (start, count, eventId, endpointName) {
-            return axios.get('/api/subscription/list', {
+            return axios.get('v1/api/subscription/list', {
                 params: {
                     startIndex: start,
                     count: count,

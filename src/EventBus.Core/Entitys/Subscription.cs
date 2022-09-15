@@ -24,6 +24,17 @@ namespace EventBus.Core.Entitys
             FailedRetryPolicy = endpoint.FailedRetryPolicy;
         }
 
+        public Subscription(ISubscription subscription) : base()
+        {
+            EventId = subscription.EventId;
+
+            EndpointName = subscription.EndpointName;
+            EndpointUrl = subscription.EndpointUrl;
+            SubscriptionProtocol = subscription.SubscriptionProtocol;
+            RequestTimeout = subscription.RequestTimeout;
+            FailedRetryPolicy = subscription.FailedRetryPolicy;
+        }
+
         public Guid EventId { get; set; }
 
         [NotMapped]

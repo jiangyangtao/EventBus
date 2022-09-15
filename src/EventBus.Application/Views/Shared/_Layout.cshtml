@@ -21,15 +21,12 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav" id="top-nav">
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="~/home">事件</a>
+                            <a class="nav-link" aria-current="page" href="~/event">事件</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="~/application">应用</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="~/subscription">订阅</a>
+                            <a class="nav-link" href="~/application">应用</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="~/eventrecord">事件记录</a>
@@ -75,11 +72,9 @@
         </div>
     </div>
 
-    <div class="main-container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+
+    @RenderBody()
+
 
     <script>
         var totas = new bootstrap.Toast(document.getElementById("messageToast"));
@@ -129,8 +124,22 @@
             }
         };
 
+        window.onload = function() {
+            var topNav = document.getElementById("top-nav");
+            for (var item of topNav.children) {
+                var a = item.children[0];
+                var href = a.getAttribute("href");
+
+                if (href == window.location.pathname) {
+                    a.classList.add("active");
+                } else {
+                    a.classList.remove("active");
+                }
+            }
+        }
 
     </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
