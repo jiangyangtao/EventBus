@@ -84,6 +84,12 @@ body {
     overflow: auto;
 }
 
+.retry-record-container {
+    margin-top: 30px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .event-record-navigation {
     margin-top: 15px;
     margin-right: 8px;
@@ -129,14 +135,59 @@ body {
         cursor: pointer;
     }
 
-.endpoint-record-container {
-    margin: 16px 0px 30px 70px;
+.retry-item .card-header {
+    padding: 0;
 }
 
-    .endpoint-record-container .record-item {
-        margin: 4px 0;
+    .retry-item .card-header .card-header-left {
+        padding: 0.5rem 1rem;
+        border-right: 1px solid #d8d8d8;
     }
 
-        .endpoint-record-container .record-item .header-item {
-            margin-left: 20px;
+    .retry-item .card-header .card-header-right {
+        padding: 0.5rem 1rem;
+    }
+
+
+.retry-item .card-body {
+    padding: 0;
+}
+
+    .retry-item .card-body .card-body-left {
+        border-right: 1px solid #d8d8d8;
+        padding: 1rem 1rem 1rem 1.8rem;
+    }
+
+    .retry-item .card-body .card-body-right {
+        padding: 1rem 2rem 0 1rem;
+    }
+
+.card-body .card-body-left .record-item {
+    margin: 5px 0px;
+}
+
+.card-body .card-body-right .record-item {
+    margin: 10px 0px;
+}
+
+.card-body .record-item .header-item {
+    margin-left: 20px;
+}
+
+
+.collapse-container {
+    max-height: calc(70vh);
+    overflow: auto;
+}
+
+    .collapse-container .endpoint-record-container {
+        margin: 16px 0px 30px 70px;
+    }
+
+        .collapse-container .endpoint-record-container .record-item {
+            margin: 4px 0;
         }
+
+            .collapse-container .endpoint-record-container .record-item .header-item {
+                margin-left: 20px;
+            }

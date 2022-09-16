@@ -43,7 +43,7 @@ namespace EventBus.Core.Services
 
         private async Task ExecuteingAsync()
         {
-            await _retryProvider.RetryAsync();
+            //await _retryProvider.RetryAsync();
         }
     }
 }

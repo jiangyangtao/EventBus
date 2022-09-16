@@ -122,11 +122,14 @@ var api = {
         }
     },
     retry: {
-        modify: function (retryDataId) {
+        retry: function (retryDataId) {
             return axios.put(`${apiVersion}/api/retry/retry/${retryDataId}`);
         },
+        delete: function (retryDataId) {
+            return axios.delete(`${apiVersion}/api/retry/delete/${retryDataId}`);
+        },
         list: function (start, count, eventName, endpointName) {
-            return axios.get(`${apiVersion}/api/event/list`, {
+            return axios.get(`${apiVersion}/api/retry/list`, {
                 params: {
                     startIndex: start,
                     count: count,

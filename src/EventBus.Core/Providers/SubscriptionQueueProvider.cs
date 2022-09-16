@@ -35,15 +35,19 @@ namespace EventBus.Core.Providers
             var endpointSubscription = await record.Subscription(_httpClientFactory, record.GetSubscriptionContent(), record.GetSubscriptionHeader());
             if (endpointSubscription != null)
             {
-                record.SubscriptionResult = endpointSubscription.IsSuccessStatusCode;
+                var _record = await GetByIdAsync<SubscriptionRecord>(record.Id);
+                if (_record != null)
+                {
+                    _record.SubscriptionResult = endpointSubscription.IsSuccessStatusCode;
+                    await UpdateAsync(_record);
+                }
 
-                await UpdateAsync(record, false);
                 await CreateAsync(endpointSubscription);
 
                 if (endpointSubscription.IsSuccessStatusCode == false && record.FailToRetry)
                 {
                     var retryCount = await GetRetryCountAsync(record.Id);
-                    var policy = record.GetRetryPolicy(retryCount + 1);
+                    var policy = record.GetRetryPolicy(retryCount);
                     if (policy.Behavior == RetryBehavior.Retry)
                     {
                         var retryData = record.GetRetryData(policy);

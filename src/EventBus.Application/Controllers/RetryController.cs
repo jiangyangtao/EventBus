@@ -31,6 +31,17 @@ namespace EventBus.Application.Controllers
             return Ok();
         }
 
+
+        [HttpDelete("{retryDataId}")]
+        public async Task<IActionResult> Delete(Guid retryDataId)
+        {
+            if (retryDataId == Guid.Empty) return NotFound();
+
+            await _retryProvider.RemoveAsync(retryDataId);
+            return NoContent();
+        }
+
+
         [HttpGet]
         public async Task<RetryDataPaginationResult> List([FromQuery] RetryDataQueryDto query)
         {

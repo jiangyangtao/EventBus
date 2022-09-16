@@ -99,7 +99,7 @@
                             </div>
                         </div>
 
-                        <div class="collapse" :id="item.SubscriptionRecordId">
+                        <div class="collapse collapse-container" :id="item.SubscriptionRecordId">
 
                             <div v-show="endpointRecordList.length > 0" class="card card-body endpoint-record-container" v-for="(item,index) in endpointRecordList" :class="item.IsSuccessStatusCode ? 'border-success' : 'border-danger'">
                                 <div class="record-item">Subscription:&nbsp;<small class="text-muted">{{item.SubscriptionTime}}&nbsp;&nbsp;{{getSubscriptionType(item.SubscriptionType)}}订阅</small></div>

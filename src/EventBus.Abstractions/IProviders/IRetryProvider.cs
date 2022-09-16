@@ -17,6 +17,8 @@ namespace EventBus.Abstractions.IProviders
         /// <returns></returns>
         Task RetryAsync(Guid retryDataId);
 
+        Task RemoveAsync(Guid retryDataId);
+
         /// <summary>
         /// 获取重试数据
         /// </summary>
