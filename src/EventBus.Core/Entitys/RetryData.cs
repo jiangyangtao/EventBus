@@ -15,7 +15,7 @@ namespace EventBus.Core.Entitys
         public RetryData(
             Guid eventId,
             Guid eventRecordId,
-            Guid subscriptionRecordId,
+            Guid eventRecordSubscriptionId,
             RetryDelayUnit delayUnit,
             int delayCount)
         {
@@ -39,7 +39,7 @@ namespace EventBus.Core.Entitys
             RetryTime = DateTime.Now.Add(retryDelay);
             EventId = eventId;
             EventRecordId = eventRecordId;
-            SubscriptionRecordId = subscriptionRecordId;
+            EventRecordSubscriptionId = eventRecordSubscriptionId;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace EventBus.Core.Entitys
         /// <summary>
         /// 订阅的分组日志 Id
         /// </summary>
-        public Guid SubscriptionRecordId { set; get; }
+        public Guid EventRecordSubscriptionId { set; get; }
 
         public Guid EventRecordId { set; get; }
 
@@ -64,6 +64,6 @@ namespace EventBus.Core.Entitys
         public IEventRecord EventRecord { set; get; }
 
         [NotMapped]
-        public ISubscriptionRecord SubscriptionRecord { set; get; }
+        public IEventRecordSubscription EventRecordSubscription { set; get; }
     }
 }

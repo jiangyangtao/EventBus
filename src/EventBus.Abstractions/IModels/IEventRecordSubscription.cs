@@ -3,9 +3,9 @@
 namespace EventBus.Abstractions.IModels
 {
     /// <summary>
-    /// 订阅记录
+    /// 事件记录的订阅
     /// </summary>
-    public interface ISubscriptionRecord : IBaseModel
+    public interface IEventRecordSubscription : IBaseModel
     {
         /// <summary>
         /// 接入点名称

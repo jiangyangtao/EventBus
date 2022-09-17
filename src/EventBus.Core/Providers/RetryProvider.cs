@@ -24,11 +24,11 @@ namespace EventBus.Core.Providers
             var datas = await Get(a => a.RetryTime <= DateTime.Now).ToArrayAsync();
             if (datas.IsNullOrEmpty()) return;
 
-            var subscriptionRecordIds = datas.Select(a => a.SubscriptionRecordId).ToArray();
-            var subscriptionRecords = await Get<SubscriptionRecord>(a => subscriptionRecordIds.Contains(a.Id)).ToArrayAsync();
-            if (subscriptionRecords.NotNullAndEmpty())
+            var eventRecordSubscriptionIds = datas.Select(a => a.EventRecordSubscriptionId).ToArray();
+            var eventRecordSubscriptions = await Get<EventRecordSubscription>(a => eventRecordSubscriptionIds.Contains(a.Id)).ToArrayAsync();
+            if (eventRecordSubscriptions.NotNullAndEmpty())
             {
-                await _subscriptionQueueProvider.PutAsync(subscriptionRecords);
+                await _subscriptionQueueProvider.PutAsync(eventRecordSubscriptions);
             }
 
             await DeleteRangeAsync(datas);
@@ -37,11 +37,11 @@ namespace EventBus.Core.Providers
         public async Task RetryAsync(Guid retryDataId)
         {
             var data = await GetByIdAsync(retryDataId);
-            var subscriptionRecord = await GetByIdAsync<SubscriptionRecord>(data.SubscriptionRecordId);
-            if (subscriptionRecord != null && subscriptionRecord.SubscriptionResult == false)
+            var eventRecordSubscription = await GetByIdAsync<EventRecordSubscription>(data.EventRecordSubscriptionId);
+            if (eventRecordSubscription != null && eventRecordSubscription.SubscriptionResult == false)
             {
-                subscriptionRecord.SubscriptionType = SubscriptionType.Manual;
-                await _subscriptionQueueProvider.PutAsync(subscriptionRecord);
+                eventRecordSubscription.SubscriptionType = SubscriptionType.Manual;
+                await _subscriptionQueueProvider.PutAsync(eventRecordSubscription);
             }
 
             await DeleteAsync(data);
@@ -57,9 +57,9 @@ namespace EventBus.Core.Providers
             return await GetByIdAsync(a => a.Id == id);
         }
 
-        public async Task<int> GetRetryCountAsync(Guid subscriptionRecordId)
+        public async Task<int> GetRetryCountAsync(Guid eventRecordSubscriptionId)
         {
-            return await Get<EndpointSubscriptionRecord>(a => a.SubscriptionRecordId == subscriptionRecordId).CountAsync();
+            return await Get<EndpointSubscriptionRecord>(a => a.EventRecordSubscriptionId == eventRecordSubscriptionId).CountAsync();
         }
 
         public async Task<IRetryData[]> GetRetryDatasAsync(string eventName, string endpointName, int start, int count)
@@ -89,13 +89,13 @@ namespace EventBus.Core.Providers
                 }
             }
 
-            var subscriptionRecordIds = retryDatas.Select(a => a.SubscriptionRecordId).Distinct().ToArray();
-            var subscriptionRecords = await Get<SubscriptionRecord>(a => subscriptionRecordIds.Contains(a.Id)).ToArrayAsync();
-            if (subscriptionRecords.NotNullAndEmpty())
+            var eventRecordSubscriptionIds = retryDatas.Select(a => a.EventRecordSubscriptionId).Distinct().ToArray();
+            var eventRecordSubscriptions = await Get<EventRecordSubscription>(a => eventRecordSubscriptionIds.Contains(a.Id)).ToArrayAsync();
+            if (eventRecordSubscriptions.NotNullAndEmpty())
             {
                 foreach (var retryData in retryDatas)
                 {
-                    retryData.SubscriptionRecord = subscriptionRecords.FirstOrDefault(a => a.Id == retryData.SubscriptionRecordId);
+                    retryData.EventRecordSubscription = eventRecordSubscriptions.FirstOrDefault(a => a.Id == retryData.EventRecordSubscriptionId);
                 }
             }
 
@@ -105,22 +105,22 @@ namespace EventBus.Core.Providers
         private async Task<IQueryable<RetryData>> BuildQueryAsync(string eventName, string endpointName)
         {
             var eventIds = Array.Empty<Guid>();
-            var subscriptionRecordIds = Array.Empty<Guid>();
+            var eventRecordSubscriptionIds = Array.Empty<Guid>();
             if (endpointName.NotNullAndEmpty())
             {
                 var events = await Get<Event>(a => a.EventName.Contains(eventName)).ToArrayAsync();
-                eventIds = events.Select(a => a.Id).ToArray();
+                eventIds = events.Select(a => a.Id).Distinct().ToArray();
             }
 
             if (endpointName.NotNullAndEmpty())
             {
-                var subscriptionRecords = await Get<SubscriptionRecord>(a => a.EndpointName.Contains(endpointName)).ToArrayAsync();
-                subscriptionRecordIds = subscriptionRecords.Select(a => a.Id).ToArray();
+                var eventRecordSubscriptions = await Get<EventRecordSubscription>(a => a.EndpointName.Contains(endpointName)).ToArrayAsync();
+                eventRecordSubscriptionIds = eventRecordSubscriptions.Select(a => a.Id).Distinct().ToArray();
             }
 
             var query = Get();
             if (eventIds.NotNullAndEmpty()) query = query.Where(a => eventIds.Contains(a.EventId));
-            if (subscriptionRecordIds.NotNullAndEmpty()) query = query.Where(a => subscriptionRecordIds.Contains(a.SubscriptionRecordId));
+            if (eventRecordSubscriptionIds.NotNullAndEmpty()) query = query.Where(a => eventRecordSubscriptionIds.Contains(a.EventRecordSubscriptionId));
 
             return query;
         }

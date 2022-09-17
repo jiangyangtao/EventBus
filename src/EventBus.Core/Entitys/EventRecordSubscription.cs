@@ -8,11 +8,11 @@ using System.Diagnostics;
 
 namespace EventBus.Core.Entitys
 {
-    public class SubscriptionRecord : BaseEntity<SubscriptionRecord>, ISubscriptionRecord
+    public class EventRecordSubscription : BaseEntity<EventRecordSubscription>, IEventRecordSubscription
     {
-        public SubscriptionRecord() { }
+        public EventRecordSubscription() { }
 
-        public SubscriptionRecord(Guid eventId, IEventRecord eventRecord, ISubscription subscript)
+        public EventRecordSubscription(Guid eventId, IEventRecord eventRecord, ISubscription subscript)
         {
             EventId = eventId;
             EventRecordId = eventRecord.Id;
@@ -132,7 +132,7 @@ namespace EventBus.Core.Entitys
 
             return new EndpointSubscriptionRecord
             {
-                SubscriptionRecordId = Id,
+                EventRecordSubscriptionId = Id,
                 SubscriptionType = SubscriptionType,
                 SubscriptionTime = subscriptionTime,
                 IsSuccessStatusCode = response.IsSuccessStatusCode,

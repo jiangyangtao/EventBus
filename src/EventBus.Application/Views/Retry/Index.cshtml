@@ -59,15 +59,15 @@
                         <div class="col-6 card-body-right">
 
                             <div class="d-flex w-100 justify-content-between item-header">
-                                <h5 class="mb-1">{{item.SubscriptionRecord.EndpointName}}</h5>
+                                <h5 class="mb-1">{{item.EventRecordSubscription.EndpointName}}</h5>
                                 <small>{{item.RetryTime}}</small>
                             </div>
 
-                            <div class="record-item">Url:&nbsp;<small class="text-muted">{{item.SubscriptionRecord.EndpointUrl}}</small></div>
-                            <div class="record-item">订阅类型:&nbsp;<small class="text-muted">{{item.SubscriptionRecord.SubscriptionProtocol}}</small></div>
+                            <div class="record-item">Url:&nbsp;<small class="text-muted">{{item.EventRecordSubscription.EndpointUrl}}</small></div>
+                            <div class="record-item">订阅类型:&nbsp;<small class="text-muted">{{item.EventRecordSubscription.SubscriptionProtocol}}</small></div>
                             <div class="record-item">
                                 重试策略:
-                                <div v-for="(policyItem,policyIndex) in item.SubscriptionRecord.FailedRetryPolicy" class="header-item">
+                                <div v-for="(policyItem,policyIndex) in item.EventRecordSubscription.FailedRetryPolicy" class="header-item">
                                     <small class="text-muted">
                                         第<span>{{policyIndex+1}}</span>次：<span>{{getBehavior(policyItem.Behavior)}}</span>，<span>{{policyItem.RetryDelayCount}}</span><span>{{getDelayUnit(policyItem.RetryDelayUnit)}}</span>
                                     </small>

@@ -21,10 +21,10 @@ namespace EventBus.Abstractions.IProviders
 
         Task<long> GetEventRecordCountAsync(DateTime? begin, DateTime? end);
 
-        Task<ISubscriptionRecord> GetSubscriptionRecordAsync(Guid subscriptionRecordId);
+        Task<IEventRecordSubscription> GetEventRecordSubscriptionAsync(Guid eventRecordSubscriptionId);
 
-        Task<ISubscriptionRecord[]> GetSubscriptionRecordsAsync(Guid eventRecordId);
+        Task<IEventRecordSubscription[]> GetEventRecordSubscriptionsAsync(Guid eventRecordId);
 
-        Task<IEndpointSubscriptionRecord[]> GetEndpointSubscriptionRecordsAsync(Guid subscriptionRecordId);
+        Task<IEndpointSubscriptionRecord[]> GetEndpointSubscriptionRecordsAsync(Guid eventRecordSubscriptionId);
     }
 }

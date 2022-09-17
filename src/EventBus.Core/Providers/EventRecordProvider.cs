@@ -37,7 +37,7 @@ namespace EventBus.Core.Providers
 
             if (e.Subscriptions.NotNullAndEmpty())
             {
-                var records = e.Subscriptions.Select(subscription => new SubscriptionRecord(e.Id, eventRecord, subscription)).ToArray();
+                var records = e.Subscriptions.Select(subscription => new EventRecordSubscription(e.Id, eventRecord, subscription)).ToArray();
 
                 if (records.NotNullAndEmpty())
                 {
@@ -49,13 +49,13 @@ namespace EventBus.Core.Providers
 
         public async Task SubscriptionAsync(Guid subscriptionId)
         {
-            var subscriptionRecord = await GetByIdAsync<SubscriptionRecord>(subscriptionId);
-            if (subscriptionRecord == null) return;
-            if (subscriptionRecord.SubscriptionResult) return;
+            var eventRecordSubscription = await GetByIdAsync<EventRecordSubscription>(subscriptionId);
+            if (eventRecordSubscription == null) return;
+            if (eventRecordSubscription.SubscriptionResult) return;
 
-            subscriptionRecord.FailToRetry = false;
-            subscriptionRecord.SubscriptionType = SubscriptionType.Manual;
-            await _subscriptionQueueProvider.PutAsync(subscriptionRecord);
+            eventRecordSubscription.FailToRetry = false;
+            eventRecordSubscription.SubscriptionType = SubscriptionType.Manual;
+            await _subscriptionQueueProvider.PutAsync(eventRecordSubscription);
         }
 
         private async Task<EventRecord> BuildEventRecordAsync(Guid eventId)
@@ -123,25 +123,25 @@ namespace EventBus.Core.Providers
             return await query.CountAsync();
         }
 
-        public async Task<ISubscriptionRecord[]> GetSubscriptionRecordsAsync(Guid eventRecordId)
+        public async Task<IEventRecordSubscription[]> GetEventRecordSubscriptionsAsync(Guid eventRecordId)
         {
-            var records = await Get<SubscriptionRecord>(a => a.EventRecordId == eventRecordId).ToArrayAsync();
-            if (records.IsNullOrEmpty()) return SubscriptionRecord.EmptyArray;
+            var records = await Get<EventRecordSubscription>(a => a.EventRecordId == eventRecordId).ToArrayAsync();
+            if (records.IsNullOrEmpty()) return EventRecordSubscription.EmptyArray;
 
             return records;
         }
 
         public async Task<IEndpointSubscriptionRecord[]> GetEndpointSubscriptionRecordsAsync(Guid subscriptionRecordId)
         {
-            var records = await Get<EndpointSubscriptionRecord>(a => a.SubscriptionRecordId == subscriptionRecordId).ToArrayAsync();
+            var records = await Get<EndpointSubscriptionRecord>(a => a.EventRecordSubscriptionId == subscriptionRecordId).ToArrayAsync();
             if (records.IsNullOrEmpty()) return EndpointSubscriptionRecord.EmptyArray;
 
             return records;
         }
 
-        public async Task<ISubscriptionRecord> GetSubscriptionRecordAsync(Guid subscriptionRecordId)
+        public async Task<IEventRecordSubscription> GetEventRecordSubscriptionAsync(Guid eventRecordSubscriptionId)
         {
-            return await GetByIdAsync<SubscriptionRecord>(subscriptionRecordId);
+            return await GetByIdAsync<EventRecordSubscription>(eventRecordSubscriptionId);
         }
     }
 }

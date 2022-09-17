@@ -9,33 +9,33 @@ namespace EventBus.Core.Providers
 {
     internal interface ISubscriptionQueueProvider
     {
-        Task PutAsync(SubscriptionRecord record);
+        Task PutAsync(EventRecordSubscription record);
 
-        Task PutAsync(SubscriptionRecord[] records);
+        Task PutAsync(EventRecordSubscription[] records);
     }
 
     internal class SubscriptionQueueProvider : BaseRepository, ISubscriptionQueueProvider
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IBufferQueue<SubscriptionRecord> _subscriptionRecordQueue;
+        private readonly IBufferQueue<EventRecordSubscription> _eventRecordSubscriptionIdQueue;
 
         public SubscriptionQueueProvider(
             IServiceProvider serviceProvider,
             IBufferQueueService bufferQueueService,
             IHttpClientFactory httpClientFactory) : base(serviceProvider)
         {
-            _subscriptionRecordQueue = bufferQueueService.CreateBufferQueue<SubscriptionRecord>("subscription", async record => await PushAsync(record), 10, 100);
+            _eventRecordSubscriptionIdQueue = bufferQueueService.CreateBufferQueue<EventRecordSubscription>("subscription", async record => await PushAsync(record), 10, 100);
             _httpClientFactory = httpClientFactory;
         }
 
-        private async Task PushAsync(SubscriptionRecord record)
+        private async Task PushAsync(EventRecordSubscription record)
         {
             if (record == null) return;
 
             var endpointSubscription = await record.Subscription(_httpClientFactory, record.GetSubscriptionContent(), record.GetSubscriptionHeader());
             if (endpointSubscription != null)
             {
-                var _record = await GetByIdAsync<SubscriptionRecord>(record.Id);
+                var _record = await GetByIdAsync<EventRecordSubscription>(record.Id);
                 if (_record != null)
                 {
                     _record.SubscriptionResult = endpointSubscription.IsSuccessStatusCode;
@@ -72,7 +72,7 @@ namespace EventBus.Core.Providers
             var eventRecord = await GetByIdAsync<EventRecord>(eventRecordId);
             if (eventRecord == null) return;
 
-            var subscriptions = await Get<SubscriptionRecord>(a => a.EventRecordId == eventRecordId).ToArrayAsync();
+            var subscriptions = await Get<EventRecordSubscription>(a => a.EventRecordId == eventRecordId).ToArrayAsync();
             if (subscriptions.IsNullOrEmpty()) return;
 
             var successCount = subscriptions.Count(a => a.SubscriptionResult);
@@ -81,21 +81,21 @@ namespace EventBus.Core.Providers
             await UpdateAsync(eventRecord);
         }
 
-        private async Task<int> GetRetryCountAsync(Guid subscriptionRecordId)
+        private async Task<int> GetRetryCountAsync(Guid eventRecordSubscriptionId)
         {
-            return await Get<EndpointSubscriptionRecord>(a => a.SubscriptionRecordId == subscriptionRecordId).CountAsync();
+            return await Get<EndpointSubscriptionRecord>(a => a.EventRecordSubscriptionId == eventRecordSubscriptionId).CountAsync();
         }
 
-        public async Task PutAsync(SubscriptionRecord record)
+        public async Task PutAsync(EventRecordSubscription subscription)
         {
-            await _subscriptionRecordQueue.PutAsync(record, default);
+            await _eventRecordSubscriptionIdQueue.PutAsync(subscription, default);
         }
 
-        public async Task PutAsync(SubscriptionRecord[] records)
+        public async Task PutAsync(EventRecordSubscription[] subscriptions)
         {
-            if (records.IsNullOrEmpty()) return;
+            if (subscriptions.IsNullOrEmpty()) return;
 
-            foreach (var record in records)
+            foreach (var record in subscriptions)
             {
                 if (record.SubscriptionResult == false) await PutAsync(record);
             }

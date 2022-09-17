@@ -21,13 +21,13 @@ namespace EventBus.Application.Controllers
             return View();
         }
 
-        [HttpPost("{subscriptionRecordId}")]
-        public async Task<IActionResult> Subscription(Guid subscriptionRecordId)
+        [HttpPost("{eventRecordSubscriptionId}")]
+        public async Task<IActionResult> Subscription(Guid eventRecordSubscriptionId)
         {
-            var record = await _eventRecordProvider.GetSubscriptionRecordAsync(subscriptionRecordId);
+            var record = await _eventRecordProvider.GetEventRecordSubscriptionAsync(eventRecordSubscriptionId);
             if (record == null) return NotFound();
 
-            await _eventRecordProvider.SubscriptionAsync(subscriptionRecordId);
+            await _eventRecordProvider.SubscriptionAsync(eventRecordSubscriptionId);
             return Ok();
         }
 
@@ -41,18 +41,18 @@ namespace EventBus.Application.Controllers
         }
 
         [HttpGet("{eventRecordId}")]
-        public async Task<SubscriptionRecordResult[]> GetSubscriptionRecord(Guid eventRecordId)
+        public async Task<EventRecordSubscriptionResult[]> GetEventRecordSubscription(Guid eventRecordId)
         {
-            var records = await _eventRecordProvider.GetSubscriptionRecordsAsync(eventRecordId);
-            if (records.IsNullOrEmpty()) return Array.Empty<SubscriptionRecordResult>();
+            var records = await _eventRecordProvider.GetEventRecordSubscriptionsAsync(eventRecordId);
+            if (records.IsNullOrEmpty()) return Array.Empty<EventRecordSubscriptionResult>();
 
-            return records.Select(a => new SubscriptionRecordResult(a)).ToArray();
+            return records.Select(a => new EventRecordSubscriptionResult(a)).ToArray();
         }
 
-        [HttpGet("{subscriptionRecordId}")]
-        public async Task<EndpointSubscriptionRecordResult[]> GetEndpointSubscriptionRecord(Guid subscriptionRecordId)
+        [HttpGet("{eventRecordSubscriptionId}")]
+        public async Task<EndpointSubscriptionRecordResult[]> GetEndpointSubscriptionRecord(Guid eventRecordSubscriptionId)
         {
-            var records = await _eventRecordProvider.GetEndpointSubscriptionRecordsAsync(subscriptionRecordId);
+            var records = await _eventRecordProvider.GetEndpointSubscriptionRecordsAsync(eventRecordSubscriptionId);
             if (records.IsNullOrEmpty()) return Array.Empty<EndpointSubscriptionRecordResult>();
 
             return records.Select(a => new EndpointSubscriptionRecordResult(a)).ToArray();

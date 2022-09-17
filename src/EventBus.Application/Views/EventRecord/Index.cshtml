@@ -71,8 +71,8 @@
                         【{{currentEventRecord?.RecordTime}}】 的【<span style="font:bold;">{{currentEventRecord?.EventName}}</span>】的订阅
                     </div>
 
-                    <div v-for="(item,index) in subscriptionRecordList">
-                        <div class="card scription-record-item mb-3" :class="item.SubscriptionResult ? 'border-success' : 'border-danger'" v-on:click="selectSubscriptionRecord(item)">
+                    <div v-for="(item,index) in eventRecordSubscriptionList">
+                        <div class="card scription-record-item mb-3" :class="item.SubscriptionResult ? 'border-success' : 'border-danger'" v-on:click="selectEventRecordSubscription(item)">
                             <div class="card-header">
                                 {{item.EndpointName}}
                                 <span style="float:right;" :class="item.SubscriptionResult ? 'text-success' : 'text-danger'">
@@ -99,7 +99,7 @@
                             </div>
                         </div>
 
-                        <div class="collapse collapse-container" :id="item.SubscriptionRecordId">
+                        <div class="collapse collapse-container" :id="item.EventRecordSubscriptionId">
 
                             <div v-show="endpointRecordList.length > 0" class="card card-body endpoint-record-container" v-for="(item,index) in endpointRecordList" :class="item.IsSuccessStatusCode ? 'border-success' : 'border-danger'">
                                 <div class="record-item">Subscription:&nbsp;<small class="text-muted">{{item.SubscriptionTime}}&nbsp;&nbsp;{{getSubscriptionType(item.SubscriptionType)}}订阅</small></div>
@@ -138,7 +138,7 @@
         data: {
             eventName: "",
             eventRecordList: [],
-            subscriptionRecordList: [],
+            eventRecordSubscriptionList: [],
             endpointRecordList: [],
             endpointList: [],
             currnetPageIndex: 1,
@@ -167,19 +167,19 @@
                         message.error(e.message);
                     });
             },
-            getSubscriptionRecordList() {
+            getEventRecordSubscriptionList() {
                 if (this.currentEventRecord) {
-                    api.eventRecord.getSubscriptionRecord(this.currentEventRecord.EventRecordId)
+                    api.eventRecord.getEventRecordSubscription(this.currentEventRecord.EventRecordId)
                         .success(r => {
-                            this.subscriptionRecordList = r;
+                            this.eventRecordSubscriptionList = r;
                         }).fail(e => {
                             console.log(e);
                             message.error(e.message);
                         });
                 }
             },
-            getEndpointRecordList(subscriptionRecordId) {
-                api.eventRecord.getEndpointSubscriptionRecord(subscriptionRecordId)
+            getEndpointRecordList(eventRecordSubscriptionId) {
+                api.eventRecord.getEndpointSubscriptionRecord(eventRecordSubscriptionId)
                     .success(r => {
                         this.endpointRecordList = r;
                         this.currnetEndpointCollapse.show();
@@ -214,7 +214,7 @@
             },
             selectEventRecord(data) {
                 this.currentEventRecord = data;
-                this.getSubscriptionRecordList();
+                this.getEventRecordSubscriptionList();
                 if (this.currnetEndpointCollapse) this.currnetEndpointCollapse.hide();
             },
             getBehavior(behavior) {
@@ -237,15 +237,15 @@
 
                 return subscriptionType;
             },
-            selectSubscriptionRecord(data) {
-                var subscriptionRecordCollapse = document.getElementById(data.SubscriptionRecordId)
-                this.currnetEndpointCollapse = new bootstrap.Collapse(subscriptionRecordCollapse, {
+            selectEventRecordSubscription(data) {
+                var eventRecordSubscriptionCollapse = document.getElementById(data.EventRecordSubscriptionId)
+                this.currnetEndpointCollapse = new bootstrap.Collapse(eventRecordSubscriptionCollapse, {
                     toggle: false
                 });
 
                 if (!data.IsCollapse) {
                     data.IsCollapse = true;
-                    this.getEndpointRecordList(data.SubscriptionRecordId);
+                    this.getEndpointRecordList(data.EventRecordSubscriptionId);
                 }
 
                 if (data.IsCollapse) {
@@ -255,7 +255,7 @@
             },
             subscription(data) {
                 if (!data.SubscriptionResult) {
-                    api.eventRecord.subscription(data.SubscriptionRecordId).success(r => {
+                    api.eventRecord.subscription(data.EventRecordSubscriptionId).success(r => {
                         message.success("订阅成功");
                     }).fail(e => {
                         console.log(e);

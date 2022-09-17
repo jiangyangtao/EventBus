@@ -45,7 +45,7 @@ namespace EventBus.Abstractions.IModels
         /// <summary>
         /// 事件的订阅记录
         /// </summary>
-        public ISubscriptionRecord[] ISubscriptionRecords { get; }
+        public IEventRecordSubscription[] EventRecordSubscriptions { get; }
 
         public HttpContent BuilderHttpContent();
 

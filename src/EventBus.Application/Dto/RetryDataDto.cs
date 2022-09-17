@@ -16,14 +16,14 @@ namespace EventBus.Application.Dto
 
             if (retryData.Event != null) EventName = retryData.Event.EventName;
             if (retryData.EventRecord != null) EventRecord = new EventRecordDto(retryData.EventRecord);
-            if (retryData.SubscriptionRecord != null) SubscriptionRecord = new SubscriptionRecordDto(retryData.SubscriptionRecord);
+            if (retryData.EventRecordSubscription != null) EventRecordSubscription = new EventRecordSubscriptionDto(retryData.EventRecordSubscription);
         }
 
         public string EventName { set; get; }
 
         public EventRecordDto EventRecord { set; get; }
 
-        public SubscriptionRecordDto SubscriptionRecord { set; get; }
+        public EventRecordSubscriptionDto EventRecordSubscription { set; get; }
 
 
         /// <summary>

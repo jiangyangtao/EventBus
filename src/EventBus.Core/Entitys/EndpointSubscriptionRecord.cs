@@ -12,7 +12,7 @@ namespace EventBus.Core.Entitys
         /// <summary>
         /// 
         /// </summary>
-        public Guid SubscriptionRecordId { set; get; }
+        public Guid EventRecordSubscriptionId { set; get; }
 
         public SubscriptionType SubscriptionType { get; set; } = SubscriptionType.Automatic;
 

@@ -36,9 +36,9 @@ namespace EventBus.Abstractions.IProviders
         /// <summary>
         /// 获取重试次数
         /// </summary>
-        /// <param name="subscriptionRecordId"></param>
+        /// <param name="eventRecordSubscriptionId"></param>
         /// <returns></returns>
-        Task<int> GetRetryCountAsync(Guid subscriptionRecordId);
+        Task<int> GetRetryCountAsync(Guid eventRecordSubscriptionId);
 
         Task<IRetryData[]> GetRetryDatasAsync(string eventName, string endpointName, int start, int count);
 

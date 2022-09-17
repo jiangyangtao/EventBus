@@ -5,16 +5,16 @@ using Newtonsoft.Json.Converters;
 
 namespace EventBus.Application.Dto
 {
-    public class SubscriptionRecordDtoBase
+    public class EventRecordSubscriptionDtoBase
     {
-        public Guid SubscriptionRecordId { get; set; }
+        public Guid EventRecordSubscriptionId { get; set; }
     }
 
-    public class SubscriptionRecordDto : SubscriptionRecordDtoBase
+    public class EventRecordSubscriptionDto : EventRecordSubscriptionDtoBase
     {
-        public SubscriptionRecordDto(ISubscriptionRecord record)
+        public EventRecordSubscriptionDto(IEventRecordSubscription record)
         {
-            SubscriptionRecordId = record.Id;
+            EventRecordSubscriptionId = record.Id;
             EndpointName = record.EndpointName;
             EndpointUrl = record.EndpointUrl;
             SubscriptionProtocol = record.SubscriptionProtocol;
@@ -55,9 +55,9 @@ namespace EventBus.Application.Dto
         public bool SubscriptionResult { get; }
     }
 
-    public class SubscriptionRecordResult : SubscriptionRecordDto
+    public class EventRecordSubscriptionResult : EventRecordSubscriptionDto
     {
-        public SubscriptionRecordResult(ISubscriptionRecord record) : base(record)
+        public EventRecordSubscriptionResult(IEventRecordSubscription record) : base(record)
         {
 
         }

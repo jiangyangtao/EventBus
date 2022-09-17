@@ -15,12 +15,12 @@ namespace EventBus.Abstractions.IModels
         /// <summary>
         /// 订阅的分组日志 Id
         /// </summary>
-        public Guid SubscriptionRecordId { get; }
+        public Guid EventRecordSubscriptionId { get; }
 
         public IEventRecord EventRecord { get; }
 
         public IEvent Event { get; }
 
-        public ISubscriptionRecord SubscriptionRecord { get; }
+        public IEventRecordSubscription EventRecordSubscription { get; }
     }
 }

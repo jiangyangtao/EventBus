@@ -102,8 +102,8 @@ var api = {
         }
     },
     eventRecord: {
-        subscription: function (subscriptionRecordId) {
-            return axios.post(`${apiVersion}/api/eventrecord/subscription/${subscriptionRecordId}`, {});
+        subscription: function (eventRecordSubscriptionId) {
+            return axios.post(`${apiVersion}/api/eventrecord/subscription/${eventRecordSubscriptionId}`, {});
         },
         list: function (start, count, eventName) {
             return axios.get(`${apiVersion}/api/eventrecord/list`, {
@@ -114,11 +114,11 @@ var api = {
                 }
             });
         },
-        getSubscriptionRecord: function (eventRecordId) {
-            return axios.get(`${apiVersion}/api/eventrecord/getSubscriptionRecord/${eventRecordId}`);
+        getEventRecordSubscription: function (eventRecordSubscriptionId) {
+            return axios.get(`${apiVersion}/api/eventrecord/GetEventRecordSubscription/${eventRecordSubscriptionId}`);
         },
-        getEndpointSubscriptionRecord: function (subscriptionRecordId) {
-            return axios.get(`${apiVersion}/api/eventrecord/getEndpointSubscriptionRecord/${subscriptionRecordId}`);
+        getEndpointSubscriptionRecord: function (eventRecordSubscriptionId) {
+            return axios.get(`${apiVersion}/api/eventrecord/getEndpointSubscriptionRecord/${eventRecordSubscriptionId}`);
         }
     },
     retry: {

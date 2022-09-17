@@ -46,7 +46,7 @@ namespace EventBus.Core.Entitys
         public IEvent Event { set; get; }
 
         [NotMapped]
-        public ISubscriptionRecord[] ISubscriptionRecords { set; get; }
+        public IEventRecordSubscription[] EventRecordSubscriptions { set; get; }
 
         public HttpContent BuilderHttpContent()
         {
