@@ -138,7 +138,7 @@ namespace EventBus.Core.Entitys
                 IsSuccessStatusCode = response.IsSuccessStatusCode,
                 ResponseStatus = responseStatus.ToString(),
                 ResponseStatusCode = response.StatusCode.ToString(),
-                ResponseHeaders = response.Headers.ToDictionary(a => a.Key, a => a.Value.ToString()),
+                ResponseHeaders = response.Headers.ToDictionary(a => a.Key, a => string.Join(",", a.Value)),
                 ResponseContent = content,
                 ResponseTime = DateTime.Now,
                 UsageTime = watch.ElapsedMilliseconds,
