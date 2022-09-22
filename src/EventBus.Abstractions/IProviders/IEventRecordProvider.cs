@@ -11,6 +11,14 @@ namespace EventBus.Abstractions.IProviders
         /// <returns></returns>
         Task PublishAsync(Guid eventId);
 
+        /// <summary>
+        /// 发布事件，gRPC 方式
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="record"></param>
+        /// <returns></returns>
+        Task PublishAsync(Guid eventId, IEventRecord record);
+
         Task SubscriptionAsync(Guid subscriptionId);
 
         Task<IEventRecord> GetEventRecordAsync(Guid eventRecordId);

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option csharp_namespace = "EventBus.GrpcService.Protos";
+
+package EventBus;
+
+service EventProto {
+	rpc Push(PushModel) returns (PushResponse);
+}
+
+message PushModel {
+  string EventId = 1;
+  string Data = 2;
+  string QueryString = 3;
+}
+
+message PushResponse{
+	bool Result = 1;
+}

@@ -1,10 +1,8 @@
 ﻿using EventBus.Abstractions.IModels;
 using EventBus.Core.Base;
 using EventBus.Extensions;
-using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Net.Http;
 using System.Text;
 
 namespace EventBus.Core.Entitys

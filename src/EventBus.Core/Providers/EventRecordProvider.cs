@@ -47,15 +47,25 @@ namespace EventBus.Core.Providers
             }
         }
 
-        public async Task SubscriptionAsync(Guid subscriptionId)
+        public async Task PublishAsync(Guid eventId, IEventRecord record)
         {
-            var eventRecordSubscription = await GetByIdAsync<EventRecordSubscription>(subscriptionId);
-            if (eventRecordSubscription == null) return;
-            if (eventRecordSubscription.SubscriptionResult) return;
+            var e = await _eventProvider.GetEventAsync(eventId);
+            if (e == null) return;
+            if (e.Subscriptions.IsNullOrEmpty()) return;
 
-            eventRecordSubscription.FailToRetry = false;
-            eventRecordSubscription.SubscriptionType = SubscriptionType.Manual;
-            await _subscriptionQueueProvider.PutAsync(eventRecordSubscription);
+            var eventRecord = BuildEventRecord(e.Id, record);
+            await CreateAsync(eventRecord);
+
+            if (e.Subscriptions.NotNullAndEmpty())
+            {
+                var records = e.Subscriptions.Select(subscription => new EventRecordSubscription(e.Id, eventRecord, subscription)).ToArray();
+
+                if (records.NotNullAndEmpty())
+                {
+                    await AddRangeAsync(records);
+                    await _subscriptionQueueProvider.PutAsync(records);
+                }
+            }
         }
 
         private async Task<EventRecord> BuildEventRecordAsync(Guid eventId)
@@ -71,12 +81,37 @@ namespace EventBus.Core.Providers
             {
                 EventId = eventId,
                 QueryString = request.QueryString.ToString(),
-                Data = streamReader.ReadToEndAsync().Result,
+                Data = data,
                 Header = request.Headers.ToDictionary(a => a.Key, a => a.Value.ToString()),
                 RecordTime = DateTime.Now,
                 ClientIPAddress = ipaddress.ToString(),
             };
         }
+
+        private EventRecord BuildEventRecord(Guid eventId, IEventRecord record)
+        {
+            return new EventRecord
+            {
+                EventId = eventId,
+                QueryString = record.QueryString,
+                Data = record.Data,
+                Header = record.Header,
+                RecordTime = DateTime.Now,
+                ClientIPAddress = record.ClientIPAddress,
+            };
+        }
+
+        public async Task SubscriptionAsync(Guid subscriptionId)
+        {
+            var eventRecordSubscription = await GetByIdAsync<EventRecordSubscription>(subscriptionId);
+            if (eventRecordSubscription == null) return;
+            if (eventRecordSubscription.SubscriptionResult) return;
+
+            eventRecordSubscription.FailToRetry = false;
+            eventRecordSubscription.SubscriptionType = SubscriptionType.Manual;
+            await _subscriptionQueueProvider.PutAsync(eventRecordSubscription);
+        }
+
 
         public async Task<IEventRecord> GetEventRecordAsync(Guid eventRecordId)
         {

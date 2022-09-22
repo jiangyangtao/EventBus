@@ -503,7 +503,7 @@
                 const input = document.createElement('input');
                 input.type = "text";
                 input.setAttribute('readonly', 'readonly');
-                input.value = `${window.location.origin}/${apiVersion}/api/event/publish/${data.EventId}`;
+                input.value = `${window.location.origin}/${apiVersion}/api/event/push/${data.EventId}`;
                 document.body.appendChild(input);
                 input.select();
                 input.setSelectionRange(0, input.value.length);

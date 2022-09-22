@@ -1,5 +1,6 @@
 ﻿using EventBus.Abstractions.IModels;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace EventBus.Application.Dto
 {
@@ -11,6 +12,8 @@ namespace EventBus.Application.Dto
 
     public class EventRecordDto : EventRecordDtoBase
     {
+        public EventRecordDto() { }
+
         public EventRecordDto(IEventRecord record)
         {
             EventRecordId = record.Id;
@@ -51,6 +54,24 @@ namespace EventBus.Application.Dto
         /// 订阅完成率
         /// </summary>
         public decimal SubscriptionCompletionRate { set; get; }
+    }
+
+    public class EventRecordDataDto : EventRecordDto, IEventRecord
+    {
+        public IEvent Event { set; get; }
+
+        public IEventRecordSubscription[] EventRecordSubscriptions => throw new NotImplementedException();
+
+        public Guid Id { set; get; }
+
+        public DateTime CreateTime { set; get; }
+
+        public DateTime UpdateTime { set; get; }
+
+        public HttpContent BuilderHttpContent()
+        {
+            return new StringContent(Data, Encoding.UTF8, "application/json");
+        }
     }
 
     public class EventRecordResult : EventRecordDto

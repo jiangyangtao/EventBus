@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option csharp_namespace = "EventBus.Client.Protos";
+
+package EventBus;
+
+service SubscriptionProto {
+	rpc Push(PushModel) returns (PushResponse);
+}
+
+message PushModel {
+  string Data = 2;
+  string QueryString = 3;
+}
+
+message PushResponse{
+	bool Result = 1;
+}

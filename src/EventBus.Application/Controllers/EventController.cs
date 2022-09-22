@@ -25,7 +25,7 @@ namespace EventBus.Application.Controllers
 
         [HttpPut("{eventId}")]
         [HttpPost("{eventId}")]
-        public async Task<IActionResult> Publish(Guid eventId)
+        public async Task<IActionResult> Push(Guid eventId)
         {
             if (eventId == Guid.Empty) return NotFound();
 
