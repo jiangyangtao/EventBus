@@ -2,6 +2,7 @@
 using EventBus.Core.Providers;
 using EventBus.Core.Services;
 using EventBus.Storage.Core;
+using EventBus.Subscription;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,7 @@ namespace EventBus.Core
 
             services.AddHttpClient();
             services.AddStorage(configuration);
+            services.AddEventSubscription();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<BufferQueueService>();

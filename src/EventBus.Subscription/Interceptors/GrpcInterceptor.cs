@@ -1,16 +1,16 @@
-﻿using EventBus.Core.Entitys;
+﻿using EventBus.Abstractions.IModels;
 using EventBus.Extensions;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace EventBus.Core.Interceptors
+namespace EventBus.Subscription.Interceptors
 {
     internal class GrpcInterceptor : Interceptor
     {
         private readonly ILogger _logger;
-        private readonly EventRecordSubscription _subscription;
+        private readonly IEventRecordSubscription _subscription;
 
         public IDictionary<string, string> ResponseHeaders { get; private set; }
 
@@ -20,7 +20,7 @@ namespace EventBus.Core.Interceptors
 
         public int TaskStatusNumber { get; private set; }
 
-        public GrpcInterceptor(IServiceProvider serviceProvider, EventRecordSubscription subscription)
+        public GrpcInterceptor(IServiceProvider serviceProvider, IEventRecordSubscription subscription)
         {
             _logger = serviceProvider.GetRequiredService<ILogger>();
             _subscription = subscription;

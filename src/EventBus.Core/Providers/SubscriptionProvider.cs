@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventBus.Core.Providers
 {
-    internal class SubscriptionProvider : BaseRepository<Subscription>, ISubscriptionProvider
+    internal class SubscriptionProvider : BaseRepository<Entitys.Subscription>, ISubscriptionProvider
     {
         private readonly IApplicationProvider _applicationProvider;
 
@@ -20,12 +20,12 @@ namespace EventBus.Core.Providers
 
         public async Task<Guid> AddOrUpdateAsync(ISubscription subscription)
         {
-            Subscription data = null;
+            Entitys.Subscription data = null;
             if (subscription.Id != Guid.Empty) data = await GetByIdAsync(subscription.Id);
 
             if (data == null)
             {
-                data = new Subscription(subscription);
+                data = new Entitys.Subscription(subscription);
                 await CreateAsync(data);
                 return data.Id;
             }
@@ -45,7 +45,7 @@ namespace EventBus.Core.Providers
             var endpoint = await _applicationProvider.GetApplicationEndpointAsync(endpointId);
             if (endpoint == null) return Guid.Empty;
 
-            var subscription = new Subscription(eventId, endpoint);
+            var subscription = new Entitys.Subscription(eventId, endpoint);
             await CreateAsync(subscription);
 
             return subscription.Id;
@@ -53,7 +53,7 @@ namespace EventBus.Core.Providers
 
         public async Task<ISubscription> GetSubscriptionAsync(Guid subscriptionId)
         {
-            return await GetByIdAsync<Subscription>(subscriptionId);
+            return await GetByIdAsync<Entitys.Subscription>(subscriptionId);
         }
 
         public async Task<long> GetSubscriptionCountAsync(Guid? eventId, string endpointName)
@@ -62,7 +62,7 @@ namespace EventBus.Core.Providers
             return await query.CountAsync();
         }
 
-        private IQueryable<Subscription> BuildQueryable(Guid? eventId, string endpointName)
+        private IQueryable<Entitys.Subscription> BuildQueryable(Guid? eventId, string endpointName)
         {
             var query = Get();
             if (eventId.HasValue) query = query.Where(a => a.EventId == eventId);
@@ -76,7 +76,7 @@ namespace EventBus.Core.Providers
             var query = BuildQueryable(eventId, endpointName);
 
             var subscriptions = await query.Skip(start).Take(count).ToArrayAsync();
-            if (subscriptions.IsNullOrEmpty()) return Subscription.EmptyArray;
+            if (subscriptions.IsNullOrEmpty()) return Entitys.Subscription.EmptyArray;
 
             var eventIds = subscriptions.Select(a => a.EventId).ToArray();
             if (eventIds.NotNullAndEmpty())
@@ -93,8 +93,8 @@ namespace EventBus.Core.Providers
 
         public async Task<ISubscription[]> GetSubscriptionsAsync(Guid eventId)
         {
-            var subscriptions = await Get<Subscription>(a => a.EventId == eventId).ToArrayAsync();
-            if (subscriptions.IsNullOrEmpty()) return Subscription.EmptyArray;
+            var subscriptions = await Get<Entitys.Subscription>(a => a.EventId == eventId).ToArrayAsync();
+            if (subscriptions.IsNullOrEmpty()) return Entitys.Subscription.EmptyArray;
 
             return subscriptions;
         }

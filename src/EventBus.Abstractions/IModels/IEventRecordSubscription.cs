@@ -38,6 +38,13 @@ namespace EventBus.Abstractions.IModels
         public bool SubscriptionResult { get; }
 
         /// <summary>
+        /// 事件记录
+        /// </summary>
+        public IEventRecord EventRecord { get; }
+
+        public SubscriptionType SubscriptionType { get; set; }
+
+        /// <summary>
         /// 接入点的订阅记录
         /// </summary>
         public IEndpointSubscriptionRecord[] EndpointSubscriptionRecords { get; }

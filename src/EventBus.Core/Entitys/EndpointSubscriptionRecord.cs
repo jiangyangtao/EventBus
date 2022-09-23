@@ -9,6 +9,23 @@ namespace EventBus.Core.Entitys
 {
     public class EndpointSubscriptionRecord : BaseEntity<EndpointSubscriptionRecord>, IEndpointSubscriptionRecord
     {
+        public EndpointSubscriptionRecord()
+        {
+        }
+
+        public EndpointSubscriptionRecord(IEndpointSubscriptionRecord endpointSubscription)
+        {
+            EventRecordSubscriptionId = endpointSubscription.EventRecordSubscriptionId;
+            SubscriptionType = endpointSubscription.SubscriptionType;
+            SubscriptionTime = endpointSubscription.SubscriptionTime;
+            ResponseContent = endpointSubscription.ResponseContent;
+            ResponseTime = endpointSubscription.ResponseTime;
+            IsSuccessStatusCode = endpointSubscription.IsSuccessStatusCode;
+            ResponseStatus = endpointSubscription.ResponseStatus;
+            ResponseHeaders = endpointSubscription.ResponseHeaders;
+            UsageTime = endpointSubscription.UsageTime;
+        }
+
         /// <summary>
         /// 
         /// </summary>

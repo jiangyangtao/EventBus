@@ -100,6 +100,9 @@ namespace EventBus.Core.Entitys
         [NotMapped]
         public bool FailToRetry { set; get; } = true;
 
+        [NotMapped]
+        public IEventRecord EventRecord { set; get; }
+
         /// <summary>
         /// 订阅
         /// </summary>

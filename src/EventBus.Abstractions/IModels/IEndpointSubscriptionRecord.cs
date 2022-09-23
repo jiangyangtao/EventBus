@@ -49,6 +49,8 @@ namespace EventBus.Abstractions.IModels
         /// </summary>
         public long UsageTime { get; }
 
+        public Guid EventRecordSubscriptionId { get; }
+
 
         public ISubscription Subscription { get; }
     }

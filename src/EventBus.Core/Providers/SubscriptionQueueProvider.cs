@@ -1,4 +1,5 @@
-﻿using EventBus.Abstractions.Enums;
+﻿using EventBus.Abstractions;
+using EventBus.Abstractions.Enums;
 using EventBus.Core.Base;
 using EventBus.Core.Entitys;
 using EventBus.Core.Services;
@@ -16,23 +17,24 @@ namespace EventBus.Core.Providers
 
     internal class SubscriptionQueueProvider : BaseRepository, ISubscriptionQueueProvider
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ISubscriptionFactory _subscriptionFactory;
         private readonly IBufferQueue<EventRecordSubscription> _eventRecordSubscriptionIdQueue;
 
         public SubscriptionQueueProvider(
             IServiceProvider serviceProvider,
             IBufferQueueService bufferQueueService,
-            IHttpClientFactory httpClientFactory) : base(serviceProvider)
+            ISubscriptionFactory subscriptionFactory) : base(serviceProvider)
         {
             _eventRecordSubscriptionIdQueue = bufferQueueService.CreateBufferQueue<EventRecordSubscription>("subscription", async record => await PushAsync(record), 10, 100);
-            _httpClientFactory = httpClientFactory;
+            _subscriptionFactory = subscriptionFactory;
         }
 
         private async Task PushAsync(EventRecordSubscription record)
         {
             if (record == null) return;
 
-            var endpointSubscription = await record.Subscription(_httpClientFactory, record.GetSubscriptionContent(), record.GetSubscriptionHeader());
+            var subscriptionProvider = _subscriptionFactory.CreateSubscriptionProvider(record);
+            var endpointSubscription = await subscriptionProvider.SubscriptionAsync();
             if (endpointSubscription != null)
             {
                 var _record = await GetByIdAsync<EventRecordSubscription>(record.Id);
@@ -42,7 +44,7 @@ namespace EventBus.Core.Providers
                     await UpdateAsync(_record);
                 }
 
-                await CreateAsync(endpointSubscription);
+                await CreateAsync(new EndpointSubscriptionRecord(endpointSubscription));
 
                 if (endpointSubscription.IsSuccessStatusCode == false && record.FailToRetry)
                 {
