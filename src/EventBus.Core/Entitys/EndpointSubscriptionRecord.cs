@@ -22,6 +22,7 @@ namespace EventBus.Core.Entitys
             ResponseTime = endpointSubscription.ResponseTime;
             IsSuccessStatusCode = endpointSubscription.IsSuccessStatusCode;
             ResponseStatus = endpointSubscription.ResponseStatus;
+            ResponseStatusCode = endpointSubscription.ResponseStatusCode;
             ResponseHeaders = endpointSubscription.ResponseHeaders;
             UsageTime = endpointSubscription.UsageTime;
         }

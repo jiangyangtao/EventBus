@@ -25,6 +25,8 @@ namespace EventBus.Core.Entitys
             SubscriptionResult = false;
             SubscriptionHeader = eventRecord.Header;
             SubscriptionContent = eventRecord.BuilderHttpContent();
+
+            EventRecord = eventRecord;
         }
 
         public Guid EventId { set; get; }

@@ -59,7 +59,7 @@ namespace EventBus.Core.Providers
 
                 if (endpointSubscription.IsSuccessStatusCode) // 如果成功就更新订阅成功率
                 {
-                    await UpdateSubscriptionSuccessRate(record.EventRecordId);
+                    await UpdateSubscriptionSuccessRateAsync(record.EventRecordId);
                 }
             }
         }
@@ -69,7 +69,7 @@ namespace EventBus.Core.Providers
         /// </summary>
         /// <param name="eventRecordId"></param>
         /// <returns></returns>
-        private async Task UpdateSubscriptionSuccessRate(Guid eventRecordId)
+        private async Task UpdateSubscriptionSuccessRateAsync(Guid eventRecordId)
         {
             var eventRecord = await GetByIdAsync<EventRecord>(eventRecordId);
             if (eventRecord == null) return;

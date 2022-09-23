@@ -109,6 +109,11 @@ namespace EventBus.Core.Providers
 
             eventRecordSubscription.FailToRetry = false;
             eventRecordSubscription.SubscriptionType = SubscriptionType.Manual;
+
+            var evnetRecord = await GetEventRecordAsync(eventRecordSubscription.EventRecordId);
+            if (evnetRecord == null) return;
+
+            eventRecordSubscription.EventRecord = evnetRecord;
             await _subscriptionQueueProvider.PutAsync(eventRecordSubscription);
         }
 

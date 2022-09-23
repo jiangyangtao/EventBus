@@ -11,12 +11,15 @@ namespace EventBus.Core.Providers
 {
     internal class RetryProvider : BaseRepository<RetryData>, IRetryProvider
     {
+        private readonly IEventRecordProvider _eventRecordProvider;
         private readonly ISubscriptionQueueProvider _subscriptionQueueProvider;
 
         public RetryProvider(IRepository repository,
-            ISubscriptionQueueProvider subscriptionQueueProvider) : base(repository)
+            ISubscriptionQueueProvider subscriptionQueueProvider,
+            IEventRecordProvider eventRecordProvider) : base(repository)
         {
             _subscriptionQueueProvider = subscriptionQueueProvider;
+            _eventRecordProvider = eventRecordProvider;
         }
 
         public async Task RetryAsync()
@@ -28,7 +31,17 @@ namespace EventBus.Core.Providers
             var eventRecordSubscriptions = await Get<EventRecordSubscription>(a => eventRecordSubscriptionIds.Contains(a.Id)).ToArrayAsync();
             if (eventRecordSubscriptions.NotNullAndEmpty())
             {
-                await _subscriptionQueueProvider.PutAsync(eventRecordSubscriptions);
+                var eventRecordIds = eventRecordSubscriptions.Select(a => a.EventRecordId).Distinct().ToArray();
+                var eventRecords = await Get<EventRecord>(a => eventRecordIds.Contains(a.Id)).ToArrayAsync();
+                foreach (var eventRecordSubscription in eventRecordSubscriptions)
+                {
+                    var eventRecord = eventRecords.FirstOrDefault(a => a.Id == eventRecordSubscription.EventRecordId);
+                    if (eventRecord != null && eventRecordSubscription.SubscriptionResult == false)
+                    {
+                        eventRecordSubscription.EventRecord = eventRecord;
+                        await _subscriptionQueueProvider.PutAsync(eventRecordSubscription);
+                    }
+                }
             }
 
             await DeleteRangeAsync(datas);
@@ -40,7 +53,11 @@ namespace EventBus.Core.Providers
             var eventRecordSubscription = await GetByIdAsync<EventRecordSubscription>(data.EventRecordSubscriptionId);
             if (eventRecordSubscription != null && eventRecordSubscription.SubscriptionResult == false)
             {
+                var evnetRecord = await _eventRecordProvider.GetEventRecordAsync(eventRecordSubscription.EventRecordId);
+                if (evnetRecord == null) return;
+
                 eventRecordSubscription.SubscriptionType = SubscriptionType.Manual;
+                eventRecordSubscription.EventRecord = evnetRecord;
                 await _subscriptionQueueProvider.PutAsync(eventRecordSubscription);
             }
 
