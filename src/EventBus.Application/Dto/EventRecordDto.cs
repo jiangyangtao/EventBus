@@ -1,5 +1,6 @@
 ﻿using EventBus.Abstractions.IModels;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Mime;
 using System.Text;
 
 namespace EventBus.Application.Dto
@@ -70,7 +71,7 @@ namespace EventBus.Application.Dto
 
         public HttpContent BuilderHttpContent()
         {
-            return new StringContent(Data, Encoding.UTF8, "application/json");
+            return new StringContent(Data, Encoding.UTF8, MediaTypeNames.Application.Json);
         }
     }
 

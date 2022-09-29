@@ -3,6 +3,7 @@ using EventBus.Application.Controllers.Base;
 using EventBus.Application.Dto;
 using EventBus.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 
 namespace EventBus.Application.Controllers
 {

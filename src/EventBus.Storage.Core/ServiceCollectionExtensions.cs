@@ -65,6 +65,7 @@ namespace EventBus.Storage.Core
             var serviceScope = applicationBuilder.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var db = serviceScope.ServiceProvider.GetRequiredService<EventBusDBContext>();
             db.Database.EnsureCreated();
+
             return applicationBuilder;
         }
     }

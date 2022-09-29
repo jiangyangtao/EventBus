@@ -3,6 +3,7 @@ using EventBus.Core.Base;
 using EventBus.Extensions;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Net.Mime;
 using System.Text;
 
 namespace EventBus.Core.Entitys
@@ -48,7 +49,7 @@ namespace EventBus.Core.Entitys
 
         public HttpContent BuilderHttpContent()
         {
-            return new StringContent(Data, Encoding.UTF8, "application/json");
+            return new StringContent(Data, Encoding.UTF8, MediaTypeNames.Application.Json);
         }
     }
 }
