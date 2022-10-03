@@ -5,13 +5,13 @@ namespace EventBus.Storage.Abstractions.IRepositories
     public interface IRepository
     {
         /// <summary>
-        /// 创建一条数据
+        /// 添加一条数据
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="entity"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        Task<TEntity> CreateAsync<TEntity>(TEntity entity, bool isCommit = true) where TEntity : class, IEntity;
+        Task<TEntity> AddAsync<TEntity>(TEntity entity, bool isCommit = true) where TEntity : class, IEntity;
 
         /// <summary>
         /// 批量添加

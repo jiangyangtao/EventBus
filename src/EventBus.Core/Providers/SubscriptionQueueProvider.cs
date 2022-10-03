@@ -44,7 +44,7 @@ namespace EventBus.Core.Providers
                     await UpdateAsync(_record);
                 }
 
-                await CreateAsync(new EndpointSubscriptionRecord(endpointSubscription));
+                await AddAsync(new EndpointSubscriptionRecord(endpointSubscription));
 
                 if (endpointSubscription.IsSuccessStatusCode == false && record.FailToRetry)
                 {
@@ -53,7 +53,7 @@ namespace EventBus.Core.Providers
                     if (policy.Behavior == RetryBehavior.Retry)
                     {
                         var retryData = record.GetRetryData(policy);
-                        await CreateAsync(retryData);
+                        await AddAsync(retryData);
                     }
                 }
 

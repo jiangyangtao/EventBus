@@ -31,10 +31,10 @@ namespace EventBus.Core.Base
         /// <param name="entity"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        protected async Task<TEntity> CreateAsync<TEntity>(TEntity entity, bool isCommit = true)
+        protected async Task<TEntity> AddAsync<TEntity>(TEntity entity, bool isCommit = true)
             where TEntity : class, IEntity
         {
-            return await _repository.CreateAsync(entity, isCommit);
+            return await _repository.AddAsync(entity, isCommit);
         }
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace EventBus.Core.Base
         /// <param name="entity"></param>
         /// <param name="isCommit"></param>
         /// <returns></returns>
-        protected async Task<TEntity> CreateAsync(TEntity entity, bool isCommit = true) => await base.CreateAsync(entity, isCommit);
+        protected async Task<TEntity> AddAsync(TEntity entity, bool isCommit = true) => await base.AddAsync(entity, isCommit);
 
 
         /// <summary>

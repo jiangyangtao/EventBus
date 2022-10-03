@@ -30,7 +30,7 @@ namespace EventBus.Core.Providers
         private async Task<Guid> AddApplicationAsync(string applicationName)
         {
             var application = new Application(applicationName);
-            await CreateAsync(application);
+            await AddAsync(application);
 
             return application.Id;
         }
@@ -41,7 +41,7 @@ namespace EventBus.Core.Providers
             if (endpoint == null)
             {
                 endpoint = new ApplicationEndpoint(applicationEndpoint);
-                await CreateAsync(endpoint);
+                await AddAsync(endpoint);
                 return endpoint.Id;
             }
 

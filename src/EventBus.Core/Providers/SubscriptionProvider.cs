@@ -26,7 +26,7 @@ namespace EventBus.Core.Providers
             if (data == null)
             {
                 data = new Entitys.Subscription(subscription);
-                await CreateAsync(data);
+                await AddAsync(data);
                 return data.Id;
             }
 
@@ -46,7 +46,7 @@ namespace EventBus.Core.Providers
             if (endpoint == null) return Guid.Empty;
 
             var subscription = new Entitys.Subscription(eventId, endpoint);
-            await CreateAsync(subscription);
+            await AddAsync(subscription);
 
             return subscription.Id;
         }

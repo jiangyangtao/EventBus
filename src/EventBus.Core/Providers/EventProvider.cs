@@ -23,7 +23,7 @@ namespace EventBus.Core.Providers
             if (e == null)
             {
                 e = new Event(data);
-                await CreateAsync(e);
+                await AddAsync(e);
                 return e.Id;
             }
 

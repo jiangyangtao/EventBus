@@ -40,7 +40,7 @@ namespace EventBus.Storage.Core
             return await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<TEntity> CreateAsync<TEntity>(TEntity entity, bool isCommit = true) where TEntity : class, IEntity
+        public async Task<TEntity> AddAsync<TEntity>(TEntity entity, bool isCommit = true) where TEntity : class, IEntity
         {
             if (entity == null) return null;
 

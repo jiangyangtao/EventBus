@@ -33,7 +33,7 @@ namespace EventBus.Core.Providers
             if (e.Subscriptions.IsNullOrEmpty()) return;
 
             var eventRecord = await BuildEventRecordAsync(e.Id);
-            await CreateAsync(eventRecord);
+            await AddAsync(eventRecord);
 
             if (e.Subscriptions.NotNullAndEmpty())
             {
@@ -54,7 +54,7 @@ namespace EventBus.Core.Providers
             if (e.Subscriptions.IsNullOrEmpty()) return;
 
             var eventRecord = BuildEventRecord(e.Id, record);
-            await CreateAsync(eventRecord);
+            await AddAsync(eventRecord);
 
             if (e.Subscriptions.NotNullAndEmpty())
             {
