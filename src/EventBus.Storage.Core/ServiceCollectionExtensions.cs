@@ -38,8 +38,8 @@ namespace EventBus.Storage.Core
 
                 if (storageType == StorageType.MySql)
                 {
-                    var serverVersiohn = ServerVersion.AutoDetect(connectionString);
-                    builder.UseMySql(connectionString, serverVersiohn);
+                    var serverVersion = ServerVersion.AutoDetect(connectionString);
+                    builder.UseMySql(connectionString, serverVersion);
                 }
 
                 if (storageType == StorageType.SqlServer)
